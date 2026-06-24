@@ -29,3 +29,4 @@ npm-debug.log*
 
 # ── Dependencias (por si en el futuro se añaden herramientas) ──
 node_modules/
+.claude
