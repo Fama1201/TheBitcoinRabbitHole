@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "src": "/aprender", "dest": "/aprender.html" },
+    { "src": "/donaciones", "dest": "/donaciones.html" },
+    { "src": "/educadores", "dest": "/educadores.html" },
+    { "src": "/sobre", "dest": "/sobre.html" },
+    { "src": "/tiendas", "dest": "/tiendas.html" }
+  ]
+}
