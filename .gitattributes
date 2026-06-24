@@ -1,0 +1,9 @@
+# Normaliza line endings al hacer commit
+* text=auto
+
+# HTML/CSS/JS: LF en repo
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+*.md   text eol=lf
+*.json text eol=lf

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TheRabbitHole — Educación Bitcoin en Español</title>
+  <meta name="description" content="Aprende cómo funciona Bitcoin con explicaciones técnicas y honestas. Sin altcoins, sin especulación, sin paywalls."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Educación Bitcoin en español</p>
+    <h1 class="hero-title">Entiende Bitcoin.<br/><em>De verdad.</em></h1>
+    <p class="hero-body">Explicaciones claras sobre cómo funciona Bitcoin, cómo custodiar tus propias monedas y por qué importa. Sin especulación, sin altcoins, sin promesas de rentabilidad.</p>
+    <div class="hero-actions">
+      <a href="aprender.html" class="btn-primary">Empezar desde cero</a>
+      <a href="sobre.html" class="btn-outline">Qué es TheRabbitHole</a>
+    </div>
+  </div>
+  <div class="hero-illustration">
+    <svg viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M158 175 C152 152 146 112 149 80 C151 63 157 55 164 57 C172 59 175 70 174 90 C172 122 166 158 162 176Z" fill="#F2790B"/>
+      <path d="M160 172 C155 150 150 112 153 82 C154 69 158 62 164 64 C170 66 172 76 171 94 C169 122 164 156 161 173Z" fill="#d4601a"/>
+      <path d="M242 175 C248 152 254 112 251 80 C249 63 243 55 236 57 C228 59 225 70 226 90 C228 122 234 158 238 176Z" fill="#F2790B"/>
+      <path d="M240 172 C245 150 250 112 247 82 C246 69 242 62 236 64 C230 66 228 76 229 94 C231 122 236 156 239 173Z" fill="#d4601a"/>
+      <path d="M130 248 C128 212 142 182 162 175 C172 171 178 174 200 174 C222 174 228 171 238 175 C258 182 272 212 270 248 C268 278 250 298 200 300 C150 298 132 278 130 248Z" fill="#F2790B"/>
+      <ellipse cx="200" cy="268" rx="28" ry="20" fill="#f5a060"/>
+      <ellipse cx="172" cy="240" rx="17" ry="18" fill="white"/>
+      <circle cx="174" cy="242" r="11" fill="#14110F"/>
+      <circle cx="170" cy="238" r="4" fill="white"/>
+      <ellipse cx="228" cy="240" rx="17" ry="18" fill="white"/>
+      <circle cx="226" cy="242" r="11" fill="#14110F"/>
+      <circle cx="222" cy="238" r="4" fill="white"/>
+      <path d="M195 267 L205 267 L200 274Z" fill="#c04010"/>
+      <path d="M191 278 Q200 286 209 278" fill="none" stroke="#c04010" stroke-width="2" stroke-linecap="round"/>
+      <path d="M155 298 C155 268 172 252 200 250 C228 252 245 268 245 298Z" fill="#F2790B"/>
+      <path d="M178 294 C178 270 187 258 200 256 C213 258 222 270 222 294Z" fill="#f5a060"/>
+      <path d="M155 282 C138 278 116 280 100 288 C92 292 90 302 97 306 C107 311 128 308 145 301 C152 296 156 289 155 282Z" fill="#F2790B"/>
+      <path d="M97 304 C80 303 68 308 66 316 C64 324 76 328 91 325 C104 322 112 314 108 306Z" fill="#F2790B"/>
+      <path d="M245 282 C262 278 284 280 300 288 C308 292 310 302 303 306 C293 311 272 308 255 301 C248 296 244 289 245 282Z" fill="#F2790B"/>
+      <path d="M303 304 C320 303 332 308 334 316 C336 324 324 328 309 325 C296 322 288 314 292 306Z" fill="#F2790B"/>
+      <ellipse cx="200" cy="340" rx="135" ry="38" fill="#14110F"/>
+    </svg>
+  </div>
+</div>
+
+<hr/>
+
+<!-- ── SOBRE preview ── -->
+<section class="sobre" id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-text">
+        <p class="section-label">Sobre TheRabbitHole</p>
+        <h2 class="section-title">Bitcoin explicado con rigor</h2>
+        <p>TheRabbitHole es un proyecto de educación Bitcoin en español. El objetivo es explicar cómo funciona Bitcoin de forma técnica y honesta, sin simplificar en exceso ni agregar ruido innecesario.</p>
+        <p>El contenido cubre desde los conceptos básicos hasta la autocustodia avanzada. Todo es gratuito y público. No hay cursos de pago, no hay señales de trading, no hay altcoins.</p>
+        <p><strong>Not your keys, not your coins.</strong> Ese principio guía todo lo que publicamos.</p>
+        <br/>
+        <a href="sobre.html" class="btn-outline">Leer más sobre el proyecto →</a>
+      </div>
+      <div class="principios">
+        <div class="principio">
+          <span class="principio-num">01</span>
+          <div>
+            <h4>Solo Bitcoin</h4>
+            <p>No cubrimos altcoins, tokens ni otros proyectos. Bitcoin es suficientemente complejo e importante para dedicarle atención exclusiva.</p>
+          </div>
+        </div>
+        <div class="principio">
+          <span class="principio-num">02</span>
+          <div>
+            <h4>Autocustodia</h4>
+            <p>Enseñamos a ser el único responsable de tus bitcoin. Eso implica entender wallets, llaves privadas y seed phrases.</p>
+          </div>
+        </div>
+        <div class="principio">
+          <span class="principio-num">03</span>
+          <div>
+            <h4>Sin especulación</h4>
+            <p>No damos predicciones de precio ni recomendaciones de inversión. Explicamos cómo funciona la tecnología.</p>
+          </div>
+        </div>
+        <div class="principio">
+          <span class="principio-num">04</span>
+          <div>
+            <h4>Contenido gratuito</h4>
+            <p>Todo el material es de acceso libre. El proyecto se sostiene con donaciones voluntarias en Bitcoin.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ── APRENDER preview ── -->
+<section class="aprender" id="aprender">
+  <div class="container">
+    <div class="aprender-header">
+      <div>
+        <p class="section-label">Aprender Bitcoin</p>
+        <h2 class="section-title">Lecciones disponibles</h2>
+      </div>
+      <a href="aprender.html" class="btn-outline" style="font-size:0.85rem;padding:0.55rem 1.1rem;">Ver todas las lecciones →</a>
+    </div>
+    <div class="lecciones-grid">
+      <a href="aprender.html#leccion-1" class="leccion-card">
+        <p class="leccion-num">LECCIÓN 01</p>
+        <h3>¿Qué es Bitcoin?</h3>
+        <p>Qué es, quién lo creó, cómo funciona y por qué es diferente al dinero tradicional.</p>
+        <span class="leccion-nivel">Básico</span>
+      </a>
+      <a href="aprender.html#leccion-2" class="leccion-card">
+        <p class="leccion-num">LECCIÓN 02</p>
+        <h3>Blockchain y bloques</h3>
+        <p>Cómo se registran las transacciones, qué es un bloque y cómo se encadenan.</p>
+        <span class="leccion-nivel">Básico</span>
+      </a>
+      <a href="aprender.html#leccion-3" class="leccion-card">
+        <p class="leccion-num">LECCIÓN 03</p>
+        <h3>Wallets y llaves privadas</h3>
+        <p>La diferencia entre custodia propia y dejar tus bitcoin en un exchange.</p>
+        <span class="leccion-nivel">Intermedio</span>
+      </a>
+      <a href="aprender.html#leccion-4" class="leccion-card">
+        <p class="leccion-num">LECCIÓN 04</p>
+        <h3>¿Qué es un UTXO?</h3>
+        <p>Cómo maneja Bitcoin las transacciones internamente. Diferente a como funciona una cuenta bancaria.</p>
+        <span class="leccion-nivel">Intermedio</span>
+      </a>
+      <a href="aprender.html#leccion-5" class="leccion-card">
+        <p class="leccion-num">LECCIÓN 05</p>
+        <h3>Seed phrase y respaldo</h3>
+        <p>Qué son las 12 o 24 palabras, cómo protegerlas y qué pasa si las pierdes.</p>
+        <span class="leccion-nivel">Intermedio</span>
+      </a>
+      <a href="aprender.html#leccion-6" class="leccion-card">
+        <p class="leccion-num">LECCIÓN 06</p>
+        <h3>Cómo comprar Bitcoin</h3>
+        <p>Exchanges, P2P, KYC y non-KYC. Cómo adquirir bitcoin y retirarlo a tu propia wallet.</p>
+        <span class="leccion-nivel">Básico</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ── EDUCADORES preview ── -->
+<section class="educadores-prev" id="educadores">
+  <div class="container">
+    <p class="section-label">Directorio</p>
+    <h2 class="section-title">Otros educadores Bitcoin en español</h2>
+    <p class="section-sub">Personas que también enseñan Bitcoin con rigor. Cada uno con su enfoque, todos recomendables.</p>
+    <div class="educadores-grid">
+      <div class="educador-card">
+        <div class="educador-avatar">AB</div>
+        <h4>Nombre Educador</h4>
+        <p>Plataforma · País</p>
+        <a href="educadores.html" class="educador-link">Ver perfil →</a>
+      </div>
+      <div class="educador-card">
+        <div class="educador-avatar">CD</div>
+        <h4>Nombre Educador</h4>
+        <p>Plataforma · País</p>
+        <a href="educadores.html" class="educador-link">Ver perfil →</a>
+      </div>
+      <div class="educador-card">
+        <div class="educador-avatar">EF</div>
+        <h4>Nombre Educador</h4>
+        <p>Plataforma · País</p>
+        <a href="educadores.html" class="educador-link">Ver perfil →</a>
+      </div>
+      <div class="educador-card">
+        <div class="educador-avatar">+</div>
+        <h4>Sugerir educador</h4>
+        <p>¿Conoces a alguien?</p>
+        <a href="educadores.html" class="educador-link">Ir al directorio →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ── TIENDAS preview ── -->
+<section class="tiendas-prev" id="tiendas">
+  <div class="container">
+    <div class="aprender-header">
+      <div>
+        <p class="section-label">Tiendas BTC</p>
+        <h2 class="section-title">Dónde gastar tus bitcoin</h2>
+      </div>
+      <a href="tiendas.html" class="btn-outline" style="font-size:0.85rem;padding:0.55rem 1.1rem;">Ver directorio completo →</a>
+    </div>
+    <div class="tiendas-grid">
+      <a href="tiendas.html" class="tienda-card">
+        <p class="tienda-cat">Tecnología</p>
+        <h4>Nombre tienda</h4>
+        <p>Descripción breve de qué venden y cómo aceptan Bitcoin.</p>
+      </a>
+      <a href="tiendas.html" class="tienda-card">
+        <p class="tienda-cat">Servicios</p>
+        <h4>Nombre tienda</h4>
+        <p>Descripción breve de qué venden y cómo aceptan Bitcoin.</p>
+      </a>
+      <a href="tiendas.html" class="tienda-card">
+        <p class="tienda-cat">Alimentación</p>
+        <h4>Nombre tienda</h4>
+        <p>Descripción breve de qué venden y cómo aceptan Bitcoin.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ── DONACIONES preview ── -->
+<section class="donaciones-prev" id="donaciones">
+  <div class="container">
+    <div class="donaciones-inner">
+      <div>
+        <p class="donantes-label">Donantes</p>
+        <div class="donantes-list">
+          <span class="donante-pill">Satoshi A.</span>
+          <span class="donante-pill">@hodler21</span>
+          <span class="donante-pill">María G.</span>
+          <span class="donante-pill">Anónimo</span>
+          <span class="donante-pill">Carlos BTC</span>
+          <span class="donante-pill">Tu nombre aquí</span>
+        </div>
+        <div class="btc-addr-box" onclick="copiar()" title="Copiar dirección Bitcoin">
+          <code id="btc-addr">bc1q··· tu dirección aquí</code>
+          <button class="copy-btn" id="copy-lbl">copiar</button>
+        </div>
+        <p style="font-size:0.75rem;color:var(--muted);font-family:var(--font-mono);">Lightning también disponible — escríbeme directo</p>
+      </div>
+      <div class="donaciones-cta">
+        <p class="section-label">Apoyar el proyecto</p>
+        <h3>El contenido es gratuito y seguirá siéndolo</h3>
+        <p>TheRabbitHole no tiene publicidad ni cursos de pago. Si el contenido te resultó útil, puedes apoyar el proyecto con una donación en Bitcoin. Cualquier monto ayuda.</p>
+        <a href="donaciones.html" class="btn-primary">Ver cómo donar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

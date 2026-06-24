@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aprender Bitcoin — TheRabbitHole</title>
+  <meta name="description" content="Lecciones de Bitcoin ordenadas por nivel: desde qué es Bitcoin hasta autocustodia avanzada con seed phrases y hardware wallets."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <p class="breadcrumb"><a href="index.html">Inicio</a><span>›</span>Aprender Bitcoin</p>
+    <h1 class="page-title">Lecciones de Bitcoin</h1>
+    <p class="page-lead">Desde cero hasta la autocustodia. Las lecciones están ordenadas por nivel y cubren tanto los fundamentos del protocolo como la parte práctica de usar Bitcoin con seguridad.</p>
+  </div>
+</div>
+
+<!-- ── LECCIONES ── -->
+<section class="aprender-page">
+  <div class="container">
+    <div class="ruta-info">
+      <span class="ruta-badge basico">● Básico</span>
+      <span class="ruta-badge intermedio">● Intermedio</span>
+      <span class="ruta-badge avanzado">● Avanzado</span>
+    </div>
+
+    <a href="#leccion-1" class="leccion-card-full" id="leccion-1">
+      <div class="leccion-header">
+        <div>
+          <p class="leccion-num">LECCIÓN 01</p>
+          <h3>¿Qué es Bitcoin?</h3>
+        </div>
+        <span class="leccion-nivel">Básico</span>
+      </div>
+      <p>Bitcoin es un sistema de dinero electrónico que permite enviar valor entre personas sin necesidad de un banco ni intermediario. Fue creado en 2008 por Satoshi Nakamoto y funciona mediante un protocolo de consenso descentralizado. En esta lección explicamos qué lo diferencia del dinero tradicional, por qué importa y cuál es la lógica detrás de su diseño.</p>
+      <div class="leccion-temas">
+        <span class="tema-tag">Satoshi Nakamoto</span>
+        <span class="tema-tag">Dinero digital</span>
+        <span class="tema-tag">Descentralización</span>
+        <span class="tema-tag">Oferta fija</span>
+      </div>
+    </a>
+
+    <a href="#leccion-2" class="leccion-card-full" id="leccion-2">
+      <div class="leccion-header">
+        <div>
+          <p class="leccion-num">LECCIÓN 02</p>
+          <h3>Blockchain y bloques</h3>
+        </div>
+        <span class="leccion-nivel">Básico</span>
+      </div>
+      <p>La blockchain es el registro público e inmutable de todas las transacciones de Bitcoin. Cada bloque contiene un conjunto de transacciones y una referencia al bloque anterior, formando una cadena. Explicamos cómo funciona este mecanismo, qué garantiza la integridad del registro y por qué alterarlo es computacionalmente inviable.</p>
+      <div class="leccion-temas">
+        <span class="tema-tag">Blockchain</span>
+        <span class="tema-tag">Bloques</span>
+        <span class="tema-tag">Hash</span>
+        <span class="tema-tag">Inmutabilidad</span>
+        <span class="tema-tag">Proof of Work</span>
+      </div>
+    </a>
+
+    <a href="#leccion-3" class="leccion-card-full" id="leccion-3">
+      <div class="leccion-header">
+        <div>
+          <p class="leccion-num">LECCIÓN 03</p>
+          <h3>Wallets y llaves privadas</h3>
+        </div>
+        <span class="leccion-nivel">Intermedio</span>
+      </div>
+      <p>Una wallet de Bitcoin no guarda bitcoin: guarda las llaves privadas que te permiten firmar transacciones. La diferencia entre custodia propia y dejar tus bitcoin en un exchange es la diferencia entre tener bitcoin y tener una promesa de bitcoin. Explicamos cómo funcionan las llaves públicas y privadas, qué tipos de wallets existen y cuándo usar cada uno.</p>
+      <div class="leccion-temas">
+        <span class="tema-tag">Llave privada</span>
+        <span class="tema-tag">Llave pública</span>
+        <span class="tema-tag">Hot wallet</span>
+        <span class="tema-tag">Cold storage</span>
+        <span class="tema-tag">Hardware wallet</span>
+      </div>
+    </a>
+
+    <a href="#leccion-4" class="leccion-card-full" id="leccion-4">
+      <div class="leccion-header">
+        <div>
+          <p class="leccion-num">LECCIÓN 04</p>
+          <h3>¿Qué es un UTXO?</h3>
+        </div>
+        <span class="leccion-nivel">Intermedio</span>
+      </div>
+      <p>Bitcoin no funciona como una cuenta bancaria con saldo. Funciona con UTXOs: Unspent Transaction Outputs, o salidas de transacciones no gastadas. Cada transacción consume UTXOs existentes y crea UTXOs nuevos. Entender este modelo es esencial para comprender las comisiones de red, la privacidad y cómo construir transacciones eficientes.</p>
+      <div class="leccion-temas">
+        <span class="tema-tag">UTXO</span>
+        <span class="tema-tag">Transacciones</span>
+        <span class="tema-tag">Comisiones</span>
+        <span class="tema-tag">Cambio</span>
+        <span class="tema-tag">Mempool</span>
+      </div>
+    </a>
+
+    <a href="#leccion-5" class="leccion-card-full" id="leccion-5">
+      <div class="leccion-header">
+        <div>
+          <p class="leccion-num">LECCIÓN 05</p>
+          <h3>Seed phrase y respaldo</h3>
+        </div>
+        <span class="leccion-nivel">Intermedio</span>
+      </div>
+      <p>Las 12 o 24 palabras de tu seed phrase son la representación legible de tu llave maestra. A partir de ellas se derivan todas las llaves privadas de tu wallet. Si las pierdes, pierdes acceso a tus bitcoin. Si alguien las obtiene, puede tomar tus bitcoin. En esta lección explicamos el estándar BIP39, cómo almacenar el respaldo con seguridad y qué errores hay que evitar.</p>
+      <div class="leccion-temas">
+        <span class="tema-tag">Seed phrase</span>
+        <span class="tema-tag">BIP39</span>
+        <span class="tema-tag">Respaldo</span>
+        <span class="tema-tag">Derivación HD</span>
+        <span class="tema-tag">Passphrase</span>
+      </div>
+    </a>
+
+    <a href="#leccion-6" class="leccion-card-full" id="leccion-6">
+      <div class="leccion-header">
+        <div>
+          <p class="leccion-num">LECCIÓN 06</p>
+          <h3>Cómo comprar Bitcoin</h3>
+        </div>
+        <span class="leccion-nivel">Básico</span>
+      </div>
+      <p>Hay varias formas de adquirir bitcoin: exchanges centralizados con KYC, plataformas P2P, cajeros y operaciones en persona. Cada opción implica compromisos distintos en privacidad, velocidad y precio. En esta lección explicamos las diferencias, qué significa KYC, y —lo más importante— cómo retirar tus bitcoin a tu propia wallet después de comprar.</p>
+      <div class="leccion-temas">
+        <span class="tema-tag">Exchange</span>
+        <span class="tema-tag">KYC</span>
+        <span class="tema-tag">P2P</span>
+        <span class="tema-tag">Retirar a wallet</span>
+        <span class="tema-tag">Privacidad</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<div class="cta-final">
+  <h2>¿Tienes dudas sobre el proyecto?</h2>
+  <p>Conoce quién está detrás de TheRabbitHole y los principios que guían el contenido.</p>
+  <a href="sobre.html" class="btn-primary">Sobre TheRabbitHole →</a>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
