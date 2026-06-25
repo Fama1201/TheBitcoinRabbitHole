@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 06: Cómo comprar Bitcoin — TheRabbitHole</title>
+  <meta name="description" content="Exchanges, P2P, cajeros y privacidad: aprende las distintas formas de comprar Bitcoin, qué implica el KYC y por qué siempre debes retirar a tu propia wallet."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.danger { border-color: #b03030; background: #fff5f5; }
+    .callout.tip { border-color: #2a7a2a; background: #f6fdf6; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; overflow-x: auto; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── METHOD CARDS ── */
+    .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .method-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--white); }
+    .method-card.recommended { border-color: var(--orange); background: #FFF8F0; }
+    .method-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+    .method-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+    .method-card.recommended .method-label { color: var(--orange); }
+    .method-card h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .method-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin: 0 0 0.75rem; }
+    .method-pill { display: inline-block; font-family: var(--font-mono); font-size: 0.65rem; padding: 0.15rem 0.55rem; border-radius: 99px; margin-top: 0.25rem; }
+    .pill-green { background: #f6fdf6; color: #2a7a2a; border: 1px solid #2a7a2a; }
+    .pill-orange { background: #fff8f0; color: var(--orange); border: 1px solid var(--orange); }
+    .pill-red { background: #fff5f5; color: #b03030; border: 1px solid #b03030; }
+
+    /* ── KYC VISUAL ── */
+    .kyc-data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.25rem 0; }
+    .kyc-data-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem; text-align: center; }
+    .kyc-data-icon { font-size: 1.4rem; margin-bottom: 0.35rem; }
+    .kyc-data-label { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; color: var(--black); }
+
+    /* ── EXCHANGE FLOW ── */
+    .flow-steps { display: flex; align-items: center; gap: 0; margin: 1.5rem 0; overflow-x: auto; }
+    .flow-step { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 90px; }
+    .flow-step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--black); color: var(--white); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .flow-step-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.4; }
+    .flow-step.highlight .flow-step-num { background: var(--orange); }
+    .flow-step.highlight .flow-step-label { color: var(--orange); font-weight: 700; }
+    .flow-arrow { color: var(--border); font-size: 1.2rem; padding: 0 0.5rem; flex-shrink: 0; }
+
+    /* ── PRIVACY SPECTRUM ── */
+    .privacy-spectrum { margin: 1.5rem 0; }
+    .privacy-bar { height: 32px; border-radius: var(--radius); background: linear-gradient(to right, #b03030, #F2790B, #5a7a3a, #2a7a2a); display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; }
+    .privacy-bar-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: white; }
+    .privacy-items { display: flex; justify-content: space-between; margin-top: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+    .privacy-item { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; flex: 1; min-width: 80px; }
+    .privacy-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .privacy-name { font-family: var(--font-mono); font-size: 0.7rem; text-align: center; font-weight: 600; color: var(--black); }
+    .privacy-sub { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); text-align: center; }
+
+    /* ── COMPARISON TABLE ── */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    .compare-table th { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; background: var(--black); color: var(--white); }
+    .compare-table td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: var(--bg2); }
+    .check { color: #2a7a2a; font-weight: 700; }
+    .cross { color: #b03030; font-weight: 700; }
+    .mid { color: var(--orange); font-weight: 700; }
+
+    /* ── DECISION GUIDE ── */
+    .interactive-box { background: var(--white); border: 1.5px solid var(--orange); border-radius: var(--radius); padding: 1.75rem; margin: 2rem 0; }
+    .interactive-box h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .interactive-box p.hint { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .guide-step { display: none; }
+    .guide-step.active { display: block; }
+    .guide-question { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--black); }
+    .guide-options { display: flex; flex-direction: column; gap: 0.6rem; }
+    .guide-opt { padding: 0.8rem 1.1rem; border: 1.5px solid var(--border); border-radius: var(--radius); cursor: pointer; font-size: 0.88rem; line-height: 1.5; transition: all var(--tr); background: var(--bg); text-align: left; width: 100%; }
+    .guide-opt:hover { border-color: var(--orange); background: var(--white); }
+    .guide-progress { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .guide-result { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 1.5rem; }
+    .guide-result h5 { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.5rem; }
+    .guide-result-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .guide-result p { font-size: 0.9rem; line-height: 1.7; color: #ccc; margin-bottom: 0.75rem; }
+    .guide-restart { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.5rem 1.2rem; border: 1px solid #555; border-radius: var(--radius); background: transparent; color: #aaa; cursor: pointer; transition: all var(--tr); }
+    .guide-restart:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── DCA VISUAL ── */
+    .dca-bars { display: flex; align-items: flex-end; gap: 6px; height: 100px; padding: 0 0.5rem; }
+    .dca-bar { flex: 1; border-radius: 4px 4px 0 0; background: var(--orange); opacity: 0.6; transition: opacity var(--tr); }
+    .dca-bar:hover { opacity: 1; }
+    .dca-labels { display: flex; gap: 6px; padding: 0 0.5rem; margin-top: 4px; }
+    .dca-label { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 0.58rem; color: var(--muted); }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 640px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .method-grid { grid-template-columns: 1fr; }
+      .kyc-data-grid { grid-template-columns: repeat(2, 1fr); }
+      .flow-steps { gap: 0; }
+      .flow-step { min-width: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 06</span>
+    <span class="lesson-nivel-badge">Básico</span>
+    <span class="lesson-tiempo">⏱ ~12 min</span>
+  </div>
+
+  <h1 class="lesson-title">Cómo comprar Bitcoin</h1>
+
+  <p class="lesson-intro">
+    Hay varias formas de adquirir bitcoin: exchanges centralizados, plataformas P2P, cajeros automáticos y compras directas. Cada método implica compromisos distintos en privacidad, velocidad y facilidad. Y hay una regla que aplica en todos los casos: <strong>siempre retira tus bitcoin a tu propia wallet</strong>. Esta lección te explica cómo funciona cada método y cuál podría ser el más adecuado para ti.
+  </p>
+
+  <!-- SECCIÓN 1: TRES MÉTODOS -->
+  <div class="lesson-section">
+    <h2>Los tres métodos principales</h2>
+
+    <div class="method-grid">
+      <div class="method-card recommended">
+        <div class="method-icon">🏦</div>
+        <p class="method-label">Más común</p>
+        <h4>Exchange centralizado (CEX)</h4>
+        <p>Plataformas como Binance, Kraken, Coinbase o Buda.com. Requieren registro y verificación de identidad (KYC). Son la forma más simple de empezar.</p>
+        <span class="method-pill pill-green">Fácil de usar</span><br>
+        <span class="method-pill pill-red">Requiere KYC</span>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🤝</div>
+        <p class="method-label">Más privado</p>
+        <h4>P2P (persona a persona)</h4>
+        <p>Plataformas como Bisq, HodlHodl o Peach Bitcoin permiten comprar directamente de otro usuario, sin KYC o con mínimos datos. Mayor privacidad, más complejo.</p>
+        <span class="method-pill pill-green">Sin KYC</span><br>
+        <span class="method-pill pill-orange">Curva de aprendizaje</span>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🏧</div>
+        <p class="method-label">Más caro</p>
+        <h4>Cajero Bitcoin (ATM)</h4>
+        <p>Máquinas físicas que aceptan efectivo y envían bitcoin a tu wallet. Están en centros comerciales y tiendas. Comisiones de 5–15%, algunas piden documentos.</p>
+        <span class="method-pill pill-orange">Inmediato</span><br>
+        <span class="method-pill pill-red">Comisiones altas</span>
+      </div>
+    </div>
+
+    <!-- SVG: Method overview -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- CEX -->
+        <rect x="10" y="15" width="195" height="100" rx="7" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="108" y="38" text-anchor="middle" font-size="10" fill="#F2790B" font-weight="700">Exchange (CEX)</text>
+        <text x="108" y="56" text-anchor="middle" font-size="8" fill="#6B6760">Binance, Kraken, Buda</text>
+        <text x="20" y="76" font-size="8" fill="#2a7a2a">✓ Simple y rápido</text>
+        <text x="20" y="91" font-size="8" fill="#2a7a2a">✓ Alta liquidez</text>
+        <text x="20" y="106" font-size="8" fill="#b03030">✗ Requiere KYC</text>
+
+        <!-- P2P -->
+        <rect x="243" y="15" width="194" height="100" rx="7" fill="#F5F4F2" stroke="#DDDAD6"/>
+        <text x="340" y="38" text-anchor="middle" font-size="10" fill="#14110F" font-weight="700">P2P</text>
+        <text x="340" y="56" text-anchor="middle" font-size="8" fill="#6B6760">Bisq, HodlHodl, Peach</text>
+        <text x="253" y="76" font-size="8" fill="#2a7a2a">✓ Sin KYC o mínimo</text>
+        <text x="253" y="91" font-size="8" fill="#2a7a2a">✓ Directo entre personas</text>
+        <text x="253" y="106" font-size="8" fill="#b03030">✗ Más complejo</text>
+
+        <!-- ATM -->
+        <rect x="475" y="15" width="195" height="100" rx="7" fill="#F5F4F2" stroke="#DDDAD6"/>
+        <text x="572" y="38" text-anchor="middle" font-size="10" fill="#14110F" font-weight="700">Cajero Bitcoin</text>
+        <text x="572" y="56" text-anchor="middle" font-size="8" fill="#6B6760">ATMs físicos</text>
+        <text x="485" y="76" font-size="8" fill="#2a7a2a">✓ Efectivo directo</text>
+        <text x="485" y="91" font-size="8" fill="#2a7a2a">✓ Sin cuenta online</text>
+        <text x="485" y="106" font-size="8" fill="#b03030">✗ Comisiones 5–15%</text>
+      </svg>
+      <figcaption>TRES MÉTODOS — cada uno con sus ventajas y desventajas en privacidad, precio y facilidad</figcaption>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: KYC -->
+  <div class="lesson-section">
+    <h2>¿Qué es KYC y por qué importa?</h2>
+
+    <p>KYC son las siglas de <em>Know Your Customer</em> (Conoce a tu cliente). Es un proceso de verificación de identidad que los exchanges están obligados a implementar por regulaciones financieras en la mayoría de países.</p>
+
+    <p>Cuando te registras en un exchange centralizado, antes de poder comprar debes pasar por KYC. Esto generalmente significa proporcionar:</p>
+
+    <div class="kyc-data-grid">
+      <div class="kyc-data-item">
+        <div class="kyc-data-icon">🪪</div>
+        <p class="kyc-data-label">Documento de identidad</p>
+      </div>
+      <div class="kyc-data-item">
+        <div class="kyc-data-icon">🤳</div>
+        <p class="kyc-data-label">Selfie con documento</p>
+      </div>
+      <div class="kyc-data-item">
+        <div class="kyc-data-icon">📍</div>
+        <p class="kyc-data-label">Dirección de residencia</p>
+      </div>
+      <div class="kyc-data-item">
+        <div class="kyc-data-icon">📞</div>
+        <p class="kyc-data-label">Número de teléfono</p>
+      </div>
+      <div class="kyc-data-item">
+        <div class="kyc-data-icon">💼</div>
+        <p class="kyc-data-label">Origen de los fondos</p>
+      </div>
+      <div class="kyc-data-item">
+        <div class="kyc-data-icon">📧</div>
+        <p class="kyc-data-label">Email verificado</p>
+      </div>
+    </div>
+
+    <p>El exchange guarda estos datos vinculados a tu cuenta y a tus transacciones de bitcoin. Esto significa que el exchange sabe exactamente cuánto bitcoin compraste, cuándo y a qué precio.</p>
+
+    <!-- SVG: KYC privacy implications -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- You -->
+        <rect x="10" y="55" width="120" height="50" rx="6" fill="#14110F"/>
+        <text x="70" y="78" text-anchor="middle" font-size="10" fill="white" font-weight="700">Tú</text>
+        <text x="70" y="93" text-anchor="middle" font-size="8" fill="#888">+ tus datos KYC</text>
+        <text x="70" y="108" text-anchor="middle" font-size="8" fill="#F2790B">+ historial BTC</text>
+
+        <!-- Arrow to Exchange -->
+        <line x1="130" y1="80" x2="195" y2="80" stroke="#F2790B" stroke-width="1.5"/>
+        <polygon points="192,75 200,80 192,85" fill="#F2790B"/>
+
+        <!-- Exchange -->
+        <rect x="200" y="45" width="150" height="70" rx="6" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="275" y="68" text-anchor="middle" font-size="9" fill="#F2790B" letter-spacing="1">EXCHANGE</text>
+        <text x="275" y="86" text-anchor="middle" font-size="10" fill="#14110F" font-weight="700">Base de datos</text>
+        <text x="275" y="101" text-anchor="middle" font-size="8" fill="#6B6760">Nombre · ID · BTC comprado</text>
+        <text x="275" y="113" text-anchor="middle" font-size="8" fill="#6B6760">Fechas · Cantidades</text>
+
+        <!-- Arrows from Exchange -->
+        <line x1="350" y1="65" x2="410" y2="40" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="350" y1="80" x2="410" y2="80" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="350" y1="95" x2="410" y2="120" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+
+        <!-- Recipients of data -->
+        <rect x="410" y="20" width="200" height="30" rx="5" fill="#fff5f5" stroke="#b03030"/>
+        <text x="510" y="37" text-anchor="middle" font-size="9" fill="#b03030">Reguladores / Gobierno</text>
+
+        <rect x="410" y="65" width="200" height="30" rx="5" fill="#fff5f5" stroke="#b03030"/>
+        <text x="510" y="82" text-anchor="middle" font-size="9" fill="#b03030">Empresas de análisis blockchain</text>
+
+        <rect x="410" y="110" width="200" height="30" rx="5" fill="#fff5f5" stroke="#b03030"/>
+        <text x="510" y="127" text-anchor="middle" font-size="9" fill="#b03030">Potencial filtración de datos</text>
+      </svg>
+      <figcaption>FLUJO DE DATOS KYC — tu información puede llegar a terceros fuera de tu control</figcaption>
+    </div>
+
+    <div class="callout">
+      <p>El KYC no es bueno ni malo por sí mismo — es una realidad del sistema financiero actual. Lo importante es entender sus implicaciones: una vez que tus datos están en un exchange, no puedes borrarlos. Y los registros de tus transacciones de bitcoin quedan vinculados a tu identidad indefinidamente.</p>
+    </div>
+
+    <h3>Alternativas sin KYC</h3>
+    <p>Las plataformas P2P sin KYC existen y son legales. Permiten comprar bitcoin con menor rastro de identidad:</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Plataforma</th>
+          <th>KYC</th>
+          <th>Método de pago</th>
+          <th>Facilidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bisq</strong></td>
+          <td><span class="check">Sin KYC</span></td>
+          <td>Transferencia, Revolut, efectivo</td>
+          <td>Avanzado — requiere BTC como garantía</td>
+        </tr>
+        <tr>
+          <td><strong>HodlHodl</strong></td>
+          <td><span class="check">Sin KYC</span></td>
+          <td>Transferencia, Wise, efectivo</td>
+          <td>Intermedio — escrow multisig</td>
+        </tr>
+        <tr>
+          <td><strong>Peach Bitcoin</strong></td>
+          <td><span class="mid">Mínimo</span></td>
+          <td>Transferencia, Revolut, efectivo</td>
+          <td>Fácil — app móvil intuitiva</td>
+        </tr>
+        <tr>
+          <td><strong>RoboSats</strong></td>
+          <td><span class="check">Sin KYC</span></td>
+          <td>Fiat por Lightning Network</td>
+          <td>Intermedio — requiere Lightning</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECCIÓN 3: ESPECTRO DE PRIVACIDAD -->
+  <div class="lesson-section">
+    <h2>El espectro de privacidad</h2>
+
+    <p>No todas las formas de comprar bitcoin son iguales en términos de privacidad. Hay un espectro que va desde máxima exposición hasta máxima privacidad:</p>
+
+    <div class="privacy-spectrum">
+      <div class="privacy-bar">
+        <span class="privacy-bar-label">← Menor privacidad</span>
+        <span class="privacy-bar-label">Mayor privacidad →</span>
+      </div>
+      <div class="privacy-items">
+        <div class="privacy-item">
+          <div class="privacy-dot" style="background:#b03030;"></div>
+          <span class="privacy-name">CEX + KYC</span>
+          <span class="privacy-sub">Binance, Kraken</span>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-dot" style="background:#d4601a;"></div>
+          <span class="privacy-name">CEX regional</span>
+          <span class="privacy-sub">Buda, Bitso</span>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-dot" style="background:#F2790B;"></div>
+          <span class="privacy-name">ATM Bitcoin</span>
+          <span class="privacy-sub">Efectivo en caja</span>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-dot" style="background:#5a7a3a;"></div>
+          <span class="privacy-name">P2P con ID</span>
+          <span class="privacy-sub">Peach, HodlHodl</span>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-dot" style="background:#2a7a2a;"></div>
+          <span class="privacy-name">P2P sin KYC</span>
+          <span class="privacy-sub">Bisq, efectivo</span>
+        </div>
+      </div>
+    </div>
+
+    <p>No necesitas la máxima privacidad para empezar. Un exchange centralizado con KYC es perfectamente válido para la mayoría de personas, especialmente para cantidades pequeñas o cuando recién se empieza. Lo importante es entender el tradeoff que estás haciendo.</p>
+  </div>
+
+  <!-- SECCIÓN 4: FLUJO CEX -->
+  <div class="lesson-section">
+    <h2>Paso a paso en un exchange centralizado</h2>
+
+    <p>Si decides usar un exchange, este es el flujo típico desde el registro hasta tener bitcoin en tu wallet:</p>
+
+    <!-- Flow steps visual -->
+    <div style="background:var(--bg);border-radius:var(--radius);padding:1.75rem 1.25rem;margin:1.5rem 0;">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-label">Crear cuenta<br>+ email</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-label">KYC<br>+ ID</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-label">Depositar<br>fiat</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-label">Comprar<br>BTC</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step highlight">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-label">RETIRAR<br>a tu wallet</div>
+        </div>
+      </div>
+      <p style="font-family:var(--font-mono);font-size:0.72rem;color:var(--orange);text-align:center;margin:1rem 0 0;">El paso 5 es el más importante. Nunca omitas el retiro a tu propia wallet.</p>
+    </div>
+
+    <!-- SVG: not your keys -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- Left: BTC on exchange -->
+        <rect x="10" y="20" width="300" height="110" rx="8" fill="#fff5f5" stroke="#b03030" stroke-width="1.5"/>
+        <text x="160" y="44" text-anchor="middle" font-size="10" fill="#b03030" font-weight="700">BTC en el exchange</text>
+        <text x="160" y="64" text-anchor="middle" font-size="11" fill="#14110F" font-weight="700">0.05 BTC</text>
+        <text x="160" y="83" text-anchor="middle" font-size="8" fill="#b03030">El exchange tiene las llaves privadas</text>
+        <text x="160" y="99" text-anchor="middle" font-size="8" fill="#6B6760">Tú tienes: una promesa de que te los</text>
+        <text x="160" y="113" text-anchor="middle" font-size="8" fill="#6B6760">devuelven cuando quieras</text>
+        <text x="160" y="128" text-anchor="middle" font-size="8" fill="#b03030">✗ No son tus bitcoin</text>
+
+        <!-- Arrow -->
+        <text x="340" y="82" text-anchor="middle" font-size="24" fill="#DDDAD6">vs</text>
+
+        <!-- Right: BTC in own wallet -->
+        <rect x="370" y="20" width="300" height="110" rx="8" fill="#f6fdf6" stroke="#2a7a2a" stroke-width="1.5"/>
+        <text x="520" y="44" text-anchor="middle" font-size="10" fill="#2a7a2a" font-weight="700">BTC en tu wallet</text>
+        <text x="520" y="64" text-anchor="middle" font-size="11" fill="#14110F" font-weight="700">0.05 BTC</text>
+        <text x="520" y="83" text-anchor="middle" font-size="8" fill="#2a7a2a">Tú tienes las llaves privadas</text>
+        <text x="520" y="99" text-anchor="middle" font-size="8" fill="#6B6760">Nadie puede congelar, confiscar</text>
+        <text x="520" y="113" text-anchor="middle" font-size="8" fill="#6B6760">ni bloquear tus fondos</text>
+        <text x="520" y="128" text-anchor="middle" font-size="8" fill="#2a7a2a">✓ Estos SÍ son tus bitcoin</text>
+      </svg>
+      <figcaption>"NOT YOUR KEYS, NOT YOUR COINS" — solo en tu wallet son realmente tuyos</figcaption>
+    </div>
+
+    <div class="callout danger">
+      <p><strong>Regla fundamental:</strong> Nunca dejes cantidades importantes de bitcoin en un exchange por tiempo prolongado. Los exchanges quiebran (Mt. Gox en 2014, FTX en 2022), son hackeados, congelan retiros o son cerrados por reguladores. Si no tienes las llaves privadas, no tienes bitcoin: tienes una promesa.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: DCA -->
+  <div class="lesson-section">
+    <h2>DCA: la estrategia del inversor a largo plazo</h2>
+
+    <p>DCA significa <strong>Dollar Cost Averaging</strong> (promedio de costo en dólares). Es una estrategia que consiste en comprar una cantidad fija de bitcoin de forma regular — por ejemplo, $50 cada semana — independientemente del precio.</p>
+
+    <p>La lógica es simple: no hay nadie que pueda predecir el precio de bitcoin de forma consistente. Comprando en intervalos regulares, compras a distintos precios y promedias tu costo de entrada. Cuando el precio está alto, compras menos bitcoin con tu $50. Cuando está bajo, compras más.</p>
+
+    <!-- DCA Bar Chart -->
+    <div class="diagram-box">
+      <div style="padding:0.5rem;">
+        <p style="font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);margin-bottom:0.75rem;text-align:center;">DCA — $50 cada mes durante 12 meses (ejemplo ilustrativo)</p>
+        <div class="dca-bars">
+          <div class="dca-bar" style="height:55%;" title="Ene: bajo"></div>
+          <div class="dca-bar" style="height:65%;" title="Feb"></div>
+          <div class="dca-bar" style="height:80%;" title="Mar"></div>
+          <div class="dca-bar" style="height:70%;" title="Abr"></div>
+          <div class="dca-bar" style="height:60%;" title="May"></div>
+          <div class="dca-bar" style="height:90%;" title="Jun: pico"></div>
+          <div class="dca-bar" style="height:75%;" title="Jul"></div>
+          <div class="dca-bar" style="height:50%;" title="Ago: mínimo"></div>
+          <div class="dca-bar" style="height:65%;" title="Sep"></div>
+          <div class="dca-bar" style="height:85%;" title="Oct"></div>
+          <div class="dca-bar" style="height:95%;" title="Nov: nuevo máximo"></div>
+          <div class="dca-bar" style="height:88%;" title="Dic"></div>
+        </div>
+        <div class="dca-labels">
+          <span class="dca-label">Ene</span>
+          <span class="dca-label">Feb</span>
+          <span class="dca-label">Mar</span>
+          <span class="dca-label">Abr</span>
+          <span class="dca-label">May</span>
+          <span class="dca-label">Jun</span>
+          <span class="dca-label">Jul</span>
+          <span class="dca-label">Ago</span>
+          <span class="dca-label">Sep</span>
+          <span class="dca-label">Oct</span>
+          <span class="dca-label">Nov</span>
+          <span class="dca-label">Dic</span>
+        </div>
+        <p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-align:center;margin-top:0.75rem;">Cada barra = $50 invertidos. Independientemente del precio de ese mes.</p>
+      </div>
+      <figcaption>DCA ELIMINA LA PRESIÓN DE ELEGIR EL MOMENTO PERFECTO — compra automática y constante</figcaption>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Consejo práctico:</strong> Muchos exchanges permiten configurar compras automáticas recurrentes (diarias, semanales, mensuales). Configura el retiro automático a tu wallet junto con la compra. Así el proceso es completamente automático: compras y retiras sin pensar en el precio.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 6: GUÍA INTERACTIVA -->
+  <div class="lesson-section">
+    <h2>¿Cuál método es el adecuado para ti?</h2>
+
+    <p>Responde estas preguntas y te diremos cuál forma de comprar encaja mejor con tu situación.</p>
+
+    <div class="interactive-box">
+      <h4>Guía: ¿Cómo debería comprar Bitcoin?</h4>
+      <p class="hint">3 preguntas rápidas para orientarte hacia el método más adecuado.</p>
+
+      <div id="guide">
+        <div class="guide-step active" id="g1">
+          <p class="guide-progress">Pregunta 1 de 3</p>
+          <p class="guide-question">¿Cuánto bitcoin quieres comprar?</p>
+          <div class="guide-options">
+            <button class="guide-opt" onclick="gAnswer(1,'small')">Una cantidad pequeña para probar ($10–$100)</button>
+            <button class="guide-opt" onclick="gAnswer(1,'medium')">Una cantidad moderada como ahorro ($100–$1,000)</button>
+            <button class="guide-opt" onclick="gAnswer(1,'large')">Una cantidad significativa ($1,000+)</button>
+          </div>
+        </div>
+
+        <div class="guide-step" id="g2">
+          <p class="guide-progress">Pregunta 2 de 3</p>
+          <p class="guide-question">¿Cuánto te importa la privacidad?</p>
+          <div class="guide-options">
+            <button class="guide-opt" onclick="gAnswer(2,'low')">Poco — no me molesta dar mis datos a un exchange</button>
+            <button class="guide-opt" onclick="gAnswer(2,'mid')">Algo — preferiría no vincular mi identidad con mi bitcoin</button>
+            <button class="guide-opt" onclick="gAnswer(2,'high')">Mucho — la privacidad es una prioridad para mí</button>
+          </div>
+        </div>
+
+        <div class="guide-step" id="g3">
+          <p class="guide-progress">Pregunta 3 de 3</p>
+          <p class="guide-question">¿Cuánta experiencia técnica tienes con Bitcoin?</p>
+          <div class="guide-options">
+            <button class="guide-opt" onclick="gAnswer(3,'beginner')">Poca — quiero algo simple y sin complicaciones</button>
+            <button class="guide-opt" onclick="gAnswer(3,'intermediate')">Media — me defiendo con tecnología</button>
+            <button class="guide-opt" onclick="gAnswer(3,'advanced')">Alta — me gustan los detalles y la autonomía técnica</button>
+          </div>
+        </div>
+
+        <div class="guide-step" id="gresult">
+          <div class="guide-result" id="guideResult"></div>
+          <button class="guide-restart" onclick="restartGuide()" style="margin-top:1rem;">↺ Empezar de nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>Hay tres métodos principales: CEX (exchange centralizado), P2P y cajero Bitcoin (ATM).</li>
+      <li>KYC vincula tu identidad a tus transacciones de bitcoin — es una decisión con implicaciones de privacidad.</li>
+      <li>Opciones P2P como Bisq, HodlHodl o Peach permiten comprar con menos rastro de identidad.</li>
+      <li>Los cajeros ATM son convenientes pero cobran comisiones de entre 5% y 15%.</li>
+      <li>Regla fundamental: siempre retira tus bitcoin a tu propia wallet — nunca los dejes en el exchange.</li>
+      <li>"Not your keys, not your coins": si el exchange tiene las llaves, tú tienes una promesa.</li>
+      <li>DCA (compras recurrentes por monto fijo) es la estrategia más sencilla y eficaz para acumular bitcoin a largo plazo.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="leccion-5.html">Lección 05: Seed phrase y respaldo</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Volver al índice</span>
+      <a href="aprender.html">Ver todas las lecciones →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+const gAnswers = {};
+
+function gAnswer(q, val) {
+  gAnswers[q] = val;
+  document.getElementById('g' + q).classList.remove('active');
+  if (q < 3) {
+    document.getElementById('g' + (q + 1)).classList.add('active');
+  } else {
+    showGuideResult();
+  }
+}
+
+function showGuideResult() {
+  const { 1: size, 2: priv, 3: exp } = gAnswers;
+  let title, body;
+
+  if (priv === 'high' || exp === 'advanced') {
+    title = 'P2P sin KYC';
+    body = 'Dado que valoras la privacidad y tienes experiencia técnica, las plataformas P2P como <strong>Bisq</strong> (la más descentralizada) o <strong>HodlHodl</strong> son tu mejor opción. Requieren más configuración inicial pero no vinculan tu identidad a tus bitcoin. Ten presente que necesitarás una forma de pago compatible (transferencia bancaria, Revolut) y algo de paciencia para las primeras operaciones.';
+  } else if (size === 'small' && exp === 'beginner') {
+    title = 'Exchange centralizado + retiro inmediato';
+    body = 'Para empezar con una cantidad pequeña, un exchange como <strong>Buda.com</strong> (Ecuador/LatAm), <strong>Kraken</strong> o <strong>Binance</strong> es la opción más sencilla. Pasa el KYC, compra y retira a tu wallet el mismo día. No dejes los fondos en el exchange más tiempo del necesario. Una vez tengas más confianza, puedes explorar opciones más privadas.';
+  } else if (size === 'large') {
+    title = 'Exchange reputado + hardware wallet';
+    body = 'Para cantidades significativas, usa un exchange bien establecido con buena reputación y liquidez (<strong>Kraken</strong> o <strong>Coinbase</strong> son opciones sólidas). Lo más importante: antes de comprar, ten una <strong>hardware wallet</strong> lista para recibir el retiro. Nunca dejes una cantidad significativa en un exchange más de lo necesario para completar la compra.';
+  } else if (priv === 'mid') {
+    title = 'Peach Bitcoin o HodlHodl';
+    body = '<strong>Peach Bitcoin</strong> es una excelente opción para quien quiere algo más privado que un CEX pero sin la complejidad técnica de Bisq. La app es intuitiva, las transacciones son entre personas y el proceso es bastante similar a un exchange pero con mucha menos exposición de identidad. <strong>HodlHodl</strong> también es una alternativa sólida con más opciones de pago.';
+  } else {
+    title = 'Exchange centralizado con DCA';
+    body = 'La opción más sencilla y efectiva: configura compras recurrentes automáticas en un exchange con buena reputación. <strong>Buda.com</strong> es la opción más accesible para Ecuador y Latinoamérica. Muchos exchanges permiten configurar compras automáticas semanales o mensuales. Configura también el retiro automático a tu wallet y el proceso se vuelve completamente pasivo.';
+  }
+
+  document.getElementById('guideResult').innerHTML = `
+    <h5>Recomendación para tu situación</h5>
+    <p class="guide-result-title">${title}</p>
+    <p>${body}</p>
+    <p style="font-size:0.8rem;color:#888;border-top:1px solid #333;padding-top:0.75rem;margin-bottom:0;">Sea cual sea el método que uses: siempre retira a tu propia wallet.</p>
+  `;
+  document.getElementById('g3').classList.remove('active');
+  document.getElementById('gresult').classList.add('active');
+}
+
+function restartGuide() {
+  gAnswers[1] = gAnswers[2] = gAnswers[3] = null;
+  document.querySelectorAll('.guide-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('g1').classList.add('active');
+}
+</script>
+</body>
+</html>

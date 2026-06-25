@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 05: Seed phrase y respaldo — TheRabbitHole</title>
+  <meta name="description" content="Las 12 o 24 palabras de tu seed phrase son la representación de tu llave maestra. Aprende BIP39, derivación HD y cómo hacer un respaldo seguro."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.danger { border-color: #b03030; background: #fff5f5; }
+    .callout.tip { border-color: #2a7a2a; background: #f6fdf6; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; overflow-x: auto; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── SEED WORDS DISPLAY ── */
+    .seed-display { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; margin: 1.5rem 0; }
+    .seed-word { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.5rem 0.35rem; text-align: center; }
+    .seed-word-num { font-family: var(--font-mono); font-size: 0.58rem; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+    .seed-word-val { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--black); display: block; }
+    .seed-display .checksum { background: #fff8f0; border-color: var(--orange); }
+    .seed-display .checksum .seed-word-num { color: var(--orange); }
+
+    /* ── DERIVATION TREE ── */
+    .deriv-tree { font-family: var(--font-mono); font-size: 0.82rem; line-height: 2; color: var(--black); background: var(--bg); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; }
+    .deriv-tree .root { color: var(--orange); font-weight: 700; }
+    .deriv-tree .level1 { color: #2a7a2a; font-weight: 600; }
+    .deriv-tree .level2 { color: var(--muted); }
+    .deriv-tree .addr { color: #5a7a3a; font-style: italic; }
+
+    /* ── DOS & DON'TS GRID ── */
+    .dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .dos-col { border-radius: var(--radius); padding: 1.25rem; }
+    .dos-col.do { background: #f6fdf6; border: 1px solid #2a7a2a; }
+    .dos-col.dont { background: #fff5f5; border: 1px solid #b03030; }
+    .dos-col-title { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; font-weight: 700; }
+    .dos-col.do .dos-col-title { color: #2a7a2a; }
+    .dos-col.dont .dos-col-title { color: #b03030; }
+    .dos-item { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.65rem; font-size: 0.85rem; line-height: 1.5; }
+    .dos-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+
+    /* ── PASSPHRASE COMPARISON ── */
+    .pass-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .pass-col { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--white); }
+    .pass-col-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; }
+    .pass-col:first-child .pass-col-label { color: #2a7a2a; }
+    .pass-col:last-child .pass-col-label { color: var(--orange); }
+    .pass-col h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .pass-col p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin: 0; }
+    .pass-mono { font-family: var(--font-mono); font-size: 0.75rem; background: var(--bg); padding: 0.25rem 0.5rem; border-radius: 3px; margin-top: 0.5rem; display: block; word-break: break-all; color: var(--black); }
+
+    /* ── BACKUP QUIZ ── */
+    .interactive-box { background: var(--white); border: 1.5px solid var(--orange); border-radius: var(--radius); padding: 1.75rem; margin: 2rem 0; }
+    .interactive-box h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .interactive-box p.hint { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .backup-checklist { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .backup-check-item { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 0.7rem 1rem; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--bg); transition: all var(--tr); user-select: none; font-size: 0.88rem; }
+    .backup-check-item input[type="checkbox"] { accent-color: var(--orange); width: 16px; height: 16px; flex-shrink: 0; }
+    .backup-check-item:hover { border-color: var(--orange); }
+    .backup-score-bar-wrap { height: 18px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin: 1.25rem 0 0.5rem; }
+    .backup-score-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease, background 0.4s ease; width: 0%; background: #b03030; }
+    .backup-score-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .backup-result { background: var(--bg2); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 0.9rem; line-height: 1.6; min-height: 60px; }
+    .backup-result strong { color: var(--black); }
+
+    /* ── ENTROPY VISUAL ── */
+    .entropy-scale { display: flex; gap: 0; height: 40px; border-radius: var(--radius); overflow: hidden; margin: 1rem 0; }
+    .entropy-fill { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: white; flex-shrink: 0; }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .dos-donts { grid-template-columns: 1fr; }
+      .pass-compare { grid-template-columns: 1fr; }
+      .seed-display { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 420px) {
+      .seed-display { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 05</span>
+    <span class="lesson-nivel-badge">Intermedio</span>
+    <span class="lesson-tiempo">⏱ ~14 min</span>
+  </div>
+
+  <h1 class="lesson-title">Seed phrase y respaldo</h1>
+
+  <p class="lesson-intro">
+    Las 12 o 24 palabras de tu <strong>seed phrase</strong> son el punto de partida de toda tu wallet Bitcoin. A partir de ellas se deriva matemáticamente cada llave privada, cada dirección, cada UTXO. Si alguien las obtiene, tiene tus bitcoin. Si tú las pierdes, no hay recuperación posible. Esta lección explica cómo funciona el estándar BIP39, cómo se generan y derivan las llaves, y cómo hacer un respaldo que sobreviva décadas.
+  </p>
+
+  <!-- SECCIÓN 1: QUÉ ES UNA SEED PHRASE -->
+  <div class="lesson-section">
+    <h2>¿Qué son esas 12 o 24 palabras?</h2>
+
+    <p>Una seed phrase (también llamada frase semilla, frase mnemónica o frase de recuperación) es una lista de palabras que representa un número aleatorio de gran magnitud. Ese número —tu entropía— es la semilla de la que nace toda tu wallet.</p>
+
+    <p>El estándar se llama <strong>BIP39</strong> (Bitcoin Improvement Proposal 39) y define una lista fija de 2,048 palabras en inglés. Cada palabra representa un número del 0 al 2047. Cuando tu wallet genera una seed phrase, lo que realmente está haciendo es:</p>
+
+    <!-- SVG: Proceso de generación -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- STEP 1: Entropy -->
+        <rect x="5" y="25" width="130" height="80" rx="7" fill="#14110F"/>
+        <text x="70" y="50" text-anchor="middle" font-size="8" fill="#F2790B" letter-spacing="2">PASO 1</text>
+        <text x="70" y="70" text-anchor="middle" font-size="9" fill="white" font-weight="600">Entropía</text>
+        <text x="70" y="86" text-anchor="middle" font-size="8" fill="#888">aleatoria</text>
+        <text x="70" y="101" text-anchor="middle" font-size="8" fill="#888">128 o 256 bits</text>
+
+        <text x="145" y="67" text-anchor="middle" font-size="18" fill="#F2790B">→</text>
+
+        <!-- STEP 2: Checksum -->
+        <rect x="155" y="25" width="130" height="80" rx="7" fill="#2a2520"/>
+        <text x="220" y="50" text-anchor="middle" font-size="8" fill="#F2790B" letter-spacing="2">PASO 2</text>
+        <text x="220" y="70" text-anchor="middle" font-size="9" fill="white" font-weight="600">SHA-256</text>
+        <text x="220" y="86" text-anchor="middle" font-size="8" fill="#888">agrega bits de</text>
+        <text x="220" y="101" text-anchor="middle" font-size="8" fill="#888">verificación</text>
+
+        <text x="295" y="67" text-anchor="middle" font-size="18" fill="#F2790B">→</text>
+
+        <!-- STEP 3: Words -->
+        <rect x="305" y="25" width="130" height="80" rx="7" fill="#2a2520"/>
+        <text x="370" y="50" text-anchor="middle" font-size="8" fill="#F2790B" letter-spacing="2">PASO 3</text>
+        <text x="370" y="70" text-anchor="middle" font-size="9" fill="white" font-weight="600">Bits → Palabras</text>
+        <text x="370" y="86" text-anchor="middle" font-size="8" fill="#888">lista de 2,048</text>
+        <text x="370" y="101" text-anchor="middle" font-size="8" fill="#888">palabras BIP39</text>
+
+        <text x="445" y="67" text-anchor="middle" font-size="18" fill="#F2790B">→</text>
+
+        <!-- RESULT -->
+        <rect x="455" y="25" width="220" height="80" rx="7" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="565" y="48" text-anchor="middle" font-size="8" fill="#F2790B" letter-spacing="2">RESULTADO</text>
+        <text x="565" y="68" text-anchor="middle" font-size="10" fill="#14110F" font-weight="700">12 o 24 palabras</text>
+        <text x="565" y="85" text-anchor="middle" font-size="8" fill="#6B6760">legibles, respaldables,</text>
+        <text x="565" y="100" text-anchor="middle" font-size="8" fill="#6B6760">recuperables offline</text>
+      </svg>
+      <figcaption>GENERACIÓN DE UNA SEED PHRASE BIP39 — de bits aleatorios a palabras legibles</figcaption>
+    </div>
+
+    <h3>12 palabras vs 24 palabras</h3>
+
+    <p>La cantidad de palabras determina la cantidad de entropía (aleatoriedad) que protege tu wallet:</p>
+
+    <div style="margin:1.5rem 0;">
+      <div style="margin-bottom:0.75rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+          <span style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;">12 palabras — 128 bits de entropía</span>
+          <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--orange);">10<sup>38</sup> combinaciones</span>
+        </div>
+        <div class="entropy-scale">
+          <div class="entropy-fill" style="width:50%;background:#F2790B;">128 bits</div>
+          <div style="flex:1;background:var(--bg2);"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+          <span style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;">24 palabras — 256 bits de entropía</span>
+          <span style="font-family:var(--font-mono);font-size:0.75rem;color:#2a7a2a;">10<sup>77</sup> combinaciones</span>
+        </div>
+        <div class="entropy-scale">
+          <div class="entropy-fill" style="width:100%;background:#2a7a2a;">256 bits</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Ambas opciones son extremadamente seguras. Con 128 bits de entropía, adivinar tu seed phrase es computacionalmente imposible incluso para los supercomputadores más potentes. Las 24 palabras solo añaden una capa extra para quienes prefieren máxima seguridad teórica.</p>
+
+    <div class="callout">
+      <p><strong>La última palabra de la seed phrase es especial:</strong> es parcialmente una palabra de verificación (checksum). Sirve para detectar errores de escritura. Si escribes mal una palabra, la mayoría de wallets lo detecta y te avisa que la frase es inválida.</p>
+    </div>
+
+    <!-- SEED DISPLAY VISUAL -->
+    <p>Así luce una seed phrase de 12 palabras (ejemplo de demostración — nunca uses palabras que veas en internet):</p>
+    <div class="seed-display">
+      <div class="seed-word"><span class="seed-word-num">01</span><span class="seed-word-val">legal</span></div>
+      <div class="seed-word"><span class="seed-word-num">02</span><span class="seed-word-val">winner</span></div>
+      <div class="seed-word"><span class="seed-word-num">03</span><span class="seed-word-val">thank</span></div>
+      <div class="seed-word"><span class="seed-word-num">04</span><span class="seed-word-val">year</span></div>
+      <div class="seed-word"><span class="seed-word-num">05</span><span class="seed-word-val">wave</span></div>
+      <div class="seed-word"><span class="seed-word-num">06</span><span class="seed-word-val">sausage</span></div>
+      <div class="seed-word"><span class="seed-word-num">07</span><span class="seed-word-val">worth</span></div>
+      <div class="seed-word"><span class="seed-word-num">08</span><span class="seed-word-val">useful</span></div>
+      <div class="seed-word"><span class="seed-word-num">09</span><span class="seed-word-val">legal</span></div>
+      <div class="seed-word"><span class="seed-word-num">10</span><span class="seed-word-val">winner</span></div>
+      <div class="seed-word"><span class="seed-word-num">11</span><span class="seed-word-val">thank</span></div>
+      <div class="seed-word checksum"><span class="seed-word-num">12 ✓</span><span class="seed-word-val">year</span></div>
+    </div>
+    <p style="font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);text-align:center;">Ejemplo con palabras repetidas — las seed phrases reales son completamente únicas y aleatorias</p>
+  </div>
+
+  <!-- SECCIÓN 2: DE SEED PHRASE A LLAVES -->
+  <div class="lesson-section">
+    <h2>De las palabras a tus llaves: HD Wallets</h2>
+
+    <p>La seed phrase no es tu llave privada directamente — es el punto de partida de un árbol jerárquico de llaves. El proceso de derivación sigue dos estándares:</p>
+
+    <ul style="line-height:2;padding-left:1.5rem;margin-bottom:1rem;">
+      <li><strong>BIP39</strong> — define las 2,048 palabras y el proceso de conversión a semilla</li>
+      <li><strong>BIP32</strong> — define cómo derivar un árbol de llaves desde la semilla maestra</li>
+    </ul>
+
+    <p>El proceso técnico es: las palabras se convierten en una semilla de 512 bits (usando una función llamada PBKDF2 con 2,048 iteraciones). Esa semilla genera la <em>llave maestra</em>, y de ella se derivan infinitas llaves hijo siguiendo rutas específicas.</p>
+
+    <!-- SVG: HD Derivation Tree -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- Seed phrase box -->
+        <rect x="220" y="10" width="240" height="40" rx="6" fill="#14110F"/>
+        <text x="340" y="28" text-anchor="middle" font-size="9" fill="#F2790B" letter-spacing="2">SEED PHRASE (12/24 palabras)</text>
+        <text x="340" y="42" text-anchor="middle" font-size="8" fill="#888">→ PBKDF2-HMAC-SHA512 (2048 iter.)</text>
+
+        <!-- Arrow down -->
+        <line x1="340" y1="50" x2="340" y2="70" stroke="#F2790B" stroke-width="1.5"/>
+
+        <!-- Master key -->
+        <rect x="220" y="70" width="240" height="35" rx="6" fill="#F2790B"/>
+        <text x="340" y="88" text-anchor="middle" font-size="10" fill="white" font-weight="700">Llave Maestra (m)</text>
+        <text x="340" y="100" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">512 bits · BIP32</text>
+
+        <!-- Branches to account types -->
+        <line x1="340" y1="105" x2="120" y2="130" stroke="#ddd" stroke-width="1"/>
+        <line x1="340" y1="105" x2="340" y2="130" stroke="#ddd" stroke-width="1"/>
+        <line x1="340" y1="105" x2="560" y2="130" stroke="#ddd" stroke-width="1"/>
+
+        <!-- Account type: Legacy -->
+        <rect x="30" y="130" width="180" height="40" rx="5" fill="#EDECEA" stroke="#DDDAD6"/>
+        <text x="120" y="148" text-anchor="middle" font-size="8" fill="#6B6760" letter-spacing="1">m/44'/0'/0'</text>
+        <text x="120" y="163" text-anchor="middle" font-size="9" fill="#14110F" font-weight="600">Legacy (P2PKH)</text>
+
+        <!-- Account type: SegWit -->
+        <rect x="250" y="130" width="180" height="40" rx="5" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="340" y="148" text-anchor="middle" font-size="8" fill="#F2790B" letter-spacing="1">m/84'/0'/0'</text>
+        <text x="340" y="163" text-anchor="middle" font-size="9" fill="#14110F" font-weight="700">Native SegWit (P2WPKH)</text>
+
+        <!-- Account type: Taproot -->
+        <rect x="470" y="130" width="180" height="40" rx="5" fill="#EDECEA" stroke="#DDDAD6"/>
+        <text x="560" y="148" text-anchor="middle" font-size="8" fill="#6B6760" letter-spacing="1">m/86'/0'/0'</text>
+        <text x="560" y="163" text-anchor="middle" font-size="9" fill="#14110F" font-weight="600">Taproot (P2TR)</text>
+
+        <!-- Branches from SegWit to addresses -->
+        <line x1="340" y1="170" x2="220" y2="200" stroke="#ddd" stroke-width="1"/>
+        <line x1="340" y1="170" x2="340" y2="200" stroke="#ddd" stroke-width="1"/>
+        <line x1="340" y1="170" x2="460" y2="200" stroke="#ddd" stroke-width="1"/>
+
+        <!-- Addresses -->
+        <rect x="135" y="200" width="170" height="40" rx="5" fill="#f6fdf6" stroke="#2a7a2a"/>
+        <text x="220" y="218" text-anchor="middle" font-size="8" fill="#2a7a2a" letter-spacing="1">m/84'/0'/0'/0/0</text>
+        <text x="220" y="232" text-anchor="middle" font-size="9" fill="#14110F">Dirección #0</text>
+
+        <rect x="255" y="200" width="170" height="40" rx="5" fill="#f6fdf6" stroke="#2a7a2a"/>
+        <text x="340" y="218" text-anchor="middle" font-size="8" fill="#2a7a2a" letter-spacing="1">m/84'/0'/0'/0/1</text>
+        <text x="340" y="232" text-anchor="middle" font-size="9" fill="#14110F">Dirección #1</text>
+
+        <rect x="375" y="200" width="170" height="40" rx="5" fill="#f6fdf6" stroke="#2a7a2a"/>
+        <text x="460" y="218" text-anchor="middle" font-size="8" fill="#2a7a2a" letter-spacing="1">m/84'/0'/0'/0/2</text>
+        <text x="460" y="232" text-anchor="middle" font-size="9" fill="#14110F">Dirección #2</text>
+
+        <text x="340" y="270" text-anchor="middle" font-size="9" fill="#6B6760">Millones de direcciones posibles — todas derivadas de las mismas 12 o 24 palabras</text>
+      </svg>
+      <figcaption>ÁRBOL DE DERIVACIÓN HD — una seed phrase genera un árbol completo de llaves y direcciones</figcaption>
+    </div>
+
+    <p>Esta estructura jerárquica tiene una consecuencia poderosa: <strong>solo necesitas respaldar las palabras una vez</strong>. Si importas tu seed phrase en cualquier wallet compatible con BIP39/BIP32, esta reconstruirá automáticamente todas tus direcciones y encontrará todos tus bitcoin. No importa si el dispositivo se rompe, se pierde o es robado.</p>
+
+    <div class="callout">
+      <p><strong>Compatibilidad:</strong> Cualquier wallet que soporte BIP39 puede importar tu seed phrase. Esto significa que puedes pasar de Sparrow a Electrum, de Trezor a Ledger, de un hardware wallet a una app móvil — y siempre accederás a los mismos fondos. La interoperabilidad es parte del diseño.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: PASSPHRASE -->
+  <div class="lesson-section">
+    <h2>La passphrase: la "palabra 25"</h2>
+
+    <p>BIP39 incluye una característica opcional muy poderosa: la <strong>passphrase</strong> (no confundir con la seed phrase en sí). Es una contraseña adicional que, combinada con tu seed phrase, genera un wallet completamente diferente.</p>
+
+    <!-- SVG: Passphrase concept -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- Seed phrase (common) -->
+        <rect x="10" y="65" width="210" height="40" rx="6" fill="#14110F"/>
+        <text x="115" y="83" text-anchor="middle" font-size="9" fill="#F2790B" letter-spacing="1">SEED PHRASE (12 palabras)</text>
+        <text x="115" y="97" text-anchor="middle" font-size="8" fill="#888">legal winner thank year...</text>
+
+        <!-- Fork -->
+        <line x1="220" y1="75" x2="260" y2="45" stroke="#ddd" stroke-width="1"/>
+        <line x1="220" y1="95" x2="260" y2="125" stroke="#ddd" stroke-width="1"/>
+
+        <!-- Passphrase A -->
+        <rect x="260" y="25" width="140" height="30" rx="5" fill="#EDECEA" stroke="#DDDAD6"/>
+        <text x="330" y="38" text-anchor="middle" font-size="9" fill="#6B6760">+ sin passphrase</text>
+        <text x="330" y="50" text-anchor="middle" font-size="8" fill="#888">(passphrase vacía)</text>
+
+        <!-- Passphrase B -->
+        <rect x="260" y="108" width="140" height="30" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <text x="330" y="121" text-anchor="middle" font-size="9" fill="#F2790B">+ "mi.passphrase"</text>
+        <text x="330" y="135" text-anchor="middle" font-size="8" fill="#aaa">(secreta, solo en tu mente)</text>
+
+        <line x1="400" y1="40" x2="430" y2="40" stroke="#ddd" stroke-width="1"/>
+        <line x1="400" y1="123" x2="430" y2="123" stroke="#ddd" stroke-width="1"/>
+
+        <!-- Wallet A -->
+        <rect x="430" y="18" width="230" height="50" rx="6" fill="#f6fdf6" stroke="#2a7a2a" stroke-width="1.5"/>
+        <text x="545" y="37" text-anchor="middle" font-size="9" fill="#2a7a2a" font-weight="700">Wallet A</text>
+        <text x="545" y="52" text-anchor="middle" font-size="8" fill="#6B6760">bc1q...xyz (0.15 BTC)</text>
+        <text x="545" y="63" text-anchor="middle" font-size="8" fill="#6B6760">Wallet estándar</text>
+
+        <!-- Wallet B -->
+        <rect x="430" y="99" width="230" height="50" rx="6" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="545" y="118" text-anchor="middle" font-size="9" fill="#F2790B" font-weight="700">Wallet B (completamente diferente)</text>
+        <text x="545" y="133" text-anchor="middle" font-size="8" fill="#6B6760">bc1q...abc (tus ahorros reales)</text>
+        <text x="545" y="144" text-anchor="middle" font-size="8" fill="#6B6760">Wallet oculto con passphrase</text>
+      </svg>
+      <figcaption>LA PASSPHRASE CREA UN WALLET COMPLETAMENTE DIFERENTE — mismas palabras, resultado distinto</figcaption>
+    </div>
+
+    <div class="pass-compare">
+      <div class="pass-col">
+        <p class="pass-col-label">Sin passphrase</p>
+        <h4>Wallet estándar</h4>
+        <p>Es el wallet que genera solo la seed phrase. Si alguien encuentra tus 12/24 palabras, accede a este wallet. Muchos usuarios mantienen aquí solo una cantidad pequeña de bitcoin.</p>
+      </div>
+      <div class="pass-col">
+        <p class="pass-col-label">Con passphrase</p>
+        <h4>Wallet oculto</h4>
+        <p>La passphrase combina con la seed para generar un wallet completamente distinto. Incluso si alguien te fuerza a revelar tu seed phrase, sin la passphrase solo ven el wallet "señuelo".</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <p><strong>Advertencia crítica:</strong> Si usas passphrase, debes respaldarla <em>por separado</em> de tu seed phrase y en un lugar distinto. Si pierdes la passphrase, pierdes acceso al wallet que la usa — no hay recuperación posible. La passphrase no está codificada en la seed phrase.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: CÓMO RESPALDAR -->
+  <div class="lesson-section">
+    <h2>Cómo respaldar tu seed phrase correctamente</h2>
+
+    <p>El respaldo de tu seed phrase es tan importante como la seed phrase misma. Un backup mal hecho puede significar la pérdida permanente de tus bitcoin. Aquí están las prácticas correctas — y los errores comunes que hay que evitar.</p>
+
+    <div class="dos-donts">
+      <div class="dos-col do">
+        <p class="dos-col-title">✓ Qué HACER</p>
+        <div class="dos-item">
+          <span class="dos-icon">📄</span>
+          <span>Escribirla en papel con bolígrafo permanente. Letra clara, verificar cada palabra.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">🔩</span>
+          <span>Grabarla en placas de metal (acero inoxidable o titanio) para resistir fuego e inundaciones.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">📍</span>
+          <span>Guardar copias en múltiples ubicaciones físicas seguras (casa + caja fuerte bancaria).</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">🔒</span>
+          <span>Usar una passphrase adicional para máxima seguridad, respaldada por separado.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">✅</span>
+          <span>Verificar que puedes recuperar tu wallet con el respaldo antes de depositar fondos.</span>
+        </div>
+      </div>
+      <div class="dos-col dont">
+        <p class="dos-col-title">✗ Qué NUNCA hacer</p>
+        <div class="dos-item">
+          <span class="dos-icon">📷</span>
+          <span>Tomar una foto y guardarla en el carrete del celular o en servicios en la nube.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">📧</span>
+          <span>Enviarla por email, WhatsApp, Telegram u otro servicio de mensajería.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">💾</span>
+          <span>Guardarla en un archivo de texto en tu computadora o en una nota digital.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">☁️</span>
+          <span>Subirla a Google Drive, iCloud, Dropbox o cualquier servicio de almacenamiento en la nube.</span>
+        </div>
+        <div class="dos-item">
+          <span class="dos-icon">🤝</span>
+          <span>Compartirla con nadie, bajo ninguna circunstancia. Ni con soporte técnico de ninguna empresa.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG: Metal backup concept -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- Paper backup -->
+        <rect x="30" y="20" width="170" height="100" rx="4" fill="white" stroke="#DDDAD6" stroke-width="1.5"/>
+        <rect x="30" y="20" width="170" height="22" rx="4" fill="#EDECEA"/>
+        <text x="115" y="35" text-anchor="middle" font-size="9" fill="#6B6760" letter-spacing="1">RESPALDO EN PAPEL</text>
+        <text x="50" y="60" font-size="8" fill="#14110F">01. legal</text>
+        <text x="50" y="74" font-size="8" fill="#14110F">02. winner</text>
+        <text x="50" y="88" font-size="8" fill="#14110F">03. thank</text>
+        <text x="140" y="60" font-size="8" fill="#14110F">04. year</text>
+        <text x="140" y="74" font-size="8" fill="#14110F">05. wave</text>
+        <text x="140" y="88" font-size="8" fill="#14110F">06. sausage</text>
+        <text x="115" y="112" text-anchor="middle" font-size="8" fill="#2a7a2a">Básico ✓</text>
+
+        <!-- Arrow -->
+        <text x="220" y="75" text-anchor="middle" font-size="16" fill="#DDDAD6">+</text>
+
+        <!-- Metal backup -->
+        <rect x="250" y="20" width="180" height="100" rx="4" fill="#888" stroke="#555" stroke-width="1.5"/>
+        <rect x="255" y="26" width="170" height="18" rx="2" fill="#666"/>
+        <text x="340" y="38" text-anchor="middle" font-size="8" fill="white" letter-spacing="1">PLACA DE ACERO</text>
+        <text x="265" y="60" font-size="8" fill="white">01. legal</text>
+        <text x="265" y="74" font-size="8" fill="white">02. winner</text>
+        <text x="265" y="88" font-size="8" fill="white">03. thank</text>
+        <text x="360" y="60" font-size="8" fill="white">04. year</text>
+        <text x="360" y="74" font-size="8" fill="white">05. wave</text>
+        <text x="360" y="88" font-size="8" fill="white">06. sausage</text>
+        <text x="340" y="112" text-anchor="middle" font-size="8" fill="#aaffaa">Resiste fuego e inundaciones ✓✓</text>
+
+        <!-- Labels -->
+        <text x="115" y="138" text-anchor="middle" font-size="8" fill="#6B6760">Vulnerable a: fuego, agua, deterioro</text>
+        <text x="340" y="138" text-anchor="middle" font-size="8" fill="#6B6760">Resiste: temperatura hasta 1400°C</text>
+
+        <!-- Recommendation -->
+        <rect x="460" y="20" width="200" height="100" rx="6" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="560" y="42" text-anchor="middle" font-size="9" fill="#F2790B" letter-spacing="1">RECOMENDACIÓN</text>
+        <text x="560" y="62" text-anchor="middle" font-size="9" fill="#14110F" font-weight="600">Usa ambos.</text>
+        <text x="560" y="78" text-anchor="middle" font-size="8" fill="#6B6760">Papel: en casa.</text>
+        <text x="560" y="93" text-anchor="middle" font-size="8" fill="#6B6760">Metal: ubicación</text>
+        <text x="560" y="107" text-anchor="middle" font-size="8" fill="#6B6760">separada y segura.</text>
+      </svg>
+      <figcaption>OPCIONES DE RESPALDO — el metal es el estándar para almacenamiento de largo plazo</figcaption>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: QUIZ INTERACTIVO -->
+  <div class="lesson-section">
+    <h2>¿Qué tan seguro es tu respaldo actual?</h2>
+
+    <p>Evalúa tu estrategia de respaldo marcando todo lo que aplica a tu situación actual.</p>
+
+    <div class="interactive-box">
+      <h4>Evaluación de seguridad del respaldo</h4>
+      <p class="hint">Marca todas las prácticas que ya tienes implementadas.</p>
+
+      <div class="backup-checklist">
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc1">
+          Tengo mi seed phrase escrita en papel (no solo en mi cabeza)
+        </label>
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc2">
+          El papel está en un lugar seguro y protegido de la humedad
+        </label>
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc3">
+          Tengo al menos una copia adicional en una ubicación diferente
+        </label>
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc4">
+          Tengo una copia en metal (placa grabada o similar)
+        </label>
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc5">
+          Nunca he fotografiado ni guardado digitalmente la seed phrase
+        </label>
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc6">
+          He verificado que la seed phrase funciona (restaurando el wallet)
+        </label>
+        <label class="backup-check-item">
+          <input type="checkbox" onchange="evalBackup()" id="bc7">
+          Uso una passphrase adicional para protección extra
+        </label>
+      </div>
+
+      <p class="backup-score-label" id="backupScoreLabel">Completa la evaluación</p>
+      <div class="backup-score-bar-wrap">
+        <div class="backup-score-bar" id="backupBar"></div>
+      </div>
+      <div class="backup-result" id="backupResult">
+        Marca las prácticas que ya tienes implementadas para ver tu evaluación.
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>La seed phrase (BIP39) es la raíz de toda tu wallet: de ella se deriva cada llave y dirección.</li>
+      <li>12 palabras = 128 bits de entropía. 24 palabras = 256 bits. Ambas son extremadamente seguras.</li>
+      <li>La última palabra incluye un checksum que detecta errores de escritura.</li>
+      <li>BIP32 (HD wallets) deriva millones de llaves y direcciones desde la llave maestra.</li>
+      <li>Con solo respaldar la seed phrase puedes recuperar todo en cualquier wallet compatible.</li>
+      <li>La passphrase opcional crea un wallet completamente diferente — respáldala por separado.</li>
+      <li>Nunca almacenes la seed phrase digitalmente: solo papel o metal, en ubicaciones separadas.</li>
+      <li>Verifica siempre que tu respaldo funciona antes de depositar fondos importantes.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="leccion-4.html">Lección 04: ¿Qué es un UTXO?</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="leccion-6.html">Cómo comprar Bitcoin →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+const backupPoints = [
+  { id: 'bc1', score: 15 },
+  { id: 'bc2', score: 10 },
+  { id: 'bc3', score: 20 },
+  { id: 'bc4', score: 20 },
+  { id: 'bc5', score: 15 },
+  { id: 'bc6', score: 15 },
+  { id: 'bc7', score: 5 },
+];
+
+function evalBackup() {
+  const total = backupPoints.reduce((sum, p) => {
+    return sum + (document.getElementById(p.id).checked ? p.score : 0);
+  }, 0);
+
+  const bar = document.getElementById('backupBar');
+  const label = document.getElementById('backupScoreLabel');
+  const result = document.getElementById('backupResult');
+
+  bar.style.width = total + '%';
+
+  let color, text, detail;
+  if (total >= 85) {
+    color = '#2a7a2a';
+    text = 'Excelente — ' + total + '/100';
+    detail = '<strong>Tu respaldo está muy bien configurado.</strong> Tienes múltiples capas de protección. Asegúrate de recordar dónde están todas las copias y que alguien de confianza sepa cómo acceder en caso de emergencia.';
+  } else if (total >= 60) {
+    color = '#5a7a3a';
+    text = 'Bueno — ' + total + '/100';
+    detail = '<strong>Buen punto de partida.</strong> Ya tienes lo básico cubierto. Considera añadir una copia en metal y verificar que el respaldo funciona restaurando el wallet en otro dispositivo.';
+  } else if (total >= 35) {
+    color = '#F2790B';
+    text = 'Mejorable — ' + total + '/100';
+    detail = '<strong>Hay riesgo real de pérdida.</strong> Si pierdes acceso al dispositivo o al lugar donde está tu copia, podrías perder tus bitcoin. Prioriza crear una segunda copia en ubicación separada.';
+  } else {
+    color = '#b03030';
+    text = 'Riesgo alto — ' + total + '/100';
+    detail = '<strong>Tu respaldo es insuficiente.</strong> Sin un backup físico apropiado, cualquier fallo del dispositivo, pérdida o incendio podría significar la pérdida permanente de tus bitcoin. Actúa hoy.';
+  }
+
+  bar.style.background = color;
+  label.textContent = text;
+  label.style.color = color;
+  result.innerHTML = detail;
+}
+</script>
+</body>
+</html>
