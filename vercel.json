@@ -6,6 +6,7 @@
     { "src": "/leccion-1", "dest": "/leccion-1.html" },
     { "src": "/leccion-2", "dest": "/leccion-2.html" },
     { "src": "/leccion-3", "dest": "/leccion-3.html" },
+    { "src": "/smart-evo", "dest": "/smart-evo.html" },
     { "src": "/donaciones", "dest": "/donaciones.html" },
     { "src": "/educadores", "dest": "/educadores.html" },
     { "src": "/sobre", "dest": "/sobre.html" },
