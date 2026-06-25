@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 04: ¿Qué es un UTXO? — TheRabbitHole</title>
+  <meta name="description" content="Bitcoin no usa saldos como un banco. Funciona con UTXOs. Aprende cómo se construyen las transacciones, cómo se calculan las comisiones y qué es la mempool."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.tip { border-color: #2a7a2a; background: #f6fdf6; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; overflow-x: auto; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── MODEL COMPARISON ── */
+    .model-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .model-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--white); }
+    .model-card-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.6rem; }
+    .model-card.bank .model-card-label { color: var(--muted); }
+    .model-card.btc .model-card-label { color: var(--orange); }
+    .model-card h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .model-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── TX ANATOMY ── */
+    .tx-flow { display: flex; align-items: center; gap: 0; margin: 1.5rem 0; }
+    .tx-inputs { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+    .tx-arrow { font-size: 1.5rem; color: var(--orange); padding: 0 1rem; flex-shrink: 0; }
+    .tx-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 1rem 1.25rem; flex-shrink: 0; text-align: center; }
+    .tx-box-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.3rem; }
+    .tx-box-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; }
+    .tx-outputs { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+    .utxo-chip { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.5rem 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; }
+    .utxo-chip.consumed { border-color: var(--orange); background: #fff8f0; }
+    .utxo-chip.created { border-color: #2a7a2a; background: #f6fdf6; }
+    .utxo-chip.fee { border-color: var(--muted); background: var(--bg); color: var(--muted); }
+
+    /* ── UTXO SIMULATOR ── */
+    .interactive-box { background: var(--white); border: 1.5px solid var(--orange); border-radius: var(--radius); padding: 1.75rem; margin: 2rem 0; }
+    .interactive-box h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .interactive-box p.hint { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .utxo-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .utxo-selectable { border: 2px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1rem; cursor: pointer; background: var(--bg); transition: all var(--tr); user-select: none; }
+    .utxo-selectable:hover { border-color: var(--orange); }
+    .utxo-selectable.selected { border-color: var(--orange); background: #fff8f0; }
+    .utxo-selectable .u-val { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--black); }
+    .utxo-selectable .u-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); margin-top: 0.15rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .sim-row { display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .sim-input-group { display: flex; flex-direction: column; gap: 0.35rem; flex: 1; min-width: 140px; }
+    .sim-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .sim-input { font-family: var(--font-mono); font-size: 0.9rem; padding: 0.6rem 0.9rem; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--black); width: 100%; }
+    .sim-input:focus { outline: none; border-color: var(--orange); }
+    .sim-btn { font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; padding: 0.65rem 1.5rem; border-radius: var(--radius); background: var(--orange); color: var(--white); border: none; cursor: pointer; transition: background var(--tr); flex-shrink: 0; }
+    .sim-btn:hover { background: #d4600a; }
+    .sim-result { background: var(--bg2); border-radius: var(--radius); padding: 1.25rem; display: none; }
+    .sim-result.visible { display: block; }
+    .sim-result-row { display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .sim-result-row:last-child { border-bottom: none; font-weight: 600; }
+    .sim-result-label { color: var(--muted); font-family: var(--font-mono); font-size: 0.8rem; }
+    .sim-result-val { font-family: var(--font-mono); font-weight: 600; }
+    .sim-result-val.positive { color: #2a7a2a; }
+    .sim-result-val.fee-color { color: var(--muted); }
+    .sim-result-val.change-color { color: var(--orange); }
+    .sim-error { background: #fff5f5; border: 1px solid #b03030; color: #b03030; border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+    .sim-error.visible { display: block; }
+
+    /* ── MEMPOOL ── */
+    .mempool-wrap { background: var(--black); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+    .mempool-title { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+    .mempool-rows { display: flex; flex-direction: column; gap: 0.4rem; }
+    .mempool-row { display: flex; align-items: center; gap: 0.75rem; }
+    .mempool-rate { font-family: var(--font-mono); font-size: 0.72rem; color: #aaa; width: 80px; flex-shrink: 0; text-align: right; }
+    .mempool-bar-wrap { flex: 1; height: 28px; background: #1a1512; border-radius: 4px; overflow: hidden; position: relative; }
+    .mempool-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 0.6rem; font-family: var(--font-mono); font-size: 0.65rem; color: white; }
+    .mempool-block { font-family: var(--font-mono); font-size: 0.68rem; color: #666; width: 70px; flex-shrink: 0; }
+    .mempool-legend { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+    .mempool-legend-item { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.68rem; color: #888; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── FEE TABLE ── */
+    .fee-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.88rem; }
+    .fee-table th { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; background: var(--black); color: var(--white); }
+    .fee-table td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); }
+    .fee-table tr:last-child td { border-bottom: none; }
+    .fee-badge { font-family: var(--font-mono); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 99px; font-weight: 700; }
+    .fee-badge.low { background: #f6fdf6; color: #2a7a2a; border: 1px solid #2a7a2a; }
+    .fee-badge.mid { background: #fff8f0; color: var(--orange); border: 1px solid var(--orange); }
+    .fee-badge.high { background: #fff5f5; color: #b03030; border: 1px solid #b03030; }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .model-compare { grid-template-columns: 1fr; }
+      .tx-flow { flex-direction: column; }
+      .tx-arrow { transform: rotate(90deg); padding: 0.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 04</span>
+    <span class="lesson-nivel-badge">Intermedio</span>
+    <span class="lesson-tiempo">⏱ ~12 min</span>
+  </div>
+
+  <h1 class="lesson-title">¿Qué es un UTXO?</h1>
+
+  <p class="lesson-intro">
+    Bitcoin no funciona con saldos como una cuenta bancaria. En cambio, funciona con <strong>UTXOs</strong>: Unspent Transaction Outputs, o salidas de transacciones no gastadas. Es un modelo completamente diferente al que estamos acostumbrados, y entenderlo es clave para comprender cómo se construyen las transacciones, por qué existen las comisiones y cómo funciona la privacidad en Bitcoin.
+  </p>
+
+  <!-- SECCIÓN 1: DOS MODELOS -->
+  <div class="lesson-section">
+    <h2>El modelo bancario vs. el modelo UTXO</h2>
+
+    <p>Cuando tienes dinero en un banco, el banco registra un único número: tu saldo. Si tienes $400, el banco actualiza ese número cuando recibes o gastas. Bitcoin no funciona así.</p>
+
+    <div class="model-compare">
+      <div class="model-card bank">
+        <p class="model-card-label">Modelo bancario</p>
+        <h4>Un solo saldo</h4>
+        <p>El banco guarda un número: tu balance. Cuando pagas $50, el sistema resta y actualiza. Tú nunca "tienes" billetes específicos — solo un número en una base de datos.</p>
+      </div>
+      <div class="model-card btc">
+        <p class="model-card-label">Modelo Bitcoin (UTXO)</p>
+        <h4>Monedas específicas</h4>
+        <p>Bitcoin registra monedas individuales de distintos tamaños. Cuando "tienes 0.4 BTC" significa que tienes varias monedas no gastadas que suman esa cantidad — cada una con su propia historia.</p>
+      </div>
+    </div>
+
+    <!-- SVG: Balance vs UTXOs -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- LEFT: Bank -->
+        <rect x="10" y="20" width="300" height="160" rx="8" fill="#F5F4F2" stroke="#DDDAD6"/>
+        <text x="160" y="45" text-anchor="middle" font-size="10" fill="#6B6760" letter-spacing="2">BANCO</text>
+        <rect x="50" y="65" width="220" height="80" rx="6" fill="white" stroke="#DDDAD6"/>
+        <text x="160" y="98" text-anchor="middle" font-size="11" fill="#6B6760">Saldo</text>
+        <text x="160" y="124" text-anchor="middle" font-size="26" font-weight="700" fill="#14110F">$400.00</text>
+
+        <!-- DIVIDER -->
+        <text x="350" y="108" text-anchor="middle" font-size="22" fill="#DDDAD6">vs</text>
+
+        <!-- RIGHT: UTXO -->
+        <rect x="390" y="20" width="300" height="160" rx="8" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="540" y="45" text-anchor="middle" font-size="10" fill="#F2790B" letter-spacing="2">BITCOIN (UTXOs)</text>
+
+        <!-- UTXO 1 -->
+        <rect x="410" y="58" width="80" height="48" rx="5" fill="white" stroke="#F2790B"/>
+        <text x="450" y="78" text-anchor="middle" font-size="10" fill="#6B6760">UTXO</text>
+        <text x="450" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#14110F">0.05</text>
+
+        <!-- UTXO 2 -->
+        <rect x="500" y="58" width="80" height="48" rx="5" fill="white" stroke="#F2790B"/>
+        <text x="540" y="78" text-anchor="middle" font-size="10" fill="#6B6760">UTXO</text>
+        <text x="540" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#14110F">0.12</text>
+
+        <!-- UTXO 3 -->
+        <rect x="590" y="58" width="80" height="48" rx="5" fill="white" stroke="#F2790B"/>
+        <text x="630" y="78" text-anchor="middle" font-size="10" fill="#6B6760">UTXO</text>
+        <text x="630" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#14110F">0.23</text>
+
+        <!-- Total -->
+        <text x="540" y="140" text-anchor="middle" font-size="10" fill="#6B6760">0.05 + 0.12 + 0.23 =</text>
+        <text x="540" y="160" text-anchor="middle" font-size="14" font-weight="700" fill="#F2790B">0.40 BTC total</text>
+      </svg>
+      <figcaption>UN SALDO vs. TRES UTXOs — ambos representan el mismo valor, de formas distintas</figcaption>
+    </div>
+
+    <p>Cada UTXO es como un billete físico: tiene un valor específico, pertenece a una dirección concreta y solo puede gastarse entero. Si tienes un billete de $20 y algo cuesta $7, gastas el billete completo y recibes $13 de cambio. Bitcoin funciona exactamente igual.</p>
+
+    <div class="callout">
+      <p><strong>UTXO</strong> significa <em>Unspent Transaction Output</em> (salida de transacción no gastada). Cada vez que alguien te envía bitcoin, lo que recibes es un nuevo UTXO bloqueado a tu dirección. El conjunto de todos los UTXOs existentes representa toda la oferta de bitcoin en circulación.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: ANATOMÍA DE UNA TRANSACCIÓN -->
+  <div class="lesson-section">
+    <h2>Anatomía de una transacción Bitcoin</h2>
+
+    <p>Cuando envías bitcoin, tu wallet construye una transacción que <strong>consume UTXOs existentes</strong> (entradas / inputs) y <strong>crea UTXOs nuevos</strong> (salidas / outputs). La diferencia entre el total de entradas y el total de salidas es la comisión que se queda el minero que incluye la transacción en un bloque.</p>
+
+    <!-- SVG: Transaction anatomy -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+
+        <!-- INPUTS -->
+        <text x="10" y="22" font-size="9" fill="#6B6760" letter-spacing="2" text-transform="uppercase">ENTRADAS (INPUTS)</text>
+
+        <!-- Input UTXO 1 -->
+        <rect x="10" y="32" width="155" height="50" rx="6" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="87" y="53" text-anchor="middle" font-size="9" fill="#F2790B" letter-spacing="1">UTXO A</text>
+        <text x="87" y="71" text-anchor="middle" font-size="15" font-weight="700" fill="#14110F">0.12 BTC</text>
+
+        <!-- Input UTXO 2 -->
+        <rect x="10" y="92" width="155" height="50" rx="6" fill="#FFF8F0" stroke="#F2790B" stroke-width="1.5"/>
+        <text x="87" y="113" text-anchor="middle" font-size="9" fill="#F2790B" letter-spacing="1">UTXO B</text>
+        <text x="87" y="131" text-anchor="middle" font-size="15" font-weight="700" fill="#14110F">0.23 BTC</text>
+
+        <!-- Total inputs -->
+        <rect x="10" y="155" width="155" height="30" rx="4" fill="#14110F"/>
+        <text x="87" y="174" text-anchor="middle" font-size="11" fill="#F2790B" font-weight="700">Total: 0.35 BTC</text>
+
+        <!-- Arrows to transaction -->
+        <line x1="165" y1="57" x2="240" y2="100" stroke="#F2790B" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="165" y1="117" x2="240" y2="110" stroke="#F2790B" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#F2790B"/>
+          </marker>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#2a7a2a"/>
+          </marker>
+          <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#6B6760"/>
+          </marker>
+        </defs>
+
+        <!-- TRANSACTION BOX -->
+        <rect x="240" y="75" width="110" height="60" rx="8" fill="#14110F"/>
+        <text x="295" y="100" text-anchor="middle" font-size="8" fill="#F2790B" letter-spacing="2">TRANSACCIÓN</text>
+        <text x="295" y="118" text-anchor="middle" font-size="9" fill="white">~191 vBytes</text>
+        <text x="295" y="132" text-anchor="middle" font-size="8" fill="#6B6760">@ 15 sat/vB</text>
+
+        <!-- Arrows from transaction -->
+        <line x1="350" y1="90" x2="420" y2="55" stroke="#2a7a2a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <line x1="350" y1="110" x2="420" y2="120" stroke="#2a7a2a" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <line x1="350" y1="120" x2="420" y2="170" stroke="#888" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+        <!-- OUTPUTS -->
+        <text x="420" y="22" font-size="9" fill="#6B6760" letter-spacing="2">SALIDAS (OUTPUTS)</text>
+
+        <!-- Output 1: recipient -->
+        <rect x="420" y="32" width="200" height="50" rx="6" fill="#f6fdf6" stroke="#2a7a2a" stroke-width="1.5"/>
+        <text x="520" y="53" text-anchor="middle" font-size="9" fill="#2a7a2a" letter-spacing="1">NUEVO UTXO — DESTINATARIO</text>
+        <text x="520" y="71" text-anchor="middle" font-size="15" font-weight="700" fill="#14110F">0.10 BTC</text>
+
+        <!-- Output 2: change -->
+        <rect x="420" y="95" width="200" height="50" rx="6" fill="#f6fdf6" stroke="#2a7a2a" stroke-width="1.5"/>
+        <text x="520" y="116" text-anchor="middle" font-size="9" fill="#2a7a2a" letter-spacing="1">NUEVO UTXO — TU CAMBIO</text>
+        <text x="520" y="134" text-anchor="middle" font-size="15" font-weight="700" fill="#14110F">0.2471 BTC</text>
+
+        <!-- Fee -->
+        <rect x="420" y="155" width="200" height="30" rx="4" fill="#EDECEA"/>
+        <text x="520" y="174" text-anchor="middle" font-size="10" fill="#6B6760">Comisión minero: ~2,865 sats</text>
+      </svg>
+      <figcaption>ANATOMÍA DE UNA TRANSACCIÓN — 2 UTXOs entran, 3 salidas se crean (destinatario, cambio y comisión implícita)</figcaption>
+    </div>
+
+    <p>Fíjate en algo importante: los UTXOs de entrada se <strong>consumen completamente</strong>. No puedes gastar "la mitad" de un UTXO. Si tienes un UTXO de 0.23 BTC y quieres enviar 0.10 BTC, tu wallet consume el UTXO entero (0.23 BTC) y crea dos salidas: 0.10 BTC para el destinatario y el resto de vuelta a ti como cambio (menos la comisión del minero).</p>
+
+    <div class="callout">
+      <p>La dirección de cambio puede ser la misma tuya o —en wallets bien diseñadas— una dirección nueva. Usar una dirección de cambio nueva mejora la privacidad porque hace más difícil rastrear tus UTXOs en la blockchain.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: SIMULADOR INTERACTIVO -->
+  <div class="lesson-section">
+    <h2>Simula tu propia transacción</h2>
+
+    <p>Selecciona los UTXOs que quieres usar como entrada, indica cuánto quieres enviar y ve cómo quedaría la transacción con su desglose de comisión y cambio.</p>
+
+    <div class="interactive-box">
+      <h4>Simulador de transacción UTXO</h4>
+      <p class="hint">Haz clic en los UTXOs que quieres gastar (puedes seleccionar varios). Luego ingresa el monto a enviar y la tasa de comisión.</p>
+
+      <p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;">Tus UTXOs disponibles</p>
+      <div class="utxo-grid" id="utxoGrid">
+        <div class="utxo-selectable" data-val="0.05000000" onclick="toggleUtxo(this)">
+          <div class="u-val">0.05 BTC</div>
+          <div class="u-label">5,000,000 sats</div>
+        </div>
+        <div class="utxo-selectable" data-val="0.12000000" onclick="toggleUtxo(this)">
+          <div class="u-val">0.12 BTC</div>
+          <div class="u-label">12,000,000 sats</div>
+        </div>
+        <div class="utxo-selectable" data-val="0.23000000" onclick="toggleUtxo(this)">
+          <div class="u-val">0.23 BTC</div>
+          <div class="u-label">23,000,000 sats</div>
+        </div>
+        <div class="utxo-selectable" data-val="0.08500000" onclick="toggleUtxo(this)">
+          <div class="u-val">0.085 BTC</div>
+          <div class="u-label">8,500,000 sats</div>
+        </div>
+      </div>
+
+      <div class="sim-row">
+        <div class="sim-input-group">
+          <label class="sim-label">Enviar (BTC)</label>
+          <input class="sim-input" type="number" id="simSend" placeholder="0.08" step="0.001" min="0.00001"/>
+        </div>
+        <div class="sim-input-group">
+          <label class="sim-label">Tasa de comisión (sat/vByte)</label>
+          <input class="sim-input" type="number" id="simFeeRate" value="20" step="1" min="1" max="500"/>
+        </div>
+        <button class="sim-btn" onclick="calcTx()">Calcular →</button>
+      </div>
+
+      <div class="sim-error" id="simError"></div>
+
+      <div class="sim-result" id="simResult">
+        <div class="sim-result-row">
+          <span class="sim-result-label">UTXOs de entrada seleccionados</span>
+          <span class="sim-result-val" id="rInputCount">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span class="sim-result-label">Total de entrada</span>
+          <span class="sim-result-val" id="rTotalIn">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span class="sim-result-label">Recibirá el destinatario</span>
+          <span class="sim-result-val positive" id="rSend">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span class="sim-result-label">Tamaño estimado de la tx</span>
+          <span class="sim-result-val" id="rSize">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span class="sim-result-label">Comisión del minero</span>
+          <span class="sim-result-val fee-color" id="rFee">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span class="sim-result-label">Tu cambio (nuevo UTXO)</span>
+          <span class="sim-result-val change-color" id="rChange">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: MEMPOOL -->
+  <div class="lesson-section">
+    <h2>La mempool: la sala de espera de Bitcoin</h2>
+
+    <p>Cuando envías una transacción, esta no se incluye inmediatamente en un bloque. Primero va a la <strong>mempool</strong> (memory pool): un espacio de memoria donde los nodos de la red guardan las transacciones pendientes de confirmación.</p>
+
+    <p>Los mineros pueden elegir qué transacciones incluir en el próximo bloque. Su incentivo económico es maximizar las comisiones que reciben, por lo que priorizan las transacciones con mayor <strong>tasa de comisión</strong>, medida en satoshis por byte virtual (sat/vByte).</p>
+
+    <!-- MEMPOOL VISUAL -->
+    <div class="mempool-wrap">
+      <p class="mempool-title">MEMPOOL — TRANSACCIONES EN ESPERA (mayor tasa = primera en entrar al bloque)</p>
+      <div class="mempool-rows">
+        <div class="mempool-row">
+          <span class="mempool-rate">150 sat/vB</span>
+          <div class="mempool-bar-wrap">
+            <div class="mempool-bar" style="width:95%;background:#F2790B;">Transacciones urgentes</div>
+          </div>
+          <span class="mempool-block" style="color:#F2790B;">≈ 10 min</span>
+        </div>
+        <div class="mempool-row">
+          <span class="mempool-rate">50 sat/vB</span>
+          <div class="mempool-bar-wrap">
+            <div class="mempool-bar" style="width:80%;background:#d4901a;">Alta prioridad</div>
+          </div>
+          <span class="mempool-block" style="color:#d4901a;">≈ 30 min</span>
+        </div>
+        <div class="mempool-row">
+          <span class="mempool-rate">20 sat/vB</span>
+          <div class="mempool-bar-wrap">
+            <div class="mempool-bar" style="width:65%;background:#5a7a3a;">Prioridad media</div>
+          </div>
+          <span class="mempool-block" style="color:#5a7a3a;">≈ 1-2 h</span>
+        </div>
+        <div class="mempool-row">
+          <span class="mempool-rate">8 sat/vB</span>
+          <div class="mempool-bar-wrap">
+            <div class="mempool-bar" style="width:50%;background:#3a5a7a;">Prioridad baja</div>
+          </div>
+          <span class="mempool-block" style="color:#3a5a7a;">≈ 6-24 h</span>
+        </div>
+        <div class="mempool-row">
+          <span class="mempool-rate">2 sat/vB</span>
+          <div class="mempool-bar-wrap">
+            <div class="mempool-bar" style="width:30%;background:#444;">Sin prisa</div>
+          </div>
+          <span class="mempool-block" style="color:#666;">días / nunca</span>
+        </div>
+      </div>
+      <div class="mempool-legend">
+        <div class="mempool-legend-item"><div class="legend-dot" style="background:#F2790B;"></div>Máxima prioridad</div>
+        <div class="mempool-legend-item"><div class="legend-dot" style="background:#5a7a3a;"></div>Normal</div>
+        <div class="mempool-legend-item"><div class="legend-dot" style="background:#444;"></div>Baja prioridad</div>
+      </div>
+    </div>
+
+    <p>Cada bloque de Bitcoin tiene un tamaño máximo de aproximadamente 4 MB (en peso) y puede contener unas 2,000–3,000 transacciones típicas. Los mineros llenan cada bloque empezando por las transacciones de mayor tasa hasta llenarlo.</p>
+
+    <h3>¿Cuánto debería pagar de comisión?</h3>
+    <p>Depende de la urgencia. Hay herramientas online que muestran el estado actual de la mempool y recomiendan una tasa según el tiempo de confirmación deseado. Muchas wallets calculan esto automáticamente.</p>
+
+    <table class="fee-table">
+      <thead>
+        <tr>
+          <th>Prioridad</th>
+          <th>Tasa típica</th>
+          <th>Tiempo estimado</th>
+          <th>Cuándo usarlo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fee-badge high">Alta</span></td>
+          <td>50–200 sat/vB</td>
+          <td>~10 min (próximo bloque)</td>
+          <td>Pagos urgentes, time-sensitive</td>
+        </tr>
+        <tr>
+          <td><span class="fee-badge mid">Media</span></td>
+          <td>10–50 sat/vB</td>
+          <td>30 min – 2 horas</td>
+          <td>Transacciones normales del día a día</td>
+        </tr>
+        <tr>
+          <td><span class="fee-badge low">Baja</span></td>
+          <td>1–10 sat/vB</td>
+          <td>Horas o días</td>
+          <td>Sin urgencia: ahorros, retiros largos</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <p><strong>Tip:</strong> Una transacción con tasa muy baja puede quedar atascada en la mempool indefinidamente. Si la mempool se vacía (períodos de baja actividad), eventualmente los mineros la incluyen. Pero si la tasa es tan baja que nunca es competitiva, los nodos pueden expulsarla de la mempool tras cierto tiempo.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: UTXO SET -->
+  <div class="lesson-section">
+    <h2>El UTXO set: la foto del estado de Bitcoin</h2>
+
+    <p>El conjunto de <strong>todos los UTXOs no gastados</strong> que existen en un momento dado se llama el <strong>UTXO set</strong>. Es el estado actual de Bitcoin: si sumaras todos los UTXOs del mundo, obtendrías exactamente la cantidad de bitcoin en circulación.</p>
+
+    <!-- SVG: UTXO set concept -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+        <text x="340" y="20" text-anchor="middle" font-size="9" fill="#6B6760" letter-spacing="2">UTXO SET GLOBAL</text>
+
+        <!-- UTXOs of different sizes -->
+        <rect x="20"  y="35" width="55"  height="80" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="85"  y="55" width="90"  height="60" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="185" y="45" width="70"  height="70" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="265" y="60" width="45"  height="55" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="320" y="30" width="120" height="85" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="450" y="50" width="65"  height="65" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="525" y="40" width="40"  height="75" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+        <rect x="575" y="65" width="85"  height="50" rx="5" fill="#FFF8F0" stroke="#F2790B"/>
+
+        <!-- Labels inside UTXOs -->
+        <text x="47"  y="80" text-anchor="middle" font-size="8" fill="#14110F">0.05</text>
+        <text x="130" y="85" text-anchor="middle" font-size="9" fill="#14110F">0.12 BTC</text>
+        <text x="220" y="83" text-anchor="middle" font-size="8" fill="#14110F">0.07</text>
+        <text x="287" y="90" text-anchor="middle" font-size="8" fill="#14110F">0.03</text>
+        <text x="380" y="77" text-anchor="middle" font-size="11" fill="#14110F">1.50 BTC</text>
+        <text x="482" y="85" text-anchor="middle" font-size="8" fill="#14110F">0.25</text>
+        <text x="545" y="83" text-anchor="middle" font-size="8" fill="#14110F">0.09</text>
+        <text x="617" y="90" text-anchor="middle" font-size="8" fill="#14110F">0.33</text>
+
+        <!-- Total label -->
+        <text x="340" y="148" text-anchor="middle" font-size="10" fill="#6B6760">Suma de todos los UTXOs = Bitcoin en circulación ≈ 19.8 M BTC</text>
+      </svg>
+      <figcaption>CADA UTXO EXISTE EN LA BLOCKCHAIN — los nodos de la red mantienen el UTXO set completo en memoria para validar transacciones rápidamente</figcaption>
+    </div>
+
+    <p>Los nodos completos de Bitcoin mantienen el UTXO set en memoria RAM para poder validar transacciones rápidamente. Cuando una transacción llega, el nodo verifica que los UTXOs de entrada existan en el UTXO set y no hayan sido gastados antes. Esto es lo que hace imposible el doble gasto en Bitcoin.</p>
+
+    <div class="callout">
+      <p><strong>Dato técnico:</strong> A junio de 2025, el UTXO set de Bitcoin contiene aproximadamente 180 millones de UTXOs y ocupa unos 10–12 GB en memoria. Los satoshis no existen en ninguna cuenta — existen como UTXOs registrados en la blockchain y validados por miles de nodos en todo el mundo.</p>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>Bitcoin no usa saldos: usa UTXOs (monedas individuales no gastadas) de distintos tamaños.</li>
+      <li>Cada transacción consume UTXOs existentes (inputs) y crea UTXOs nuevos (outputs).</li>
+      <li>Los UTXOs se consumen completos: si son mayores al monto enviado, el excedente vuelve a ti como cambio.</li>
+      <li>La comisión es implícita: es la diferencia entre el total de inputs y el total de outputs.</li>
+      <li>Las comisiones se miden en sat/vByte. A mayor tasa, más rápido confirma la transacción.</li>
+      <li>La mempool es la sala de espera: los mineros priorizan transacciones con mayor tasa de comisión.</li>
+      <li>El UTXO set global es la suma de todos los UTXOs no gastados — representa toda la oferta de bitcoin.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="leccion-3.html">Lección 03: Wallets y llaves privadas</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="leccion-5.html">Seed phrase y respaldo →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+const SATS = 100_000_000;
+
+function toggleUtxo(el) {
+  el.classList.toggle('selected');
+}
+
+function calcTx() {
+  const selected = [...document.querySelectorAll('.utxo-selectable.selected')];
+  const sendBtc = parseFloat(document.getElementById('simSend').value);
+  const feeRate = parseInt(document.getElementById('simFeeRate').value, 10);
+  const errEl = document.getElementById('simError');
+  const resEl = document.getElementById('simResult');
+
+  errEl.classList.remove('visible');
+  resEl.classList.remove('visible');
+
+  if (selected.length === 0) {
+    errEl.textContent = 'Selecciona al menos un UTXO de entrada.';
+    errEl.classList.add('visible');
+    return;
+  }
+  if (!sendBtc || isNaN(sendBtc) || sendBtc <= 0) {
+    errEl.textContent = 'Ingresa un monto válido a enviar.';
+    errEl.classList.add('visible');
+    return;
+  }
+  if (!feeRate || feeRate < 1) {
+    errEl.textContent = 'La tasa de comisión debe ser al menos 1 sat/vByte.';
+    errEl.classList.add('visible');
+    return;
+  }
+
+  const totalInSats = selected.reduce((sum, el) => sum + Math.round(parseFloat(el.dataset.val) * SATS), 0);
+  const sendSats = Math.round(sendBtc * SATS);
+  const numInputs = selected.length;
+  const numOutputs = 2;
+  const txSizeVbytes = 10 + numInputs * 68 + numOutputs * 31;
+  const feeSats = txSizeVbytes * feeRate;
+  const changeSats = totalInSats - sendSats - feeSats;
+
+  if (sendSats + feeSats > totalInSats) {
+    errEl.textContent = `Fondos insuficientes. Total seleccionado: ${(totalInSats / SATS).toFixed(8)} BTC. Necesitas al menos ${((sendSats + feeSats) / SATS).toFixed(8)} BTC para cubrir el envío + comisión.`;
+    errEl.classList.add('visible');
+    return;
+  }
+  if (changeSats < 546) {
+    errEl.textContent = 'El cambio sería inferior al mínimo aceptable (546 sats). Ajusta el monto enviado o selecciona más UTXOs.';
+    errEl.classList.add('visible');
+    return;
+  }
+
+  document.getElementById('rInputCount').textContent = `${numInputs} UTXO${numInputs > 1 ? 's' : ''}`;
+  document.getElementById('rTotalIn').textContent = `${(totalInSats / SATS).toFixed(8)} BTC`;
+  document.getElementById('rSend').textContent = `${(sendSats / SATS).toFixed(8)} BTC`;
+  document.getElementById('rSize').textContent = `${txSizeVbytes} vBytes (SegWit estimado)`;
+  document.getElementById('rFee').textContent = `${feeSats.toLocaleString()} sats (${(feeSats / SATS).toFixed(8)} BTC)`;
+  document.getElementById('rChange').textContent = `${changeSats.toLocaleString()} sats (${(changeSats / SATS).toFixed(8)} BTC)`;
+  resEl.classList.add('visible');
+}
+</script>
+</body>
+</html>
