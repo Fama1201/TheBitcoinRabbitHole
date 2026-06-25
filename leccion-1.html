@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 01: ¿Qué es Bitcoin? — TheRabbitHole</title>
+  <meta name="description" content="Bitcoin es un sistema de dinero electrónico descentralizado creado en 2008. Aprende qué es, cómo funciona y por qué importa."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout strong { color: var(--black); }
+
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    .propiedades-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.75rem 0; }
+    .prop-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .prop-card-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+    .prop-card h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .prop-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    .timeline { border-left: 2px solid var(--border); margin: 1.75rem 0 1.75rem 0.75rem; padding-left: 1.5rem; }
+    .timeline-item { position: relative; margin-bottom: 1.5rem; }
+    .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--orange); border: 2px solid var(--bg); }
+    .timeline-year { font-family: var(--font-mono); font-size: 0.72rem; color: var(--orange); letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+    .timeline-item h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .timeline-item p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .propiedades-grid { grid-template-columns: 1fr; }
+      .lesson-nav-next { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<!-- ── LESSON CONTENT ── -->
+<div class="lesson-wrap">
+
+  <p class="breadcrumb" style="margin-bottom:1.5rem;">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="aprender.html">Aprender Bitcoin</a><span>›</span>
+    Lección 01
+  </p>
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 01</span>
+    <span class="lesson-nivel-badge">● Básico</span>
+    <span class="lesson-tiempo">⏱ ~10 min lectura</span>
+  </div>
+
+  <h1 class="lesson-title">¿Qué es Bitcoin?</h1>
+  <p class="lesson-intro">Bitcoin es un sistema de dinero electrónico que permite transferir valor entre personas sin necesidad de un banco ni ningún intermediario. Fue propuesto en 2008 y puesto en marcha en 2009. En esta lección explicamos el problema que intenta resolver, cómo funciona a grandes rasgos y cuáles son las propiedades que lo hacen diferente a cualquier otra forma de dinero anterior.</p>
+
+  <!-- ── EL PROBLEMA ── -->
+  <div class="lesson-section">
+    <h2>El problema del dinero moderno</h2>
+    <p>Para entender Bitcoin hay que empezar por entender qué tiene de problemático el sistema monetario actual. Cuando usas una tarjeta de crédito, haces una transferencia bancaria o usas PayPal, en realidad no estás moviendo dinero directamente: estás pidiendo permiso a una institución para que actualice un registro en su base de datos.</p>
+    <p>Ese sistema implica varias cosas que damos por sentadas pero que no son inevitables:</p>
+
+    <div class="callout">
+      <p><strong>Necesitas permiso para participar.</strong> Un banco puede cerrar tu cuenta, bloquear una transacción o negarte el acceso a tus fondos. En muchos países del mundo, millones de personas no tienen acceso a servicios bancarios.</p>
+    </div>
+
+    <p>Además, los bancos centrales tienen la capacidad de crear dinero nuevo en cualquier momento. Eso significa que el valor de los billetes que tienes guardados puede disminuir sin que tú hayas hecho nada. A esto se le llama inflación, y es una consecuencia directa del diseño del sistema: alguien controla la oferta monetaria y puede cambiarla.</p>
+
+    <!-- DIAGRAMA: Centralizado vs Descentralizado -->
+    <figure class="diagram-box">
+      <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <!-- Título izquierda -->
+        <text x="160" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#6B6760" letter-spacing="1">SISTEMA ACTUAL</text>
+        <!-- Banco central -->
+        <rect x="120" y="40" width="80" height="36" rx="5" fill="#14110F"/>
+        <text x="160" y="63" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="white" font-weight="600">BANCO</text>
+        <!-- Líneas al banco -->
+        <line x1="160" y1="76" x2="60" y2="130" stroke="#DDDAD6" stroke-width="1.5"/>
+        <line x1="160" y1="76" x2="110" y2="140" stroke="#DDDAD6" stroke-width="1.5"/>
+        <line x1="160" y1="76" x2="160" y2="145" stroke="#DDDAD6" stroke-width="1.5"/>
+        <line x1="160" y1="76" x2="210" y2="140" stroke="#DDDAD6" stroke-width="1.5"/>
+        <line x1="160" y1="76" x2="260" y2="130" stroke="#DDDAD6" stroke-width="1.5"/>
+        <!-- Nodos personas -->
+        <circle cx="60" cy="148" r="16" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1.5"/>
+        <text x="60" y="153" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B6760">👤</text>
+        <circle cx="110" cy="158" r="16" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1.5"/>
+        <text x="110" y="163" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B6760">👤</text>
+        <circle cx="160" cy="163" r="16" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1.5"/>
+        <text x="160" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B6760">👤</text>
+        <circle cx="210" cy="158" r="16" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1.5"/>
+        <text x="210" y="163" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B6760">👤</text>
+        <circle cx="260" cy="148" r="16" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1.5"/>
+        <text x="260" y="153" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B6760">👤</text>
+        <!-- Separador -->
+        <line x1="320" y1="20" x2="320" y2="200" stroke="#DDDAD6" stroke-width="1" stroke-dasharray="4,4"/>
+        <!-- Título derecha -->
+        <text x="480" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#F2790B" letter-spacing="1">BITCOIN</text>
+        <!-- Nodos Bitcoin (mesh) -->
+        <circle cx="480" cy="70" r="16" fill="#F2790B"/>
+        <text x="480" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="white">👤</text>
+        <circle cx="380" cy="120" r="16" fill="#F2790B"/>
+        <text x="380" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="white">👤</text>
+        <circle cx="430" cy="175" r="16" fill="#F2790B"/>
+        <text x="430" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="white">👤</text>
+        <circle cx="530" cy="175" r="16" fill="#F2790B"/>
+        <text x="530" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="white">👤</text>
+        <circle cx="580" cy="120" r="16" fill="#F2790B"/>
+        <text x="580" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="white">👤</text>
+        <!-- Conexiones mesh -->
+        <line x1="480" y1="86" x2="380" y2="104" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="480" y1="86" x2="580" y2="104" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="480" y1="86" x2="430" y2="159" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="480" y1="86" x2="530" y2="159" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="380" y1="136" x2="430" y2="159" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="580" y1="136" x2="530" y2="159" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="430" y1="175" x2="530" y2="175" stroke="#F2790B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="380" y1="120" x2="580" y2="120" stroke="#F2790B" stroke-width="1.5" opacity="0.3"/>
+      </svg>
+      <figcaption>IZQUIERDA: sistema centralizado — todos dependen del banco. DERECHA: red Bitcoin — todos se conectan directamente entre sí.</figcaption>
+    </figure>
+  </div>
+
+  <!-- ── QUÉ ES BITCOIN ── -->
+  <div class="lesson-section">
+    <h2>¿Qué es Bitcoin exactamente?</h2>
+    <p>Bitcoin es un <strong>protocolo</strong>: un conjunto de reglas matemáticas que cualquier computadora puede seguir. No es una empresa. No tiene CEO. No tiene oficinas. No hay nadie que pueda cerrar Bitcoin, igual que no hay nadie que pueda "cerrar" las matemáticas.</p>
+    <p>Estas reglas definen cómo se registran las transacciones, cómo se verifica que alguien tiene derecho a gastar ciertos bitcoin, y cuántos bitcoin nuevos se crean con cada bloque. Las reglas son públicas, auditables y no pueden ser cambiadas por una sola persona u organización.</p>
+
+    <div class="callout">
+      <p><strong>Analogía:</strong> Bitcoin es al dinero lo que el email es a las cartas. El email no es una empresa — es un protocolo abierto que cualquiera puede usar. Bitcoin tampoco es una empresa: es un protocolo abierto que permite enviar valor entre personas.</p>
+    </div>
+
+    <p>Cuando dices "tengo bitcoin", en realidad lo que tienes es una <strong>llave privada</strong>: un número matemático que te da el derecho exclusivo de mover ciertos fondos registrados en la blockchain. Eso lo veremos en detalle en las lecciones de wallets y llaves.</p>
+  </div>
+
+  <!-- ── LAS 4 PROPIEDADES ── -->
+  <div class="lesson-section">
+    <h2>Las 4 propiedades que definen Bitcoin</h2>
+    <p>Hay muchas criptomonedas, pero Bitcoin tiene características específicas que no son accidentales — son decisiones de diseño que responden directamente al problema del dinero controlado por terceros.</p>
+
+    <div class="propiedades-grid">
+      <div class="prop-card">
+        <p class="prop-card-label">01</p>
+        <h4>Oferta fija</h4>
+        <p>Nunca existirán más de 21 millones de bitcoin. Esto está escrito en el protocolo y no puede cambiarse sin el consenso de toda la red. Ningún gobierno ni banco central puede crear más.</p>
+      </div>
+      <div class="prop-card">
+        <p class="prop-card-label">02</p>
+        <h4>Descentralización</h4>
+        <p>Miles de nodos en todo el mundo mantienen una copia del registro. No hay un servidor central que pueda ser apagado, hackeado o controlado.</p>
+      </div>
+      <div class="prop-card">
+        <p class="prop-card-label">03</p>
+        <h4>Sin permiso</h4>
+        <p>Cualquier persona con acceso a internet puede recibir y enviar bitcoin. No necesitas una cuenta bancaria, no necesitas presentar un documento de identidad y nadie puede negarte el acceso.</p>
+      </div>
+      <div class="prop-card">
+        <p class="prop-card-label">04</p>
+        <h4>Transparencia</h4>
+        <p>Todas las transacciones son públicas y verificables por cualquiera. El registro es inmutable: una vez confirmada, ninguna transacción puede ser revertida.</p>
+      </div>
+    </div>
+
+    <!-- DIAGRAMA: Oferta fija -->
+    <figure class="diagram-box">
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <text x="320" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6B6760" letter-spacing="1">EMISIÓN DE BITCOIN A LO LARGO DEL TIEMPO</text>
+        <!-- Eje Y -->
+        <line x1="60" y1="30" x2="60" y2="170" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="55" y="35" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">21M</text>
+        <text x="55" y="90" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">10.5M</text>
+        <text x="55" y="170" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">0</text>
+        <!-- Eje X -->
+        <line x1="60" y1="170" x2="610" y2="170" stroke="#DDDAD6" stroke-width="1"/>
+        <!-- Años -->
+        <text x="90" y="185" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">2009</text>
+        <text x="200" y="185" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">2012</text>
+        <text x="310" y="185" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">2016</text>
+        <text x="420" y="185" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">2020</text>
+        <text x="530" y="185" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">2024</text>
+        <!-- Curva de emisión acumulada (S-curve approach) -->
+        <polyline points="60,170 90,148 200,95 310,60 420,42 530,35 610,33" fill="none" stroke="#F2790B" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Línea límite 21M -->
+        <line x1="60" y1="33" x2="610" y2="33" stroke="#DDDAD6" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="615" y="37" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">21M</text>
+        <!-- Halvings -->
+        <line x1="200" y1="30" x2="200" y2="170" stroke="#DDDAD6" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="310" y1="30" x2="310" y2="170" stroke="#DDDAD6" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="420" y1="30" x2="420" y2="170" stroke="#DDDAD6" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="530" y1="30" x2="530" y2="170" stroke="#DDDAD6" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="200" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#F2790B">halving</text>
+        <text x="310" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#F2790B">halving</text>
+        <text x="420" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#F2790B">halving</text>
+        <text x="530" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#F2790B">halving</text>
+      </svg>
+      <figcaption>LA OFERTA TOTAL DE BITCOIN SE ACERCA ASINTÓTICAMENTE A 21 MILLONES. CADA ~4 AÑOS OCURRE UN "HALVING" QUE REDUCE A LA MITAD LA RECOMPENSA POR BLOQUE.</figcaption>
+    </figure>
+
+    <p>El <strong>halving</strong> es el mecanismo que controla la emisión. Cada 210.000 bloques (aproximadamente cada 4 años), la cantidad de bitcoin nuevos que reciben los mineros por bloque se reduce a la mitad. Esto hace que la emisión sea predecible y verificable por cualquiera, a diferencia de los bancos centrales, cuyas decisiones sobre la oferta monetaria pueden cambiarse en cualquier reunión de política monetaria.</p>
+  </div>
+
+  <!-- ── SATOSHI ── -->
+  <div class="lesson-section">
+    <h2>Satoshi Nakamoto</h2>
+    <p>En octubre de 2008, una persona o grupo bajo el seudónimo <strong>Satoshi Nakamoto</strong> publicó un documento de 9 páginas titulado <em>"Bitcoin: A Peer-to-Peer Electronic Cash System"</em>. En él describía un sistema para hacer transacciones electrónicas sin depender de instituciones financieras.</p>
+    <p>En enero de 2009 puso en marcha la red minando el primer bloque, conocido como el <strong>bloque génesis</strong>. Colaboró con otros desarrolladores durante dos años y luego desapareció progresivamente, dejando el protocolo en manos de la comunidad.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <p class="timeline-year">OCTUBRE 2008</p>
+        <h4>El whitepaper</h4>
+        <p>Satoshi publica el paper en una lista de correo de criptografía. Nadie sabía que cambiaría las finanzas globales.</p>
+      </div>
+      <div class="timeline-item">
+        <p class="timeline-year">3 ENERO 2009</p>
+        <h4>Bloque génesis</h4>
+        <p>Satoshi mina el primer bloque. Incluye un mensaje: <em>"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"</em> — una referencia directa al problema que Bitcoin intenta resolver.</p>
+      </div>
+      <div class="timeline-item">
+        <p class="timeline-year">MAYO 2010</p>
+        <h4>Primera transacción real</h4>
+        <p>Laszlo Hanyecz paga 10.000 BTC por dos pizzas. Primera vez que se usa Bitcoin para comprar algo en el mundo real.</p>
+      </div>
+      <div class="timeline-item">
+        <p class="timeline-year">2011</p>
+        <h4>Satoshi desaparece</h4>
+        <p>Deja el proyecto en manos de los desarrolladores. Su identidad sigue siendo desconocida. Sus ~1 millón de BTC nunca se han movido.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>El hecho de que Satoshi sea anónimo y haya desaparecido es una <strong>ventaja del protocolo</strong>, no un problema. Bitcoin no puede ser controlado presionando a su creador. No hay ninguna figura de autoridad que pueda ser detenida, silenciada o sobornada para cambiar las reglas.</p>
+    </div>
+  </div>
+
+  <!-- ── LO QUE NO ES ── -->
+  <div class="lesson-section">
+    <h2>Lo que Bitcoin no es</h2>
+    <h3>No es "cripto" en general</h3>
+    <p>La palabra "cripto" se usa para referirse a miles de proyectos diferentes: Ethereum, Solana, Dogecoin, stablecoins… Bitcoin es uno de ellos en términos de categoría técnica, pero sus objetivos, diseño y propiedades son fundamentalmente distintos. Muchos de esos proyectos tienen fundadores identificables que pueden cambiar las reglas. Bitcoin no.</p>
+    <h3>No es solo "una inversión"</h3>
+    <p>El precio de Bitcoin sube y baja. Eso no cambia sus propiedades. Bitcoin es útil porque resuelve el problema del dinero controlado por terceros — el precio en dólares es una consecuencia de cuánta gente lo valora, no la razón por la que fue creado.</p>
+    <h3>No es anónimo por defecto</h3>
+    <p>Todas las transacciones de Bitcoin son <strong>públicas</strong>. Cualquiera puede ver cuánto se envió de una dirección a otra. Lo que no es público es quién controla cada dirección — pero eso puede rastrearse con análisis de blockchain. La privacidad en Bitcoin requiere esfuerzo deliberado.</p>
+  </div>
+
+  <!-- ── RESUMEN ── -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>Bitcoin es un protocolo de dinero electrónico sin intermediarios, creado en 2008 por Satoshi Nakamoto.</li>
+      <li>Existe para resolver un problema concreto: el dinero controlado por instituciones que pueden censurar, inflar y bloquear transacciones.</li>
+      <li>Su oferta está limitada a 21 millones de unidades, determinada por el código — no por decisiones políticas.</li>
+      <li>Es descentralizado: miles de nodos mantienen una copia del registro y no hay ningún punto de control único.</li>
+      <li>Satoshi desapareció deliberadamente para que ninguna persona controle el protocolo.</li>
+      <li>El precio fluctúa; las propiedades del protocolo no.</li>
+    </ul>
+  </div>
+
+  <!-- ── NAVEGACIÓN ── -->
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="aprender.html">Volver a todas las lecciones</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="aprender.html#leccion-2">Blockchain y bloques →</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
