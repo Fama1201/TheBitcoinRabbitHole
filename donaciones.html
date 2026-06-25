@@ -87,7 +87,7 @@
       <div class="donaciones-sidebar">
         <div class="sidebar-box">
           <h3>Dirección Bitcoin</h3>
-          <div class="qr-placeholder">QR pendiente</div>
+          <div id="btc-qr" style="display:flex;justify-content:center;margin-bottom:1rem;"></div>
           <div class="btc-addr-box" onclick="copiar()" title="Copiar dirección Bitcoin">
             <code id="btc-addr">bc1q32ke9vugd9se28vwhlhvw5y6yyjz2hlsjpstj5</code>
             <button class="copy-btn" id="copy-lbl">copiar</button>
@@ -183,5 +183,14 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  new QRCode(document.getElementById('btc-qr'), {
+    text: 'bitcoin:bc1q32ke9vugd9se28vwhlhvw5y6yyjz2hlsjpstj5',
+    width: 180, height: 180,
+    colorDark: '#14110F', colorLight: '#FFFFFF',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+</script>
 </body>
 </html>

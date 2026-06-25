@@ -3,6 +3,7 @@
   "trailingSlash": false,
   "routes": [
     { "src": "/aprender", "dest": "/aprender.html" },
+    { "src": "/leccion-1", "dest": "/leccion-1.html" },
     { "src": "/donaciones", "dest": "/donaciones.html" },
     { "src": "/educadores", "dest": "/educadores.html" },
     { "src": "/sobre", "dest": "/sobre.html" },
