@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 03: Wallets y llaves privadas — TheRabbitHole</title>
+  <meta name="description" content="Aprende cómo funcionan las wallets de Bitcoin, qué son las llaves privadas y por qué la autocustodia importa."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.danger { border-color: #b03030; background: #fff5f5; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── KEY COMPARISON TABLE ── */
+    .key-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.88rem; }
+    .key-table th { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; background: var(--black); color: var(--white); }
+    .key-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+    .key-table tr:last-child td { border-bottom: none; }
+    .key-table tr:hover td { background: var(--bg2); }
+    .key-label-pub { color: #2a7a2a; font-weight: 600; }
+    .key-label-priv { color: #b03030; font-weight: 600; }
+
+    /* ── WALLET TYPE TOGGLE ── */
+    .wallet-toggle { display: flex; gap: 0; margin-bottom: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .wallet-tab { flex: 1; padding: 0.65rem 1rem; font-family: var(--font-mono); font-size: 0.78rem; border: none; background: var(--white); color: var(--muted); cursor: pointer; transition: all var(--tr); text-align: center; }
+    .wallet-tab.active { background: var(--black); color: var(--white); }
+    .wallet-panel { display: none; }
+    .wallet-panel.active { display: block; }
+    .wallet-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+    .wallet-card-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .wallet-card-sub { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 1rem; letter-spacing: 0.05em; }
+    .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .pros h5, .cons h5 { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .pros h5 { color: #2a7a2a; }
+    .cons h5 { color: #b03030; }
+    .pros ul, .cons ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+    .pros li::before { content: '✓ '; color: #2a7a2a; }
+    .cons li::before { content: '✗ '; color: #b03030; }
+    .pros li, .cons li { font-size: 0.85rem; line-height: 1.5; }
+    .use-case { margin-top: 1rem; padding: 0.75rem 1rem; background: var(--bg); border-radius: var(--radius); font-size: 0.85rem; line-height: 1.6; }
+    .use-case strong { color: var(--orange); }
+
+    /* ── CUSTODY QUIZ ── */
+    .interactive-box { background: var(--white); border: 1.5px solid var(--orange); border-radius: var(--radius); padding: 1.75rem; margin: 2rem 0; }
+    .interactive-box h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .interactive-box p.hint { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .quiz-step { display: none; }
+    .quiz-step.active { display: block; }
+    .quiz-question { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--black); }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+    .quiz-opt { padding: 0.8rem 1.1rem; border: 1.5px solid var(--border); border-radius: var(--radius); cursor: pointer; font-size: 0.88rem; line-height: 1.5; transition: all var(--tr); background: var(--bg); text-align: left; width: 100%; }
+    .quiz-opt:hover { border-color: var(--orange); background: var(--white); }
+    .quiz-result { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 1.5rem; }
+    .quiz-result h5 { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.5rem; }
+    .quiz-result-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .quiz-result p { font-size: 0.9rem; line-height: 1.7; color: #ccc; margin-bottom: 1rem; }
+    .quiz-restart { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.5rem 1.2rem; border: 1px solid #555; border-radius: var(--radius); background: transparent; color: #aaa; cursor: pointer; transition: all var(--tr); }
+    .quiz-restart:hover { border-color: var(--orange); color: var(--orange); }
+    .quiz-progress { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-bottom: 1rem; letter-spacing: 0.1em; }
+
+    /* ── CUSTODY COMPARISON ── */
+    .custody-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .custody-col { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .custody-col.self { border-color: #2a7a2a; background: #f6fdf6; }
+    .custody-col.exchange { border-color: #b03030; background: #fff5f5; }
+    .custody-col-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .custody-col.self .custody-col-label { color: #2a7a2a; }
+    .custody-col.exchange .custody-col-label { color: #b03030; }
+    .custody-col h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .custody-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .custody-col li { font-size: 0.84rem; line-height: 1.5; }
+    .custody-col.self li::before { content: '✓ '; color: #2a7a2a; }
+    .custody-col.exchange li::before { content: '✗ '; color: #b03030; }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .pros-cons { grid-template-columns: 1fr; }
+      .custody-compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <p class="breadcrumb" style="margin-bottom:1.5rem;">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="aprender.html">Aprender Bitcoin</a><span>›</span>
+    Lección 03
+  </p>
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 03</span>
+    <span class="lesson-nivel-badge">● Intermedio</span>
+    <span class="lesson-tiempo">⏱ ~12 min lectura</span>
+  </div>
+
+  <h1 class="lesson-title">Wallets y llaves privadas</h1>
+  <p class="lesson-intro">Una wallet de Bitcoin no guarda bitcoin: guarda las llaves privadas que te permiten demostrar que eres el dueño de ciertos fondos en la blockchain. Entender esta diferencia es la base de la autocustodia — la habilidad más importante en Bitcoin. En esta lección explicamos cómo funcionan las llaves, qué tipos de wallets existen y qué significa realmente "tener" bitcoin.</p>
+
+  <!-- ── QUÉ ES UNA WALLET ── -->
+  <div class="lesson-section">
+    <h2>Una wallet no guarda bitcoin</h2>
+    <p>Los bitcoin no "viven" en tu wallet. Viven en la blockchain — en el registro público que todos los nodos de la red mantienen. Lo que sí guarda una wallet es tu <strong>llave privada</strong>: el número matemático que prueba que tienes derecho a gastar ciertos fondos.</p>
+
+    <div class="callout">
+      <p><strong>Analogía:</strong> tu wallet es como un llavero, no como una caja fuerte. El dinero está en el banco (la blockchain). El llavero (wallet) contiene la llave que abre tu cuenta. Si pierdes el llavero, el dinero sigue ahí — pero no puedes acceder. Si alguien roba el llavero, puede acceder en tu lugar.</p>
+    </div>
+
+    <!-- DIAGRAMA LLAVE → FIRMA → TRANSACCIÓN -->
+    <figure class="diagram-box">
+      <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <!-- Llave privada -->
+        <rect x="20" y="30" width="130" height="70" rx="6" fill="#14110F"/>
+        <text x="85" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#F2790B" letter-spacing="1">LLAVE PRIVADA</text>
+        <text x="85" y="74" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#aaa">5KJvs...Wk3p</text>
+        <text x="85" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#888">Solo tú la conoces</text>
+        <!-- Flecha -->
+        <path d="M150 65 L185 65" stroke="#F2790B" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Proceso firma -->
+        <rect x="185" y="30" width="130" height="70" rx="6" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="250" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#14110F" letter-spacing="1">FIRMA DIGITAL</text>
+        <text x="250" y="74" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B6760">ECDSA · prueba de</text>
+        <text x="250" y="86" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B6760">propiedad sin revelar</text>
+        <text x="250" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B6760">la llave privada</text>
+        <!-- Flecha -->
+        <path d="M315 65 L350 65" stroke="#F2790B" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Transacción -->
+        <rect x="350" y="30" width="130" height="70" rx="6" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="415" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#14110F" letter-spacing="1">TRANSACCIÓN</text>
+        <text x="415" y="74" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B6760">Enviada a la red</text>
+        <text x="415" y="86" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B6760">y confirmada en</text>
+        <text x="415" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B6760">la blockchain</text>
+        <!-- Flecha -->
+        <path d="M480 65 L510 65" stroke="#F2790B" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Red -->
+        <rect x="510" y="30" width="90" height="70" rx="6" fill="#F2790B"/>
+        <text x="555" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="white" letter-spacing="0.5">BLOCKCHAIN</text>
+        <text x="555" y="78" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)">Registro global</text>
+        <!-- Arrow marker -->
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6Z" fill="#F2790B"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>LA LLAVE PRIVADA FIRMA LA TRANSACCIÓN SIN REVELARSE — LA RED PUEDE VERIFICAR LA FIRMA CON LA LLAVE PÚBLICA</figcaption>
+    </figure>
+  </div>
+
+  <!-- ── LLAVES PÚBLICA Y PRIVADA ── -->
+  <div class="lesson-section">
+    <h2>Llave privada y llave pública</h2>
+    <p>Son un par matemáticamente relacionado. La llave privada es un número aleatorio enorme. A partir de ella se deriva la llave pública, y a partir de la llave pública se genera tu dirección Bitcoin.</p>
+
+    <table class="key-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Llave privada</th>
+          <th>Llave pública</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>¿Qué es?</td>
+          <td>Número aleatorio de 256 bits</td>
+          <td>Derivada matemáticamente de la privada</td>
+        </tr>
+        <tr>
+          <td>¿Quién la conoce?</td>
+          <td><span class="key-label-priv">Solo tú</span></td>
+          <td><span class="key-label-pub">Todo el mundo</span></td>
+        </tr>
+        <tr>
+          <td>¿Para qué sirve?</td>
+          <td>Firmar transacciones (gastar)</td>
+          <td>Verificar firmas, generar dirección</td>
+        </tr>
+        <tr>
+          <td>¿Es reversible?</td>
+          <td>—</td>
+          <td>No: no puedes obtener la privada a partir de la pública</td>
+        </tr>
+        <tr>
+          <td>¿Qué pasa si la pierdes?</td>
+          <td>Pierdes acceso permanentemente</td>
+          <td>Nada grave — es pública de todas formas</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <p><strong>Regla de oro:</strong> nunca compartas tu llave privada con nadie, bajo ningún motivo. Cualquier persona o servicio que te pida tu llave privada está intentando robarte. Una wallet legítima nunca te la pide.</p>
+    </div>
+  </div>
+
+  <!-- ── TIPOS DE WALLETS ── -->
+  <div class="lesson-section">
+    <h2>Tipos de wallets</h2>
+    <p>No todas las wallets ofrecen el mismo nivel de seguridad. La diferencia clave está en dónde se guarda la llave privada y si tiene conexión a internet.</p>
+
+    <!-- INTERACTIVE: WALLET TYPE TOGGLE -->
+    <div style="margin: 1.5rem 0;">
+      <div class="wallet-toggle">
+        <button class="wallet-tab active" onclick="showWallet('mobile')">📱 Móvil</button>
+        <button class="wallet-tab" onclick="showWallet('desktop')">💻 Desktop</button>
+        <button class="wallet-tab" onclick="showWallet('hardware')">🔒 Hardware</button>
+        <button class="wallet-tab" onclick="showWallet('paper')">📄 Papel</button>
+      </div>
+
+      <div class="wallet-panel active" id="panel-mobile">
+        <div class="wallet-card">
+          <p class="wallet-card-title">Wallet móvil</p>
+          <p class="wallet-card-sub">HOT WALLET · CONECTADA A INTERNET · Ejemplos: Phoenix, Muun, Blue Wallet</p>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--muted);">La llave privada se guarda en tu teléfono, cifrada. Es conveniente para pagos del día a día y Lightning Network, pero el teléfono tiene conexión a internet, lo que crea una superficie de ataque mayor.</p>
+          <div class="pros-cons">
+            <div class="pros">
+              <h5>Ventajas</h5>
+              <ul>
+                <li>Fácil de usar</li>
+                <li>Ideal para Lightning</li>
+                <li>Siempre disponible</li>
+                <li>Gratuita</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h5>Limitaciones</h5>
+              <ul>
+                <li>Conectada a internet</li>
+                <li>Si pierdes el teléfono sin backup, pierdes acceso</li>
+                <li>Vulnerable a malware</li>
+              </ul>
+            </div>
+          </div>
+          <div class="use-case"><strong>Recomendada para:</strong> montos pequeños, gastos diarios, pagos Lightning. No para tus ahorros principales.</div>
+        </div>
+      </div>
+
+      <div class="wallet-panel" id="panel-desktop">
+        <div class="wallet-card">
+          <p class="wallet-card-title">Wallet de escritorio</p>
+          <p class="wallet-card-sub">HOT WALLET · CONECTADA A INTERNET · Ejemplos: Sparrow, Electrum</p>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--muted);">La llave privada se guarda en tu ordenador. Suelen ofrecer más funciones avanzadas que las móviles: gestión de UTXOs, coinjoin, conexión a tu propio nodo. Pero el ordenador sigue estando conectado a internet.</p>
+          <div class="pros-cons">
+            <div class="pros">
+              <h5>Ventajas</h5>
+              <ul>
+                <li>Más funciones avanzadas</li>
+                <li>Control de UTXOs</li>
+                <li>Compatible con nodo propio</li>
+                <li>Gratuita</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h5>Limitaciones</h5>
+              <ul>
+                <li>Conectada a internet</li>
+                <li>Más compleja para principiantes</li>
+                <li>Vulnerable si el equipo se compromete</li>
+              </ul>
+            </div>
+          </div>
+          <div class="use-case"><strong>Recomendada para:</strong> usuarios intermedios que quieren más control. Ideal combinada con hardware wallet para firmar offline.</div>
+        </div>
+      </div>
+
+      <div class="wallet-panel" id="panel-hardware">
+        <div class="wallet-card">
+          <p class="wallet-card-title">Hardware wallet</p>
+          <p class="wallet-card-sub">COLD WALLET · OFFLINE · Ejemplos: Coldcard, Trezor, Ledger</p>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--muted);">Es un dispositivo físico dedicado que guarda las llaves privadas completamente offline. Las transacciones se firman dentro del dispositivo — la llave nunca toca un equipo conectado a internet. Es el estándar para guardar cantidades significativas de bitcoin.</p>
+          <div class="pros-cons">
+            <div class="pros">
+              <h5>Ventajas</h5>
+              <ul>
+                <li>Llave nunca toca internet</li>
+                <li>Resistente a malware</li>
+                <li>PIN + passphrase</li>
+                <li>Estándar de industria</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h5>Limitaciones</h5>
+              <ul>
+                <li>Coste ($50–$200)</li>
+                <li>Más pasos para enviar</li>
+                <li>Hay que proteger el seed físicamente</li>
+              </ul>
+            </div>
+          </div>
+          <div class="use-case"><strong>Recomendada para:</strong> cualquier cantidad que no te permitirías perder. La opción más segura para ahorros en Bitcoin.</div>
+        </div>
+      </div>
+
+      <div class="wallet-panel" id="panel-paper">
+        <div class="wallet-card">
+          <p class="wallet-card-title">Wallet en papel / metal</p>
+          <p class="wallet-card-sub">COLD STORAGE · COMPLETAMENTE OFFLINE</p>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--muted);">La llave privada y la dirección se imprimen o graban en papel o metal y se guardan físicamente. Extremadamente seguro contra ataques digitales, pero requiere cuidado especial para no perder o dañar el material.</p>
+          <div class="pros-cons">
+            <div class="pros">
+              <h5>Ventajas</h5>
+              <ul>
+                <li>Cero riesgo digital</li>
+                <li>Sin dispositivo que falle</li>
+                <li>Muy bajo coste</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h5>Limitaciones</h5>
+              <ul>
+                <li>Difícil de usar para enviar</li>
+                <li>Vulnerable a fuego / agua si no se protege</li>
+                <li>Requiere conocimiento técnico para hacerlo bien</li>
+              </ul>
+            </div>
+          </div>
+          <div class="use-case"><strong>Recomendada para:</strong> almacenamiento a muy largo plazo, legados, o como backup del seed phrase en metal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AUTOCUSTODIA VS EXCHANGE ── -->
+  <div class="lesson-section">
+    <h2>Autocustodia vs dejar bitcoin en un exchange</h2>
+    <p>"Not your keys, not your coins" no es un slogan: describe una realidad técnica. Si dejas tus bitcoin en un exchange, el exchange tiene las llaves privadas — tú tienes una promesa de que te las devuelven cuando quieras. Si el exchange quiebra, es hackeado, congela retiros o simplemente decide que no, no hay nada que puedas hacer.</p>
+
+    <div class="custody-compare">
+      <div class="custody-col self">
+        <p class="custody-col-label">Autocustodia ✓</p>
+        <h4>Tú controlas las llaves</h4>
+        <ul>
+          <li>Nadie puede confiscar tus fondos</li>
+          <li>Puedes enviar en cualquier momento</li>
+          <li>No dependes de ninguna empresa</li>
+          <li>No hay riesgo de contraparte</li>
+          <li>Funciona aunque el exchange cierre</li>
+        </ul>
+      </div>
+      <div class="custody-col exchange">
+        <p class="custody-col-label">Exchange ✗</p>
+        <h4>El exchange controla las llaves</h4>
+        <ul>
+          <li>Pueden congelar tu cuenta</li>
+          <li>Pueden quebrar (Mt. Gox, FTX...)</li>
+          <li>Pueden requerir verificación adicional</li>
+          <li>Estás expuesto a su riesgo operativo</li>
+          <li>No son bitcoin: son una IOU del exchange</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>Usar un exchange para <strong>comprar</strong> bitcoin es normal. El error es <strong>dejarlos ahí</strong>. El paso siguiente siempre debe ser retirarlos a tu propia wallet. Ese es el momento en que realmente tienes bitcoin.</p>
+    </div>
+
+    <!-- QUIZ INTERACTIVO: QUÉ WALLET TE CONVIENE -->
+    <div class="interactive-box">
+      <h4>Quiz: ¿Qué wallet se adapta a tu situación?</h4>
+      <p class="hint">Responde 3 preguntas y te diremos qué tipo de wallet encaja mejor con tu caso.</p>
+
+      <div id="quiz">
+        <div class="quiz-step active" id="q1">
+          <p class="quiz-progress">Pregunta 1 de 3</p>
+          <p class="quiz-question">¿Cuánto bitcoin quieres guardar?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(1,'small')">Una cantidad pequeña — para probar o gastos del día a día</button>
+            <button class="quiz-opt" onclick="answer(1,'medium')">Un monto que me importaría perder, pero no es todo mi ahorro</button>
+            <button class="quiz-opt" onclick="answer(1,'large')">Mis ahorros principales o una cantidad significativa</button>
+          </div>
+        </div>
+
+        <div class="quiz-step" id="q2">
+          <p class="quiz-progress">Pregunta 2 de 3</p>
+          <p class="quiz-question">¿Con qué frecuencia necesitas acceder a esos fondos?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(2,'frequent')">Con frecuencia — pago con bitcoin regularmente</button>
+            <button class="quiz-opt" onclick="answer(2,'occasional')">De vez en cuando — alguna transferencia puntual</button>
+            <button class="quiz-opt" onclick="answer(2,'rare')">Rara vez — son ahorros que no pienso tocar pronto</button>
+          </div>
+        </div>
+
+        <div class="quiz-step" id="q3">
+          <p class="quiz-progress">Pregunta 3 de 3</p>
+          <p class="quiz-question">¿Tienes experiencia técnica con Bitcoin?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(3,'beginner')">Soy principiante — prefiero algo simple</button>
+            <button class="quiz-opt" onclick="answer(3,'intermediate')">Tengo algo de experiencia y me defiendo</button>
+            <button class="quiz-opt" onclick="answer(3,'advanced')">Soy usuario avanzado, me gustan los detalles técnicos</button>
+          </div>
+        </div>
+
+        <div class="quiz-step" id="qresult">
+          <div class="quiz-result" id="quizResult"></div>
+          <button class="quiz-restart" onclick="restartQuiz()" style="margin-top:1rem;">↺ Empezar de nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RESUMEN ── -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>Una wallet guarda llaves privadas, no bitcoin. Los bitcoin siempre están en la blockchain.</li>
+      <li>La llave privada es tu único control sobre tus fondos — quien la tiene, tiene los bitcoin.</li>
+      <li>La llave pública se deriva de la privada y es pública: se usa para verificar firmas y generar direcciones.</li>
+      <li>Hot wallets (móvil, desktop) tienen conexión a internet — convenientes pero con mayor riesgo.</li>
+      <li>Cold wallets (hardware, papel) mantienen las llaves offline — el estándar para ahorros.</li>
+      <li>Dejar bitcoin en un exchange no es autocustodia: es confiar en que el exchange te los devuelva.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back" style="font-size:0.875rem;color:var(--muted);">
+      ← <a href="leccion-2.html">Lección 02: Blockchain y bloques</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="aprender.html#leccion-4">¿Qué es un UTXO? →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+// ── WALLET TYPE TOGGLE ──
+function showWallet(type) {
+  document.querySelectorAll('.wallet-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.wallet-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[onclick="showWallet('${type}')"]`).classList.add('active');
+  document.getElementById('panel-' + type).classList.add('active');
+}
+
+// ── QUIZ ──
+const answers = {};
+
+function answer(q, val) {
+  answers[q] = val;
+  document.getElementById('q' + q).classList.remove('active');
+  if (q < 3) {
+    document.getElementById('q' + (q + 1)).classList.add('active');
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const { 1: size, 2: freq, 3: exp } = answers;
+  let title, body, icon;
+
+  if (size === 'large' || freq === 'rare') {
+    title = 'Hardware wallet';
+    icon = '🔒';
+    body = 'Dado el monto o la frecuencia de uso, una hardware wallet (Coldcard, Trezor o Ledger) es lo más adecuado. Tus llaves permanecen offline y el riesgo de compromiso digital es mínimo. La inversión inicial vale la pena para ahorros serios en Bitcoin.';
+  } else if (size === 'small' || freq === 'frequent') {
+    title = 'Wallet móvil';
+    icon = '📱';
+    body = 'Para montos pequeños y uso frecuente, una wallet móvil como Phoenix o Blue Wallet es perfecta. Es conveniente para pagos del día a día y Lightning Network. Si en el futuro acumulas más, añade una hardware wallet para los ahorros.';
+  } else if (exp === 'advanced') {
+    title = 'Desktop wallet + Hardware wallet';
+    icon = '💻🔒';
+    body = 'Con experiencia técnica, la combinación ideal es una wallet de escritorio como Sparrow para la gestión avanzada (UTXOs, coinjoin) y una hardware wallet para firmar offline. Máximo control con máxima seguridad.';
+  } else {
+    title = 'Wallet móvil para empezar';
+    icon = '📱';
+    body = 'Empieza con una wallet móvil simple como Blue Wallet o Phoenix. Aprende el flujo de recibir y enviar. Cuando tengas más confianza y más fondos, da el paso a una hardware wallet para el almacenamiento serio.';
+  }
+
+  document.getElementById('quizResult').innerHTML = `
+    <h5>Tu recomendación</h5>
+    <p class="quiz-result-title">${icon} ${title}</p>
+    <p>${body}</p>
+  `;
+  document.getElementById('q3').classList.remove('active');
+  document.getElementById('qresult').classList.add('active');
+}
+
+function restartQuiz() {
+  answers[1] = answers[2] = answers[3] = null;
+  document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('q1').classList.add('active');
+}
+</script>
+</body>
+</html>

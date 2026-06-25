@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 02: Blockchain y bloques — TheRabbitHole</title>
+  <meta name="description" content="Aprende cómo funciona la blockchain de Bitcoin: bloques, hashes, Proof of Work e inmutabilidad."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── HASH DEMO ── */
+    .interactive-box { background: var(--white); border: 1.5px solid var(--orange); border-radius: var(--radius); padding: 1.75rem; margin: 2rem 0; }
+    .interactive-box h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .interactive-box p.hint { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.6; }
+    .hash-input { width: 100%; font-family: var(--font-mono); font-size: 0.9rem; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--black); outline: none; transition: border-color var(--tr); }
+    .hash-input:focus { border-color: var(--orange); }
+    .hash-output-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin: 1rem 0 0.4rem; }
+    .hash-output { font-family: var(--font-mono); font-size: 0.78rem; word-break: break-all; color: var(--orange); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1rem; min-height: 2.8rem; line-height: 1.6; transition: color 0.1s; }
+    .hash-output.changed { animation: flashHash 0.3s ease; }
+    @keyframes flashHash { 0% { color: var(--black); } 100% { color: var(--orange); } }
+
+    /* ── BLOCK CHAIN DEMO ── */
+    .chain-demo { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+    .block-demo { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; transition: border-color var(--tr); }
+    .block-demo.valid { border-color: #2a7a2a; }
+    .block-demo.invalid { border-color: #b03030; background: #fff5f5; }
+    .block-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+    .block-num { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .block-status { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.15rem 0.55rem; border-radius: 99px; }
+    .block-status.ok { background: #e6f4e6; color: #2a7a2a; }
+    .block-status.bad { background: #fde8e8; color: #b03030; }
+    .block-field { margin-bottom: 0.5rem; }
+    .block-field-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+    .block-field-val { font-family: var(--font-mono); font-size: 0.75rem; color: var(--black); word-break: break-all; }
+    .block-field-val.hash-val { color: var(--orange); }
+    .block-field-val.hash-bad { color: #b03030; }
+    .block-editable { width: 100%; font-family: var(--font-mono); font-size: 0.8rem; padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--black); outline: none; }
+    .block-editable:focus { border-color: var(--orange); }
+    .chain-arrow { text-align: center; font-size: 1.4rem; color: var(--muted); }
+    .chain-reset-btn { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.5rem 1.2rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg2); color: var(--muted); cursor: pointer; transition: all var(--tr); margin-top: 0.5rem; }
+    .chain-reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── MINING DEMO ── */
+    .mining-demo { background: var(--black); border-radius: var(--radius); padding: 1.75rem; margin: 1.5rem 0; color: var(--white); }
+    .mining-demo h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .mining-demo p.hint { font-size: 0.82rem; color: #aaa; margin-bottom: 1.2rem; line-height: 1.6; }
+    .mining-screen { font-family: var(--font-mono); font-size: 0.78rem; background: #0a0908; border-radius: 4px; padding: 1rem; min-height: 80px; margin-bottom: 1rem; overflow: hidden; }
+    .mining-line { margin-bottom: 0.3rem; }
+    .mining-line.found { color: var(--orange); font-weight: bold; }
+    .mining-line.trying { color: #555; }
+    .mining-controls { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .mining-btn { font-family: var(--font-mono); font-size: 0.8rem; padding: 0.55rem 1.3rem; border: 1.5px solid var(--orange); border-radius: var(--radius); background: transparent; color: var(--orange); cursor: pointer; transition: all var(--tr); }
+    .mining-btn:hover { background: var(--orange); color: var(--black); }
+    .mining-btn:disabled { opacity: 0.4; cursor: default; }
+    .mining-stat { font-family: var(--font-mono); font-size: 0.75rem; color: #aaa; }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+    @media (max-width: 600px) { .lesson-wrap { padding: 4rem 1.25rem 4rem; } }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <p class="breadcrumb" style="margin-bottom:1.5rem;">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="aprender.html">Aprender Bitcoin</a><span>›</span>
+    Lección 02
+  </p>
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 02</span>
+    <span class="lesson-nivel-badge">● Básico</span>
+    <span class="lesson-tiempo">⏱ ~12 min lectura</span>
+  </div>
+
+  <h1 class="lesson-title">Blockchain y bloques</h1>
+  <p class="lesson-intro">La blockchain es el registro público e inmutable donde se guardan todas las transacciones de Bitcoin. Pero ¿cómo funciona exactamente? En esta lección explicamos qué es un bloque, qué es un hash, cómo se encadenan los bloques y por qué modificar el historial es prácticamente imposible — y puedes comprobarlo tú mismo con los demos interactivos.</p>
+
+  <!-- ── QUÉ ES UN BLOQUE ── -->
+  <div class="lesson-section">
+    <h2>¿Qué es un bloque?</h2>
+    <p>Cada bloque es un paquete de transacciones. Cada 10 minutos aproximadamente, los mineros agrupan transacciones pendientes, las validan y las añaden a la cadena formando un nuevo bloque.</p>
+    <p>Un bloque contiene:</p>
+
+    <figure class="diagram-box">
+      <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <rect x="30" y="20" width="540" height="220" rx="8" fill="white" stroke="#DDDAD6" stroke-width="1.5"/>
+        <rect x="30" y="20" width="540" height="38" rx="8" fill="#14110F"/>
+        <rect x="30" y="42" width="540" height="16" rx="0" fill="#14110F"/>
+        <text x="300" y="44" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="white" letter-spacing="1">BLOQUE #850,000</text>
+        <!-- Campos -->
+        <text x="60" y="82" font-family="JetBrains Mono, monospace" font-size="9" fill="#F2790B" letter-spacing="1">HASH DEL BLOQUE ANTERIOR</text>
+        <text x="60" y="96" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">000000000000000000029c4f2b3a1e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2</text>
+        <line x1="50" y1="106" x2="550" y2="106" stroke="#EDECEA" stroke-width="1"/>
+        <text x="60" y="122" font-family="JetBrains Mono, monospace" font-size="9" fill="#F2790B" letter-spacing="1">TIMESTAMP</text>
+        <text x="60" y="136" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">2024-05-21 06:17:43 UTC</text>
+        <line x1="50" y1="146" x2="550" y2="146" stroke="#EDECEA" stroke-width="1"/>
+        <text x="60" y="162" font-family="JetBrains Mono, monospace" font-size="9" fill="#F2790B" letter-spacing="1">TRANSACCIONES (merkle root)</text>
+        <text x="60" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">3a4b5c · Alice → Bob 0.05 BTC · Carlos → María 0.12 BTC · +2,847 más</text>
+        <line x1="50" y1="186" x2="550" y2="186" stroke="#EDECEA" stroke-width="1"/>
+        <text x="60" y="202" font-family="JetBrains Mono, monospace" font-size="9" fill="#F2790B" letter-spacing="1">NONCE</text>
+        <text x="60" y="216" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">1,274,832,491</text>
+        <text x="60" y="232" font-family="JetBrains Mono, monospace" font-size="9" fill="#F2790B" letter-spacing="1">HASH DE ESTE BLOQUE</text>
+        <text x="200" y="232" font-family="JetBrains Mono, monospace" font-size="9" fill="#6B6760">00000000000000000002fa...</text>
+      </svg>
+      <figcaption>CONTENIDO SIMPLIFICADO DE UN BLOQUE REAL DE BITCOIN</figcaption>
+    </figure>
+
+    <p>El campo más importante es el <strong>hash del bloque anterior</strong>. Ese puntero es lo que forma la cadena — de ahí el nombre "blockchain".</p>
+  </div>
+
+  <!-- ── QUÉ ES UN HASH ── -->
+  <div class="lesson-section">
+    <h2>¿Qué es un hash?</h2>
+    <p>Un hash es el resultado de pasar cualquier texto por una función matemática que produce una "huella digital" de longitud fija. Bitcoin usa SHA-256, que siempre produce una cadena de 64 caracteres hexadecimales.</p>
+    <p>Tres propiedades fundamentales:</p>
+    <ul style="margin-left:1.5rem;line-height:2;margin-bottom:1rem;">
+      <li><strong>Determinista:</strong> el mismo texto siempre produce el mismo hash.</li>
+      <li><strong>Avalancha:</strong> cambiar un solo carácter produce un hash completamente diferente.</li>
+      <li><strong>Irreversible:</strong> no puedes reconstruir el texto original a partir del hash.</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Esto garantiza la integridad:</strong> si alguien modifica aunque sea un byte de una transacción, el hash cambia completamente. Cualquier nodo de la red detecta inmediatamente la manipulación.</p>
+    </div>
+
+    <!-- DEMO INTERACTIVO: HASH REAL SHA-256 -->
+    <div class="interactive-box">
+      <h4>Demo: SHA-256 en tiempo real</h4>
+      <p class="hint">Escribe cualquier texto y verás su hash SHA-256 real, calculado en tu navegador. Intenta cambiar una sola letra y observa cómo el hash cambia completamente.</p>
+      <input class="hash-input" type="text" id="hashInput" placeholder="Escribe algo aquí..." value="Bitcoin"/>
+      <p class="hash-output-label">SHA-256 →</p>
+      <div class="hash-output" id="hashOutput">calculando...</div>
+    </div>
+  </div>
+
+  <!-- ── LA CADENA ── -->
+  <div class="lesson-section">
+    <h2>Por qué los bloques forman una cadena</h2>
+    <p>Cada bloque contiene el hash del bloque anterior. Eso significa que si cambias cualquier dato en un bloque pasado, su hash cambia — y ese hash ya no coincide con el que el siguiente bloque espera. Eso invalida el siguiente bloque, y el siguiente, y así toda la cadena hasta el presente.</p>
+
+    <!-- DEMO INTERACTIVO: CADENA DE BLOQUES -->
+    <div class="interactive-box">
+      <h4>Demo: edita un bloque y rompe la cadena</h4>
+      <p class="hint">Modifica el campo "Datos" del Bloque 1 y observa cómo los bloques siguientes se vuelven inválidos. Así funciona la inmutabilidad.</p>
+
+      <div class="chain-demo" id="chainDemo">
+        <div class="block-demo" id="b1">
+          <div class="block-header-row">
+            <span class="block-num">Bloque #1</span>
+            <span class="block-status ok" id="b1status">✓ válido</span>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Hash anterior</p>
+            <p class="block-field-val">0000000000000000 (bloque génesis)</p>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Datos</p>
+            <input class="block-editable" id="b1data" value="Alice envía 1 BTC a Bob" oninput="updateChain()"/>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Hash de este bloque</p>
+            <p class="block-field-val hash-val" id="b1hash">—</p>
+          </div>
+        </div>
+
+        <div class="chain-arrow">↓</div>
+
+        <div class="block-demo" id="b2">
+          <div class="block-header-row">
+            <span class="block-num">Bloque #2</span>
+            <span class="block-status ok" id="b2status">✓ válido</span>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Hash anterior (apunta al Bloque #1)</p>
+            <p class="block-field-val" id="b2prev">—</p>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Datos</p>
+            <p class="block-field-val">Bob envía 0.5 BTC a Carlos</p>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Hash de este bloque</p>
+            <p class="block-field-val hash-val" id="b2hash">—</p>
+          </div>
+        </div>
+
+        <div class="chain-arrow">↓</div>
+
+        <div class="block-demo" id="b3">
+          <div class="block-header-row">
+            <span class="block-num">Bloque #3</span>
+            <span class="block-status ok" id="b3status">✓ válido</span>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Hash anterior (apunta al Bloque #2)</p>
+            <p class="block-field-val" id="b3prev">—</p>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Datos</p>
+            <p class="block-field-val">Carlos envía 0.2 BTC a María</p>
+          </div>
+          <div class="block-field">
+            <p class="block-field-label">Hash de este bloque</p>
+            <p class="block-field-val hash-val" id="b3hash">—</p>
+          </div>
+        </div>
+      </div>
+      <button class="chain-reset-btn" onclick="resetChain()">↺ Restaurar datos originales</button>
+    </div>
+
+    <p>En la red real de Bitcoin hay más de 850.000 bloques encadenados. Para modificar el bloque número 500.000, necesitarías recalcular el Proof of Work de ese bloque Y de todos los bloques posteriores — mientras la red sigue añadiendo bloques nuevos a velocidad normal. Es computacionalmente imposible.</p>
+  </div>
+
+  <!-- ── PROOF OF WORK ── -->
+  <div class="lesson-section">
+    <h2>Proof of Work: el mecanismo que hace costosa la trampa</h2>
+    <p>Para añadir un bloque a la cadena, los mineros tienen que encontrar un hash que empiece con un número determinado de ceros. No hay forma de predecir qué valor de <strong>nonce</strong> producirá ese hash — solo queda probarlo millones de veces hasta encontrarlo.</p>
+    <p>Esto consume energía real, y eso es intencional: si modificar el historial requiere rehacerlo todo con coste energético real, solo quien tenga más del 50% del poder de cómputo global podría intentarlo — y sería más rentable usar esa energía para minar honestamente.</p>
+
+    <!-- DEMO INTERACTIVO: MINING SIMULATION -->
+    <div class="mining-demo">
+      <h4>Demo: simulación de minería</h4>
+      <p class="hint">El minero busca un nonce que haga que el hash del bloque empiece con "0000". Cada intento es un hash diferente. Observa cuántos intentos hacen falta.</p>
+      <div class="mining-screen" id="miningScreen">
+        <div style="color:#555;font-size:0.78rem;">Pulsa "Iniciar minería" para ver la simulación...</div>
+      </div>
+      <div class="mining-controls">
+        <button class="mining-btn" id="mineBtn" onclick="startMining()">⛏ Iniciar minería</button>
+        <span class="mining-stat" id="miningStat"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INMUTABILIDAD ── -->
+  <div class="lesson-section">
+    <h2>¿Por qué es "inmutable"?</h2>
+    <p>La inmutabilidad de la blockchain no es magia — es consecuencia de la combinación de tres cosas:</p>
+
+    <figure class="diagram-box">
+      <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <rect x="20" y="20" width="160" height="80" rx="6" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="100" y="52" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#F2790B">HASHING</text>
+        <text x="100" y="68" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B6760">Cualquier cambio</text>
+        <text x="100" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B6760">rompe la cadena</text>
+        <text x="200" y="65" text-anchor="middle" font-size="18" fill="#DDDAD6">+</text>
+        <rect x="220" y="20" width="160" height="80" rx="6" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="300" y="52" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#F2790B">PROOF OF WORK</text>
+        <text x="300" y="68" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B6760">Rehacer cuesta</text>
+        <text x="300" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B6760">energía real</text>
+        <text x="400" y="65" text-anchor="middle" font-size="18" fill="#DDDAD6">+</text>
+        <rect x="420" y="20" width="160" height="80" rx="6" fill="#EDECEA" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="500" y="52" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#F2790B">RED DISTRIBUIDA</text>
+        <text x="500" y="68" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B6760">Miles de nodos</text>
+        <text x="500" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B6760">verifican todo</text>
+      </svg>
+      <figcaption>LOS TRES PILARES DE LA INMUTABILIDAD EN BITCOIN</figcaption>
+    </figure>
+
+    <p>Ninguno de los tres elementos por sí solo sería suficiente. Un hash sin Proof of Work sería fácil de recalcular. Un Proof of Work sin red distribuida podría ser controlado por un solo actor. La red sin hashing no detectaría manipulaciones. Los tres juntos hacen que la blockchain sea prácticamente inalterable.</p>
+  </div>
+
+  <!-- ── RESUMEN ── -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>Un bloque es un conjunto de transacciones que incluye el hash del bloque anterior, formando una cadena.</li>
+      <li>SHA-256 produce una huella digital de cualquier dato — cambiar un byte produce un hash completamente diferente.</li>
+      <li>Modificar un bloque pasado invalida todos los bloques siguientes: es detectable instantáneamente.</li>
+      <li>El Proof of Work hace que rehacer el historial sea costoso en energía real, no solo computación.</li>
+      <li>Miles de nodos verifican la cadena de forma independiente — no hay un punto central de confianza.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back" style="font-size:0.875rem;color:var(--muted);">
+      ← <a href="leccion-1.html">Lección 01: ¿Qué es Bitcoin?</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="leccion-3.html">Wallets y llaves privadas →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+// ── SHA-256 HASH DEMO ──
+async function sha256(text) {
+  const data = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+const hashInput = document.getElementById('hashInput');
+const hashOutput = document.getElementById('hashOutput');
+
+async function updateHash() {
+  const h = await sha256(hashInput.value || '');
+  hashOutput.textContent = h || '(vacío)';
+  hashOutput.classList.remove('changed');
+  void hashOutput.offsetWidth;
+  hashOutput.classList.add('changed');
+}
+hashInput.addEventListener('input', updateHash);
+updateHash();
+
+// ── BLOCKCHAIN DEMO ──
+const originalData = 'Alice envía 1 BTC a Bob';
+let chainHashes = ['', '', ''];
+
+async function hashBlock(prev, data) {
+  return (await sha256(prev + data)).slice(0, 40);
+}
+
+async function updateChain() {
+  const d1 = document.getElementById('b1data').value;
+  const d2 = 'Bob envía 0.5 BTC a Carlos';
+  const d3 = 'Carlos envía 0.2 BTC a María';
+
+  const h1 = await hashBlock('0000000000000000', d1);
+  const h2 = await hashBlock(h1, d2);
+  const h3 = await hashBlock(h2, d3);
+
+  chainHashes = [h1, h2, h3];
+
+  document.getElementById('b1hash').textContent = h1;
+  document.getElementById('b2prev').textContent = h1;
+  document.getElementById('b2hash').textContent = h2;
+  document.getElementById('b3prev').textContent = h2;
+  document.getElementById('b3hash').textContent = h3;
+
+  const isModified = d1 !== originalData;
+
+  // Block 1 always valid (genesis prev is fixed)
+  setBlockState('b1', true);
+  // Block 2 and 3 are "invalid" if block 1 was tampered
+  setBlockState('b2', !isModified);
+  setBlockState('b3', !isModified);
+
+  // Change hash color
+  document.getElementById('b1hash').className = 'block-field-val ' + (isModified ? 'hash-bad' : 'hash-val');
+  document.getElementById('b2prev').className = 'block-field-val ' + (isModified ? 'hash-bad' : '');
+}
+
+function setBlockState(id, valid) {
+  const el = document.getElementById(id);
+  const st = document.getElementById(id + 'status');
+  el.className = 'block-demo ' + (valid ? 'valid' : 'invalid');
+  st.className = 'block-status ' + (valid ? 'ok' : 'bad');
+  st.textContent = valid ? '✓ válido' : '✗ inválido';
+}
+
+function resetChain() {
+  document.getElementById('b1data').value = originalData;
+  updateChain();
+}
+
+updateChain();
+
+// ── MINING SIMULATION ──
+let miningActive = false;
+
+async function startMining() {
+  if (miningActive) return;
+  miningActive = true;
+  const btn = document.getElementById('mineBtn');
+  const screen = document.getElementById('miningScreen');
+  const stat = document.getElementById('miningStat');
+  btn.disabled = true;
+  btn.textContent = '⛏ Minando...';
+  screen.innerHTML = '';
+  stat.textContent = '';
+
+  const blockData = 'Bloque demo · Datos: Alice→Bob 1 BTC';
+  let nonce = 0;
+  let found = false;
+  const target = '0000';
+
+  function addLine(text, cls) {
+    const d = document.createElement('div');
+    d.className = 'mining-line ' + (cls || '');
+    d.textContent = text;
+    screen.appendChild(d);
+    // Keep only last 6 lines visible
+    while (screen.children.length > 6) screen.removeChild(screen.firstChild);
+  }
+
+  const startTime = Date.now();
+
+  async function mine() {
+    const batchSize = 50;
+    for (let i = 0; i < batchSize; i++) {
+      const h = await sha256(blockData + nonce);
+      if (h.startsWith(target)) {
+        addLine(`nonce=${nonce} → ${h}`, 'found');
+        const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+        stat.textContent = `✓ Encontrado en ${nonce.toLocaleString()} intentos · ${elapsed}s`;
+        found = true;
+        btn.disabled = false;
+        btn.textContent = '⛏ Minar de nuevo';
+        miningActive = false;
+        return;
+      }
+      if (nonce % 200 === 0) {
+        addLine(`nonce=${nonce} → ${h.slice(0,20)}...`, 'trying');
+      }
+      nonce++;
+    }
+    if (!found) requestAnimationFrame(mine);
+  }
+
+  mine();
+}
+</script>
+</body>
+</html>
