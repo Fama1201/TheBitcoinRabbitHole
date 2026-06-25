@@ -48,9 +48,12 @@ nav {
 }
 
 .nav-logo {
-  display: flex; align-items: center;
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-display);
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--black); letter-spacing: -0.01em;
 }
-.nav-logo img { height: 44px; width: auto; flex-shrink: 0; }
+.nav-logo svg { width: 32px; height: 32px; flex-shrink: 0; }
 
 .nav-links { display: flex; gap: 0; list-style: none; }
 .nav-links a {
@@ -173,7 +176,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 0; }
   line-height: 1.75; max-width: 480px; margin-bottom: 2.5rem;
 }
 .hero-actions { display: flex; gap: 0.875rem; flex-wrap: wrap; }
-.hero-illustration svg { width: 100%; height: auto; }
+.hero-illustration svg, .hero-illustration img { width: 100%; height: auto; }
 
 /* ── SOBRE preview (index) ── */
 .sobre { background: var(--white); }
@@ -694,6 +697,35 @@ textarea.form-input { resize: vertical; min-height: 90px; }
   margin-left: auto; margin-right: auto; line-height: 1.75;
 }
 
+/* ── CONTACTO ── */
+.contacto { background: var(--white); }
+.contacto-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1.25rem; margin-top: 2.5rem;
+}
+.contacto-card {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem;
+  transition: border-color var(--tr);
+}
+a.contacto-card:hover { border-color: var(--orange); }
+.contacto-tipo {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  letter-spacing: 0.15em; color: var(--orange); text-transform: uppercase;
+}
+.contacto-valor {
+  font-family: var(--font-display); font-size: 1.05rem;
+  font-weight: 700; color: var(--black);
+}
+.contacto-pending { opacity: 0.45; }
+
+/* ── NAV HAMBURGER ── */
+.nav-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 0.4rem; color: var(--black); font-size: 1.3rem; line-height: 1;
+}
+
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
@@ -737,7 +769,21 @@ footer {
 
 @media (max-width: 600px) {
   nav { padding: 0 1.25rem; }
-  .nav-links { display: none; }
+  .nav-links {
+    display: none;
+    flex-direction: column; align-items: flex-start;
+    position: fixed; top: 60px; left: 0; right: 0;
+    background: rgba(245,244,242,0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem 1.25rem;
+    z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a { padding: 0.75rem 0; border-bottom: 1px solid var(--border); display: block; }
+  .nav-donate { display: none; }
+  .nav-toggle { display: flex; }
   section { padding: 3.5rem 1.25rem; }
   .page-header { padding: 6rem 1.25rem 3rem; }
   .lecciones-grid { grid-template-columns: 1fr; }
@@ -745,5 +791,9 @@ footer {
   .tiendas-grid-full { grid-template-columns: 1fr; }
   .educadores-grid { grid-template-columns: 1fr 1fr; }
   .educadores-full-grid { grid-template-columns: 1fr; }
+  .contacto-grid { grid-template-columns: 1fr; }
   .hero { padding: 7rem 1.25rem 4rem; }
+  .hero-illustration { max-width: 260px; margin: 0 auto; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .footer-links { flex-wrap: wrap; gap: 0.75rem; }
 }

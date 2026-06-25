@@ -2,9 +2,6 @@
   <title>TheRabbitHole logo — light</title>
   <desc>Conejo asomándose desde una madriguera oscura</desc>
 
-  <!-- Fondo blanco -->
-  <rect width="680" height="520" fill="#FFFFFF"/>
-
   <!-- HOYO -->
   <ellipse cx="340" cy="310" rx="110" ry="32" fill="#14110F"/>
 

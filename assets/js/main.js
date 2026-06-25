@@ -1,3 +1,8 @@
+// Mobile nav toggle
+function toggleNav() {
+  document.querySelector('.nav-links').classList.toggle('open');
+}
+
 // Copy Bitcoin address to clipboard
 function copiar() {
   const addr = document.getElementById('btc-addr').textContent.trim();
