@@ -85,6 +85,29 @@
       .tienda-contact-grid { grid-template-columns: 1fr; }
       .tienda-expand-header { gap: 0.9rem; }
     }
+
+    /* ── LINK CARD (goes to dedicated page) ── */
+    .tienda-card-link {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem; text-decoration: none; color: inherit;
+      transition: border-color var(--tr), box-shadow var(--tr);
+    }
+    .tienda-card-link:hover { border-color: var(--orange); box-shadow: 0 4px 20px rgba(242,121,11,0.10); }
+    .tienda-link-logo {
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 10px;
+      overflow: hidden; background: var(--black);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tienda-link-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .tienda-link-body { flex: 1; min-width: 0; }
+    .tienda-link-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .tienda-link-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; }
+    .tienda-link-loc { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; margin-top: 0.15rem; }
+    .tienda-link-arrow { font-size: 1.1rem; color: var(--orange); flex-shrink: 0; transition: transform var(--tr); }
+    .tienda-card-link:hover .tienda-link-arrow { transform: translateX(4px); }
+    .tienda-link-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    @media (max-width: 500px) { .tienda-card-link { flex-direction: column; } .tienda-link-logo { width: 56px; height: 56px; } }
   </style>
 </head>
 <body>
@@ -151,65 +174,32 @@
       <div class="tiendas-grid-full">
 
         <!-- SMART-EVO -->
-        <div class="tienda-card-expand" onclick="toggleTienda(this)">
-          <div class="tienda-expand-header">
-            <div class="tienda-logo-wrap">
-              <img src="assets/img/smart-evo-logo.png" alt="Smart-Evo"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-              <span class="tienda-logo-initials" style="display:none">SE</span>
-            </div>
-            <div class="tienda-expand-info">
-              <p class="tienda-expand-name">Smart-Evo Bitcoin Store</p>
-              <p class="tienda-expand-sub">Tecnología · Quito, Ecuador</p>
-              <div class="tienda-expand-metodos">
-                <span class="tienda-metodo">On-chain</span>
-                <span class="tienda-metodo">Lightning</span>
-              </div>
-            </div>
-            <span class="tienda-expand-chevron">›</span>
+        <a href="smart-evo.html" class="tienda-card-link">
+          <div class="tienda-link-logo">
+            <img src="assets/img/smart-evo-logo.png" alt="Smart-Evo"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <span class="tienda-logo-initials" style="display:none">SE</span>
           </div>
-
-          <div class="tienda-expand-body">
-            <hr class="tienda-expand-divider"/>
-
-            <div class="dist-oficial-block">
-              <p class="dist-oficial-label">★ Distribuidor oficial en Ecuador</p>
-              <div class="dist-badges">
-                <span class="dist-badge">Blockstream</span>
-                <span class="dist-badge">BitBox</span>
-                <span class="dist-badge">Coinkite</span>
+          <div class="tienda-link-body">
+            <div class="tienda-link-top">
+              <div>
+                <h4 class="tienda-link-name">Smart-Evo Bitcoin Store</h4>
+                <p class="tienda-link-loc">Tecnología · Quito, Ecuador</p>
               </div>
+              <span class="tienda-link-arrow">→</span>
             </div>
-
-            <p class="tienda-desc">Empresa ecuatoriana de soluciones tecnológicas con una línea especializada en Bitcoin y autocustodia. Venden hardware wallets (Jade, BitBox02, Coldcard), respaldos de seed en metal, equipos Bitaxe para minería doméstica y accesorios. También ofrecen equipos, componentes, periféricos, networking y servicio técnico. Asesoran a clientes de forma personalizada en la compra de hardware de autocustodia como distribuidores oficiales de Blockstream, BitBox y Coinkite en Ecuador.</p>
-
-            <div class="tienda-contact-grid">
-              <div class="tienda-contact-item">
-                <p class="tienda-contact-label">Web</p>
-                <p class="tienda-contact-val"><a href="https://www.smartevoec.com" target="_blank" rel="noopener">smartevoec.com</a></p>
-              </div>
-              <div class="tienda-contact-item">
-                <p class="tienda-contact-label">Teléfono / WhatsApp</p>
-                <p class="tienda-contact-val"><a href="tel:+593997752555">+593 99 775 2555</a></p>
-              </div>
-              <div class="tienda-contact-item">
-                <p class="tienda-contact-label">Correo</p>
-                <p class="tienda-contact-val"><a href="mailto:ventas@smartevoec.com">ventas@smartevoec.com</a></p>
-              </div>
-              <div class="tienda-contact-item">
-                <p class="tienda-contact-label">Dirección</p>
-                <p class="tienda-contact-val">Carcelen Bajo N92 e3-51 y E3A, Quito</p>
-              </div>
+            <p class="tienda-link-desc">Distribuidores oficiales de Blockstream, BitBox y Coinkite en Ecuador. Hardware wallets, Bitaxe, respaldos en metal y asesoría personalizada en autocustodia.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+              <span class="dist-badge">★ Blockstream</span>
+              <span class="dist-badge">★ BitBox</span>
+              <span class="dist-badge">★ Coinkite</span>
             </div>
-
-            <div class="tienda-expand-actions">
-              <a href="https://www.smartevoec.com" target="_blank" rel="noopener" class="tienda-action-btn primary" onclick="event.stopPropagation()">↗ Visitar web</a>
-              <a href="tel:+593997752555" class="tienda-action-btn" onclick="event.stopPropagation()">📞 Llamar</a>
-              <a href="https://maps.app.goo.gl/tSYmbKUrGFAsNLLq9" target="_blank" rel="noopener" class="tienda-action-btn" onclick="event.stopPropagation()">📍 Ver en mapa</a>
-              <a href="mailto:ventas@smartevoec.com" class="tienda-action-btn" onclick="event.stopPropagation()">✉ Email</a>
+            <div class="tienda-metodos" style="margin-top:0.75rem;">
+              <span class="tienda-metodo">On-chain</span>
+              <span class="tienda-metodo">Lightning</span>
             </div>
           </div>
-        </div>
+        </a>
 
       </div>
     </div>
