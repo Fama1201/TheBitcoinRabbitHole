@@ -9,6 +9,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .coming-btn {
+      font-family: var(--font-mono); font-size: 0.82rem; font-weight: 600;
+      padding: 0.8rem 1.75rem; border-radius: var(--radius);
+      border: 1.5px solid #333; color: #666;
+      text-decoration: none; white-space: nowrap;
+      transition: border-color 0.18s ease, color 0.18s ease;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .coming-btn:hover { border-color: var(--orange); color: var(--orange); }
+  </style>
 </head>
 <body>
 
@@ -41,6 +52,7 @@
     <li><a href="sobre.html">Sobre nosotros</a></li>
     <li><a href="aprender.html">Aprender Bitcoin</a></li>
     <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
     <li><a href="tiendas.html">Tiendas BTC</a></li>
     <li><a href="donaciones.html">Donaciones</a></li>
     <li><a href="networking.html">Networking</a></li>
@@ -134,37 +146,37 @@
       <a href="aprender.html" class="btn-outline" style="font-size:0.85rem;padding:0.55rem 1.1rem;">Ver todas las lecciones →</a>
     </div>
     <div class="lecciones-grid">
-      <a href="aprender.html#leccion-1" class="leccion-card">
+      <a href="leccion-1.html" class="leccion-card">
         <p class="leccion-num">LECCIÓN 01</p>
         <h3>¿Qué es Bitcoin?</h3>
         <p>Qué es, quién lo creó, cómo funciona y por qué es diferente al dinero tradicional.</p>
         <span class="leccion-nivel">Básico</span>
       </a>
-      <a href="aprender.html#leccion-2" class="leccion-card">
+      <a href="leccion-2.html" class="leccion-card">
         <p class="leccion-num">LECCIÓN 02</p>
         <h3>Blockchain y bloques</h3>
         <p>Cómo se registran las transacciones, qué es un bloque y cómo se encadenan.</p>
         <span class="leccion-nivel">Básico</span>
       </a>
-      <a href="aprender.html#leccion-3" class="leccion-card">
+      <a href="leccion-3.html" class="leccion-card">
         <p class="leccion-num">LECCIÓN 03</p>
         <h3>Wallets y llaves privadas</h3>
         <p>La diferencia entre custodia propia y dejar tus bitcoin en un exchange.</p>
         <span class="leccion-nivel">Intermedio</span>
       </a>
-      <a href="aprender.html#leccion-4" class="leccion-card">
+      <a href="leccion-4.html" class="leccion-card">
         <p class="leccion-num">LECCIÓN 04</p>
         <h3>¿Qué es un UTXO?</h3>
         <p>Cómo maneja Bitcoin las transacciones internamente. Diferente a como funciona una cuenta bancaria.</p>
         <span class="leccion-nivel">Intermedio</span>
       </a>
-      <a href="aprender.html#leccion-5" class="leccion-card">
+      <a href="leccion-5.html" class="leccion-card">
         <p class="leccion-num">LECCIÓN 05</p>
         <h3>Seed phrase y respaldo</h3>
         <p>Qué son las 12 o 24 palabras, cómo protegerlas y qué pasa si las pierdes.</p>
         <span class="leccion-nivel">Intermedio</span>
       </a>
-      <a href="aprender.html#leccion-6" class="leccion-card">
+      <a href="leccion-6.html" class="leccion-card">
         <p class="leccion-num">LECCIÓN 06</p>
         <h3>Cómo comprar Bitcoin</h3>
         <p>Exchanges, P2P, KYC y non-KYC. Cómo adquirir bitcoin y retirarlo a tu propia wallet.</p>
@@ -242,8 +254,27 @@
         <h2 class="section-title" style="color:var(--white);margin-bottom:1rem;">Networking</h2>
         <p style="color:#888;line-height:1.8;max-width:520px;">Los bitcoiners estamos regados por todo el mundo, pero somos más de los que pensamos. Conoce gente con la que puedas hablar sobre Bitcoin, compartir ideas, proyectos y visiones, y hacer la comunidad más fuerte y grande.</p>
       </div>
-      <a href="networking.html" style="font-family:var(--font-mono);font-size:0.82rem;font-weight:600;padding:0.8rem 1.75rem;border-radius:var(--radius);border:1.5px solid #333;color:#666;text-decoration:none;white-space:nowrap;transition:all 0.18s ease;display:inline-flex;align-items:center;gap:0.5rem;" onmouseover="this.style.borderColor='#F2790B';this.style.color='#F2790B'" onmouseout="this.style.borderColor='#333';this.style.color='#666'">
-        <span style="width:7px;height:7px;border-radius:50%;background:var(--orange);animation:none;display:inline-block;"></span>
+      <a href="networking.html" class="coming-btn">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block;"></span>
+        En construcción
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ── LIBROS preview ── -->
+<section style="background:var(--bg2);padding:4rem 0;">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;">
+      <div style="flex:1;min-width:240px;">
+        <p class="section-label" style="color:var(--orange);">Próximamente</p>
+        <h2 class="section-title" style="margin-bottom:1rem;">Libros sobre Bitcoin</h2>
+        <p style="color:var(--muted);line-height:1.8;max-width:520px;">Una selección curada de los mejores libros para entender Bitcoin: economía austriaca, teoría monetaria, criptografía y soberanía financiera. Para cada nivel, desde principiante hasta avanzado.</p>
+      </div>
+      <a href="libros.html" class="coming-btn">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block;"></span>
         En construcción
       </a>
     </div>
@@ -291,10 +322,10 @@
     <h2 class="section-title">Habla conmigo</h2>
     <p class="section-sub">Cualquier pregunta sobre Bitcoin, el proyecto o colaboraciones.</p>
     <div class="contacto-grid">
-      <a href="tel:+420734654911" class="contacto-card">
+      <span class="contacto-card contacto-pending">
         <span class="contacto-tipo">Teléfono</span>
-        <span class="contacto-valor">+420 734 654 911</span>
-      </a>
+        <span class="contacto-valor">Próximamente</span>
+      </span>
       <span class="contacto-card contacto-pending">
         <span class="contacto-tipo">Correo</span>
         <span class="contacto-valor">Próximamente</span>
@@ -318,6 +349,7 @@
       <li><a href="sobre.html">Sobre nosotros</a></li>
       <li><a href="aprender.html">Aprender</a></li>
       <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="libros.html">Libros</a></li>
       <li><a href="tiendas.html">Tiendas BTC</a></li>
       <li><a href="donaciones.html">Donaciones</a></li>
       <li><a href="networking.html">Networking</a></li>
