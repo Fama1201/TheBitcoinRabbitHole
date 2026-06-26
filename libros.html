@@ -10,147 +10,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/style.css"/>
   <style>
-    /* ── LIBRARY HERO ── */
-    .lib-hero {
-      background: var(--black); padding: 6rem 2.5rem 3.5rem;
-      border-bottom: 1px solid #222;
-    }
+    .lib-hero { background: var(--black); padding: 6rem 2.5rem 3.5rem; border-bottom: 1px solid #222; }
     .lib-hero-inner { max-width: var(--max-w); margin: 0 auto; }
-    .lib-hero-top {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem;
-    }
-    .lib-hero-label {
-      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem;
-    }
-    .lib-hero-title {
-      font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 900; color: var(--white); line-height: 1.05; margin: 0;
-    }
-    .lib-hero-count {
-      font-family: var(--font-mono); font-size: 0.78rem; color: #555;
-      white-space: nowrap; padding-bottom: 0.4rem;
-    }
+    .lib-hero-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .lib-hero-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+    .lib-hero-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; color: var(--white); line-height: 1.05; margin: 0; }
+    .lib-hero-count { font-family: var(--font-mono); font-size: 0.78rem; color: #555; white-space: nowrap; padding-bottom: 0.4rem; }
 
-    /* ── SEARCH ── */
     .lib-search-wrap { position: relative; max-width: 520px; }
-    .lib-search {
-      width: 100%; padding: 0.85rem 1.25rem 0.85rem 2.75rem;
-      background: #1a1512; border: 1.5px solid #333; border-radius: var(--radius);
-      font-family: var(--font-mono); font-size: 0.85rem; color: var(--white);
-      outline: none; transition: border-color 0.2s ease; box-sizing: border-box;
-    }
+    .lib-search { width: 100%; padding: 0.85rem 1.25rem 0.85rem 2.75rem; background: #1a1512; border: 1.5px solid #333; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.85rem; color: var(--white); outline: none; transition: border-color 0.2s ease; box-sizing: border-box; }
     .lib-search::placeholder { color: #555; }
     .lib-search:focus { border-color: var(--orange); }
-    .lib-search-icon {
-      position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
-      font-size: 1rem; color: #555; pointer-events: none;
-    }
+    .lib-search-icon { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #555; pointer-events: none; }
 
-    /* ── FILTERS ── */
-    .lib-filters {
-      max-width: var(--max-w); margin: 2rem auto 0; padding: 0 2.5rem;
-      display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
-    }
-    .lib-filter-btn {
-      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
-      padding: 0.4rem 1rem; border-radius: 99px;
-      border: 1px solid #333; background: transparent; color: #666;
-      cursor: pointer; transition: all 0.15s ease; letter-spacing: 0.05em;
-    }
+    .lib-filters { max-width: var(--max-w); margin: 2rem auto 0; padding: 0 2.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .lib-filter-btn { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; padding: 0.4rem 1rem; border-radius: 99px; border: 1px solid #333; background: transparent; color: #666; cursor: pointer; transition: all 0.15s ease; letter-spacing: 0.05em; }
     .lib-filter-btn:hover { border-color: var(--orange); color: var(--orange); }
     .lib-filter-btn.active { background: var(--orange); border-color: var(--orange); color: var(--white); }
 
-    /* ── GRID ── */
     .lib-grid-wrap { max-width: var(--max-w); margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
-    .lib-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1.75rem 1.25rem;
-    }
+    .lib-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.75rem 1.25rem; }
     .book-card { display: flex; flex-direction: column; }
 
-    /* ── BOOK COVER ── */
-    .book-cover-link {
-      text-decoration: none; color: inherit;
-      display: flex; flex-direction: column; flex: 1;
-    }
-    .book-cover {
-      aspect-ratio: 2 / 3;
-      background: #14110F;
-      border-radius: 2px 5px 5px 2px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: -5px 0 10px rgba(0,0,0,0.5), 4px 4px 18px rgba(0,0,0,0.35);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      margin-bottom: 0.85rem;
-      position: relative;
-    }
-    .book-cover-link:hover .book-cover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: -5px 0 14px rgba(0,0,0,0.6), 6px 10px 28px rgba(0,0,0,0.5);
-    }
-    .book-spine {
-      position: absolute; left: 0; top: 0; bottom: 0; width: 10px;
-      background: var(--bk-color);
-    }
-    .book-cover-inner {
-      flex: 1; padding: 1.25rem 1rem 1rem 1.5rem;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .bk-tag {
-      font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--bk-color); line-height: 1.6;
-    }
-    .bk-cover-title {
-      font-family: var(--font-display); font-size: 0.9rem; font-weight: 900;
-      color: var(--white); line-height: 1.2; margin: 0.6rem 0 0.3rem;
-    }
-    .bk-cover-author {
-      font-family: var(--font-mono); font-size: 0.58rem;
-      color: rgba(255,255,255,0.38); letter-spacing: 0.04em; line-height: 1.4;
-    }
-    .bk-cover-year {
-      font-family: var(--font-mono); font-size: 0.58rem;
-      color: var(--bk-color); opacity: 0.7; margin-top: 0.75rem;
-    }
+    .book-cover-link { text-decoration: none; color: inherit; display: flex; flex-direction: column; flex: 1; }
+    .book-cover { aspect-ratio: 2 / 3; background: #14110F; border-radius: 2px 5px 5px 2px; overflow: hidden; display: flex; flex-direction: column; box-shadow: -5px 0 10px rgba(0,0,0,0.5), 4px 4px 18px rgba(0,0,0,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; margin-bottom: 0.85rem; position: relative; }
+    .book-cover-link:hover .book-cover { transform: translateY(-5px) scale(1.02); box-shadow: -5px 0 14px rgba(0,0,0,0.6), 6px 10px 28px rgba(0,0,0,0.5); }
+    .book-spine { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: var(--bk-color); }
+    .book-cover-inner { flex: 1; padding: 1.25rem 1rem 1rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .bk-tag { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bk-color); line-height: 1.6; }
+    .bk-cover-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 900; color: var(--white); line-height: 1.2; margin: 0.6rem 0 0.3rem; }
+    .bk-cover-author { font-family: var(--font-mono); font-size: 0.58rem; color: rgba(255,255,255,0.38); letter-spacing: 0.04em; line-height: 1.4; }
+    .bk-cover-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--bk-color); opacity: 0.7; margin-top: 0.75rem; }
 
-    /* ── BOOK META ── */
     .bk-meta { padding: 0 0.1rem; }
-    .bk-meta-title {
-      font-family: var(--font-display); font-size: 0.88rem; font-weight: 700;
-      color: var(--black); line-height: 1.3; margin-bottom: 0.15rem;
-    }
-    .bk-meta-author {
-      font-family: var(--font-mono); font-size: 0.68rem;
-      color: var(--muted); margin-bottom: 0.5rem;
-    }
+    .bk-meta-title { font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; color: var(--black); line-height: 1.3; margin-bottom: 0.15rem; }
+    .bk-meta-author { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-bottom: 0.5rem; }
     .bk-meta-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.55rem; }
-    .bk-meta-tag {
-      font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em;
-      padding: 0.18rem 0.5rem; border-radius: 99px;
-      border: 1px solid var(--border); color: var(--muted); background: var(--bg2);
-    }
-    .bk-dl {
-      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
-      color: var(--orange); display: inline-flex; align-items: center; gap: 0.3rem;
-      transition: color 0.15s ease;
-    }
+    .bk-meta-tag { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; padding: 0.18rem 0.5rem; border-radius: 99px; border: 1px solid var(--border); color: var(--muted); background: var(--bg2); }
+    .bk-dl { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; color: var(--orange); display: inline-flex; align-items: center; gap: 0.3rem; transition: color 0.15s ease; }
     .book-cover-link:hover .bk-dl { color: #d4600a; }
 
-    /* ── EMPTY STATE ── */
-    .lib-empty {
-      display: none; grid-column: 1/-1; text-align: center;
-      padding: 4rem 2rem; color: var(--muted);
-    }
-    .lib-empty h3 {
-      font-family: var(--font-display); font-size: 1.2rem;
-      margin-bottom: 0.5rem; color: var(--black);
-    }
+    .lib-empty { display: none; grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--muted); }
+    .lib-empty h3 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--black); }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 1100px) { .lib-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 860px)  { .lib-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 580px)  {
@@ -163,7 +65,6 @@
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav>
   <a href="index.html" class="nav-logo">
     <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -201,7 +102,6 @@
   <a href="donaciones.html" class="nav-donate">Apoyar →</a>
 </nav>
 
-<!-- ── HERO ── -->
 <div class="lib-hero">
   <div class="lib-hero-inner">
     <div class="lib-hero-top">
@@ -212,435 +112,165 @@
       <p class="lib-hero-count"><span id="results-count">20</span> libros disponibles</p>
     </div>
     <div class="lib-search-wrap">
-      <span class="lib-search-icon">⌕</span>
-      <input
-        class="lib-search"
-        id="book-search"
-        type="search"
-        placeholder="Buscar por título o autor..."
-        oninput="searchBooks()"
-        autocomplete="off"
-      />
+      <span class="lib-search-icon">&#9906;</span>
+      <input class="lib-search" id="book-search" type="search" placeholder="Buscar por título o autor..." oninput="searchBooks()" autocomplete="off"/>
     </div>
   </div>
 </div>
 
-<!-- ── FILTERS ── -->
 <div class="lib-filters">
   <button class="lib-filter-btn active" onclick="filterTag('all',this)">Todos</button>
   <button class="lib-filter-btn" onclick="filterTag('bitcoin',this)">Bitcoin</button>
-  <button class="lib-filter-btn" onclick="filterTag('economía',this)">Economía</button>
-  <button class="lib-filter-btn" onclick="filterTag('filosofía',this)">Filosofía</button>
-  <button class="lib-filter-btn" onclick="filterTag('técnico',this)">Técnico</button>
+  <button class="lib-filter-btn" onclick="filterTag('economia',this)">Economía</button>
+  <button class="lib-filter-btn" onclick="filterTag('filosofia',this)">Filosofía</button>
+  <button class="lib-filter-btn" onclick="filterTag('tecnico',this)">Técnico</button>
   <button class="lib-filter-btn" onclick="filterTag('principiantes',this)">Principiantes</button>
-  <button class="lib-filter-btn" onclick="filterTag('inglés',this)">Inglés</button>
+  <button class="lib-filter-btn" onclick="filterTag('ingles',this)">Inglés</button>
 </div>
 
-<!-- ── GRID ── -->
 <div class="lib-grid-wrap">
   <div class="lib-grid" id="lib-grid">
 
-    <!-- 1 – El Patrón Bitcoin -->
-    <article class="book-card" data-tags="bitcoin economía" data-title="el patrón bitcoin" data-author="saifedean ammous">
-      <a href="assets/books/ammous-saifedean-el-patron-bitcoin-deusto.pdf" download="El Patron Bitcoin - Saifedean Ammous.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#F7931A;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Economía</span>
-            <div><h3 class="bk-cover-title">El Patrón Bitcoin</h3><p class="bk-cover-author">Saifedean Ammous</p></div>
-            <span class="bk-cover-year">2018</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">El Patrón Bitcoin</p>
-          <p class="bk-meta-author">Saifedean Ammous</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Economía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin economia" data-title="el patron bitcoin" data-author="saifedean ammous">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/ammous-saifedean-el-patron-bitcoin-deusto.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#F7931A;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Economía</span><div><h3 class="bk-cover-title">El Patrón Bitcoin</h3><p class="bk-cover-author">Saifedean Ammous</p></div><span class="bk-cover-year">2018</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">El Patrón Bitcoin</p><p class="bk-meta-author">Saifedean Ammous</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Economía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 2 – El Patrón Fiat -->
-    <article class="book-card" data-tags="economía" data-title="el patrón fiat" data-author="saifedean ammous">
-      <a href="assets/books/El%20Patron%20Fiat%20-%20Saifedean%20Ammous.pdf" download="El Patron Fiat - Saifedean Ammous.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#d4600a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Economía · Dinero Fiat</span>
-            <div><h3 class="bk-cover-title">El Patrón Fiat</h3><p class="bk-cover-author">Saifedean Ammous</p></div>
-            <span class="bk-cover-year">2021</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">El Patrón Fiat</p>
-          <p class="bk-meta-author">Saifedean Ammous</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="economia" data-title="el patron fiat" data-author="saifedean ammous">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/El%20Patron%20Fiat%20-%20Saifedean%20Ammous.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#d4600a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Economía · Dinero Fiat</span><div><h3 class="bk-cover-title">El Patrón Fiat</h3><p class="bk-cover-author">Saifedean Ammous</p></div><span class="bk-cover-year">2021</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">El Patrón Fiat</p><p class="bk-meta-author">Saifedean Ammous</p><div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 3 – Dinero Roto -->
-    <article class="book-card" data-tags="bitcoin economía" data-title="dinero roto" data-author="lyn alden">
-      <a href="assets/books/Dinero%20Roto%20-%20Lyn%20Alden.pdf" download="Dinero Roto - Lyn Alden.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#1a9a7a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Macroeconomía</span>
-            <div><h3 class="bk-cover-title">Dinero Roto</h3><p class="bk-cover-author">Lyn Alden</p></div>
-            <span class="bk-cover-year">2023</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Dinero Roto</p>
-          <p class="bk-meta-author">Lyn Alden</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Economía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin economia" data-title="dinero roto" data-author="lyn alden">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Dinero%20Roto%20-%20Lyn%20Alden.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#1a9a7a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Macroeconomía</span><div><h3 class="bk-cover-title">Dinero Roto</h3><p class="bk-cover-author">Lyn Alden</p></div><span class="bk-cover-year">2023</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Dinero Roto</p><p class="bk-meta-author">Lyn Alden</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Economía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 4 – Mastering Bitcoin -->
-    <article class="book-card" data-tags="bitcoin técnico" data-title="mastering bitcoin" data-author="andreas antonopoulos">
-      <a href="assets/books/Mastering_Bitcoin_2da_edicion_Spanish.pdf" download="Mastering Bitcoin - Andreas Antonopoulos.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#2a6aaa;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Técnico</span>
-            <div><h3 class="bk-cover-title">Mastering Bitcoin</h3><p class="bk-cover-author">Andreas M. Antonopoulos</p></div>
-            <span class="bk-cover-year">2ª edición</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Mastering Bitcoin</p>
-          <p class="bk-meta-author">Andreas M. Antonopoulos</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin tecnico" data-title="mastering bitcoin" data-author="andreas antonopoulos">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Mastering_Bitcoin_2da_edicion_Spanish.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#2a6aaa;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Técnico</span><div><h3 class="bk-cover-title">Mastering Bitcoin</h3><p class="bk-cover-author">Andreas M. Antonopoulos</p></div><span class="bk-cover-year">2ª edición</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Mastering Bitcoin</p><p class="bk-meta-author">Andreas M. Antonopoulos</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 5 – Internet del Dinero -->
-    <article class="book-card" data-tags="bitcoin filosofía" data-title="internet del dinero" data-author="andreas antonopoulos">
-      <a href="assets/books/InternetdelDineroAndreasMAntonopouloslibro.pdf" download="Internet del Dinero - Andreas Antonopoulos.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#1a9a7a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Filosofía</span>
-            <div><h3 class="bk-cover-title">Internet del Dinero</h3><p class="bk-cover-author">Andreas M. Antonopoulos</p></div>
-            <span class="bk-cover-year">2016</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Internet del Dinero</p>
-          <p class="bk-meta-author">Andreas M. Antonopoulos</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Filosofía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin filosofia" data-title="internet del dinero" data-author="andreas antonopoulos">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/InternetdelDineroAndreasMAntonopouloslibro.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#1a9a7a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Filosofía</span><div><h3 class="bk-cover-title">Internet del Dinero</h3><p class="bk-cover-author">Andreas M. Antonopoulos</p></div><span class="bk-cover-year">2016</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Internet del Dinero</p><p class="bk-meta-author">Andreas M. Antonopoulos</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Filosofía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 6 – 21 Lecciones -->
-    <article class="book-card" data-tags="bitcoin filosofía" data-title="21 lecciones" data-author="gigi">
-      <a href="assets/books/PDF-Gigi-21-lecciones-Prometea.pdf" download="21 Lecciones - Gigi.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#8e44ad;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Filosofía</span>
-            <div><h3 class="bk-cover-title">21 Lecciones</h3><p class="bk-cover-author">Gigi</p></div>
-            <span class="bk-cover-year">2019</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">21 Lecciones</p>
-          <p class="bk-meta-author">Gigi</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Filosofía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin filosofia" data-title="21 lecciones" data-author="gigi">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/PDF-Gigi-21-lecciones-Prometea.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#8e44ad;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Filosofía</span><div><h3 class="bk-cover-title">21 Lecciones</h3><p class="bk-cover-author">Gigi</p></div><span class="bk-cover-year">2019</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">21 Lecciones</p><p class="bk-meta-author">Gigi</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Filosofía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 7 – Inventemos Bitcoin -->
     <article class="book-card" data-tags="bitcoin principiantes" data-title="inventemos bitcoin" data-author="yan pritzker">
-      <a href="assets/books/Inventemos-Bitcoin-Print.pdf" download="Inventemos Bitcoin - Yan Pritzker.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#e08020;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Principiantes</span>
-            <div><h3 class="bk-cover-title">Inventemos Bitcoin</h3><p class="bk-cover-author">Yan Pritzker</p></div>
-            <span class="bk-cover-year">2019</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Inventemos Bitcoin</p>
-          <p class="bk-meta-author">Yan Pritzker</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Principiantes</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Inventemos-Bitcoin-Print.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#e08020;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Principiantes</span><div><h3 class="bk-cover-title">Inventemos Bitcoin</h3><p class="bk-cover-author">Yan Pritzker</p></div><span class="bk-cover-year">2019</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Inventemos Bitcoin</p><p class="bk-meta-author">Yan Pritzker</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Principiantes</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 8 – Bitcoin con Rigor -->
-    <article class="book-card" data-tags="bitcoin técnico" data-title="bitcoin con rigor" data-author="jose sanchis">
-      <a href="assets/books/Bitcoin%20con%20Rigor_%20Un%20estudio%20s%20-%20Jose%20Sanchis.pdf" download="Bitcoin con Rigor - Jose Sanchis.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#2a6aaa;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Técnico</span>
-            <div><h3 class="bk-cover-title">Bitcoin con Rigor</h3><p class="bk-cover-author">José Sanchis</p></div>
-            <span class="bk-cover-year"></span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Bitcoin con Rigor</p>
-          <p class="bk-meta-author">José Sanchis</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin tecnico" data-title="bitcoin con rigor" data-author="jose sanchis">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Bitcoin%20con%20Rigor_%20Un%20estudio%20s%20-%20Jose%20Sanchis.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#2a6aaa;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Técnico</span><div><h3 class="bk-cover-title">Bitcoin con Rigor</h3><p class="bk-cover-author">José Sanchis</p></div><span class="bk-cover-year"></span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Bitcoin con Rigor</p><p class="bk-meta-author">José Sanchis</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 9 – Bitcoin Para Pobres -->
     <article class="book-card" data-tags="bitcoin principiantes" data-title="bitcoin para pobres" data-author="alberto guerrero">
-      <a href="assets/books/Bitcoin%20Para%20Pobres_%20_.y%20para%20l%20-%20Guerrero%2C%20Alberto.pdf" download="Bitcoin Para Pobres - Alberto Guerrero.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#e08020;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Principiantes</span>
-            <div><h3 class="bk-cover-title">Bitcoin Para Pobres</h3><p class="bk-cover-author">Alberto Guerrero</p></div>
-            <span class="bk-cover-year"></span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Bitcoin Para Pobres</p>
-          <p class="bk-meta-author">Alberto Guerrero</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Principiantes</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Bitcoin%20Para%20Pobres_%20_.y%20para%20l%20-%20Guerrero%2C%20Alberto.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#e08020;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Principiantes</span><div><h3 class="bk-cover-title">Bitcoin Para Pobres</h3><p class="bk-cover-author">Alberto Guerrero</p></div><span class="bk-cover-year"></span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Bitcoin Para Pobres</p><p class="bk-meta-author">Alberto Guerrero</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Principiantes</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 10 – Del Oro al Bitcoin -->
-    <article class="book-card" data-tags="bitcoin economía" data-title="del oro al bitcoin" data-author="nik bhatia">
-      <a href="assets/books/Del_oro_al_Bitcoin_C%C3%B3mo_y_por_qu%C3%A9_las_criptomonedas_har%C3%A1n_Nik_Bhatia%3B.pdf" download="Del Oro al Bitcoin - Nik Bhatia.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#F7931A;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Historia · Dinero</span>
-            <div><h3 class="bk-cover-title">Del Oro al Bitcoin</h3><p class="bk-cover-author">Nik Bhatia</p></div>
-            <span class="bk-cover-year">2021</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Del Oro al Bitcoin</p>
-          <p class="bk-meta-author">Nik Bhatia</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Economía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin economia" data-title="del oro al bitcoin" data-author="nik bhatia">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Del_oro_al_Bitcoin_C%C3%B3mo_y_por_qu%C3%A9_las_criptomonedas_har%C3%A1n_Nik_Bhatia%3B.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#F7931A;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Historia · Dinero</span><div><h3 class="bk-cover-title">Del Oro al Bitcoin</h3><p class="bk-cover-author">Nik Bhatia</p></div><span class="bk-cover-year">2021</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Del Oro al Bitcoin</p><p class="bk-meta-author">Nik Bhatia</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Economía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 11 – La Filosofía de Bitcoin -->
-    <article class="book-card" data-tags="bitcoin filosofía" data-title="la filosofía de bitcoin" data-author="álvaro d. maría">
-      <a href="assets/books/La_filosof%C3%ADa_de_bitcoin_%C3%81lvaro_D_Mar%C3%ADa_2%2C_2022_Libros_com_9788419435293.pdf" download="La Filosofia de Bitcoin - Alvaro D. Maria.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#8e44ad;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Filosofía</span>
-            <div><h3 class="bk-cover-title">La Filosofía de Bitcoin</h3><p class="bk-cover-author">Álvaro D. María</p></div>
-            <span class="bk-cover-year">2022</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">La Filosofía de Bitcoin</p>
-          <p class="bk-meta-author">Álvaro D. María</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Filosofía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin filosofia" data-title="la filosofia de bitcoin" data-author="alvaro d. maria">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/La_filosof%C3%ADa_de_bitcoin_%C3%81lvaro_D_Mar%C3%ADa_2%2C_2022_Libros_com_9788419435293.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#8e44ad;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Filosofía</span><div><h3 class="bk-cover-title">La Filosofía de Bitcoin</h3><p class="bk-cover-author">Álvaro D. María</p></div><span class="bk-cover-year">2022</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">La Filosofía de Bitcoin</p><p class="bk-meta-author">Álvaro D. María</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Filosofía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 12 – Criptoria -->
-    <article class="book-card" data-tags="bitcoin filosofía técnico" data-title="criptoria de turing a nakamoto" data-author="alfre mancera">
-      <a href="assets/books/Criptoria_%20de%20Turing%20a%20Nakamoto%20-%20Alfre%20Mancera.pdf" download="Criptoria - Alfre Mancera.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#6a3a9a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Historia · Criptografía</span>
-            <div><h3 class="bk-cover-title">Criptoria</h3><p class="bk-cover-author">Alfre Mancera</p></div>
-            <span class="bk-cover-year"></span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Criptoria: de Turing a Nakamoto</p>
-          <p class="bk-meta-author">Alfre Mancera</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin filosofia tecnico" data-title="criptoria de turing a nakamoto" data-author="alfre mancera">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Criptoria_%20de%20Turing%20a%20Nakamoto%20-%20Alfre%20Mancera.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#6a3a9a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Historia · Criptografía</span><div><h3 class="bk-cover-title">Criptoria</h3><p class="bk-cover-author">Alfre Mancera</p></div><span class="bk-cover-year"></span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Criptoria: de Turing a Nakamoto</p><p class="bk-meta-author">Alfre Mancera</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 13 – Pueblo Bitcoin -->
     <article class="book-card" data-tags="bitcoin" data-title="pueblo bitcoin" data-author="valerio">
-      <a href="assets/books/Pueblo_Bitcoin_El_amanecer_de_una_sociedad_basada_en_una_Valerio.pdf" download="Pueblo Bitcoin - Valerio.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#F7931A;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Sociedad</span>
-            <div><h3 class="bk-cover-title">Pueblo Bitcoin</h3><p class="bk-cover-author">Valerio</p></div>
-            <span class="bk-cover-year">2023</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Pueblo Bitcoin</p>
-          <p class="bk-meta-author">Valerio</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Pueblo_Bitcoin_El_amanecer_de_una_sociedad_basada_en_una_Valerio.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#F7931A;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Sociedad</span><div><h3 class="bk-cover-title">Pueblo Bitcoin</h3><p class="bk-cover-author">Valerio</p></div><span class="bk-cover-year">2023</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Pueblo Bitcoin</p><p class="bk-meta-author">Valerio</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 14 – El Libro de Satoshi -->
     <article class="book-card" data-tags="bitcoin" data-title="el libro de satoshi" data-author="phil champagne">
-      <a href="assets/books/httpslibroblockchain_comwp_contentuploads201807Libro_de_Satoshi.pdf" download="El Libro de Satoshi - Phil Champagne.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#c4600a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Historia</span>
-            <div><h3 class="bk-cover-title">El Libro de Satoshi</h3><p class="bk-cover-author">Phil Champagne</p></div>
-            <span class="bk-cover-year">2014</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">El Libro de Satoshi</p>
-          <p class="bk-meta-author">Phil Champagne</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/httpslibroblockchain_comwp_contentuploads201807Libro_de_Satoshi.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#c4600a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Historia</span><div><h3 class="bk-cover-title">El Libro de Satoshi</h3><p class="bk-cover-author">Phil Champagne</p></div><span class="bk-cover-year">2014</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">El Libro de Satoshi</p><p class="bk-meta-author">Phil Champagne</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 15 – Capitalismo -->
-    <article class="book-card" data-tags="economía filosofía" data-title="capitalismo el ideal desconocido" data-author="ayn rand">
-      <a href="assets/books/Capitalismo%20el%20ideal%20desconocido.pdf" download="Capitalismo El Ideal Desconocido - Ayn Rand.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#1a9a7a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Economía · Filosofía</span>
-            <div><h3 class="bk-cover-title">Capitalismo: El Ideal Desconocido</h3><p class="bk-cover-author">Ayn Rand</p></div>
-            <span class="bk-cover-year">1966</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Capitalismo: El Ideal Desconocido</p>
-          <p class="bk-meta-author">Ayn Rand</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span><span class="bk-meta-tag">Filosofía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="economia filosofia" data-title="capitalismo el ideal desconocido" data-author="ayn rand">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Capitalismo%20el%20ideal%20desconocido.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#1a9a7a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Economía · Filosofía</span><div><h3 class="bk-cover-title">Capitalismo: El Ideal Desconocido</h3><p class="bk-cover-author">Ayn Rand</p></div><span class="bk-cover-year">1966</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Capitalismo: El Ideal Desconocido</p><p class="bk-meta-author">Ayn Rand</p><div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span><span class="bk-meta-tag">Filosofía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 16 – Poder y Mercado -->
-    <article class="book-card" data-tags="economía filosofía" data-title="poder y mercado" data-author="murray rothbard">
-      <a href="assets/books/Poder%20y%20mercado%20-%20Murray%20N.%20Rothbard.pdf" download="Poder y Mercado - Murray Rothbard.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#1a8a6a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Economía Austriaca</span>
-            <div><h3 class="bk-cover-title">Poder y Mercado</h3><p class="bk-cover-author">Murray N. Rothbard</p></div>
-            <span class="bk-cover-year">1970</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">Poder y Mercado</p>
-          <p class="bk-meta-author">Murray N. Rothbard</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span><span class="bk-meta-tag">Filosofía</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="economia filosofia" data-title="poder y mercado" data-author="murray rothbard">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Poder%20y%20mercado%20-%20Murray%20N.%20Rothbard.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#1a8a6a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Economía Austriaca</span><div><h3 class="bk-cover-title">Poder y Mercado</h3><p class="bk-cover-author">Murray N. Rothbard</p></div><span class="bk-cover-year">1970</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">Poder y Mercado</p><p class="bk-meta-author">Murray N. Rothbard</p><div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span><span class="bk-meta-tag">Filosofía</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 17 – El Hombre más Rico de Babilonia -->
-    <article class="book-card" data-tags="principiantes economía" data-title="el hombre mas rico de babilonia" data-author="george clason">
-      <a href="assets/books/El%20Hombre%20mas%20rico%20de%20Babilonia.pdf" download="El Hombre mas Rico de Babilonia - George Clason.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#c4920a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Finanzas · Principiantes</span>
-            <div><h3 class="bk-cover-title">El Hombre más Rico de Babilonia</h3><p class="bk-cover-author">George S. Clason</p></div>
-            <span class="bk-cover-year">1926</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">El Hombre más Rico de Babilonia</p>
-          <p class="bk-meta-author">George S. Clason</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span><span class="bk-meta-tag">Principiantes</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="principiantes economia" data-title="el hombre mas rico de babilonia" data-author="george clason">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/El%20Hombre%20mas%20rico%20de%20Babilonia.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#c4920a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Finanzas · Principiantes</span><div><h3 class="bk-cover-title">El Hombre más Rico de Babilonia</h3><p class="bk-cover-author">George S. Clason</p></div><span class="bk-cover-year">1926</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">El Hombre más Rico de Babilonia</p><p class="bk-meta-author">George S. Clason</p><div class="bk-meta-tags"><span class="bk-meta-tag">Economía</span><span class="bk-meta-tag">Principiantes</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 18 – SOFTWAR ESP -->
-    <article class="book-card" data-tags="bitcoin técnico" data-title="softwar" data-author="jason lowery">
-      <a href="assets/books/Softwar_ESP_v_1_12.pdf" download="SOFTWAR ESP - Jason Lowery.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#2a5a8a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Geopolítica · ESP</span>
-            <div><h3 class="bk-cover-title">SOFTWAR</h3><p class="bk-cover-author">Jason Lowery</p></div>
-            <span class="bk-cover-year">2023</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">SOFTWAR (Español)</p>
-          <p class="bk-meta-author">Jason Lowery</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin tecnico" data-title="softwar" data-author="jason lowery">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/Softwar_ESP_v_1_12.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#2a5a8a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Geopolítica · ESP</span><div><h3 class="bk-cover-title">SOFTWAR</h3><p class="bk-cover-author">Jason Lowery</p></div><span class="bk-cover-year">2023</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">SOFTWAR (Español)</p><p class="bk-meta-author">Jason Lowery</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Técnico</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 19 – SOFTWAR ENG -->
-    <article class="book-card" data-tags="bitcoin técnico inglés" data-title="softwar english" data-author="jason lowery">
-      <a href="assets/books/SOFTWAR_A_Novel_Theory_on_Power_Projection_and_the_National_Jason.pdf" download="SOFTWAR ENG - Jason Lowery.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#5a7a9a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Geopolitics · ENG</span>
-            <div><h3 class="bk-cover-title">SOFTWAR (English)</h3><p class="bk-cover-author">Jason Lowery</p></div>
-            <span class="bk-cover-year">2023</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">SOFTWAR (English)</p>
-          <p class="bk-meta-author">Jason Lowery</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Inglés</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin tecnico ingles" data-title="softwar english" data-author="jason lowery">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/SOFTWAR_A_Novel_Theory_on_Power_Projection_and_the_National_Jason.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#5a7a9a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Geopolitics · ENG</span><div><h3 class="bk-cover-title">SOFTWAR (English)</h3><p class="bk-cover-author">Jason Lowery</p></div><span class="bk-cover-year">2023</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">SOFTWAR (English)</p><p class="bk-meta-author">Jason Lowery</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Inglés</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- 20 – What Is Money? -->
-    <article class="book-card" data-tags="bitcoin economía inglés" data-title="what is money" data-author="michael saylor">
-      <a href="assets/books/What%20Is%20Money_%20The%20Saylor%20Serie%20-%20Michael%20Saylor.pdf" download="What Is Money - Michael Saylor.pdf" class="book-cover-link">
-        <div class="book-cover" style="--bk-color:#4a6a8a;">
-          <div class="book-spine"></div>
-          <div class="book-cover-inner">
-            <span class="bk-tag">Bitcoin · Money · ENG</span>
-            <div><h3 class="bk-cover-title">What Is Money?</h3><p class="bk-cover-author">Michael Saylor</p></div>
-            <span class="bk-cover-year">2021</span>
-          </div>
-        </div>
-        <div class="bk-meta">
-          <p class="bk-meta-title">What Is Money?</p>
-          <p class="bk-meta-author">Michael Saylor</p>
-          <div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Inglés</span></div>
-          <span class="bk-dl">↓ Descargar PDF</span>
-        </div>
+    <article class="book-card" data-tags="bitcoin economia ingles" data-title="what is money" data-author="michael saylor">
+      <a href="https://raw.githubusercontent.com/Fama1201/TheBitcoinRabbitHole/master/assets/books/What%20Is%20Money_%20The%20Saylor%20Serie%20-%20Michael%20Saylor.pdf" target="_blank" class="book-cover-link">
+        <div class="book-cover" style="--bk-color:#4a6a8a;"><div class="book-spine"></div><div class="book-cover-inner"><span class="bk-tag">Bitcoin · Money · ENG</span><div><h3 class="bk-cover-title">What Is Money?</h3><p class="bk-cover-author">Michael Saylor</p></div><span class="bk-cover-year">2021</span></div></div>
+        <div class="bk-meta"><p class="bk-meta-title">What Is Money?</p><p class="bk-meta-author">Michael Saylor</p><div class="bk-meta-tags"><span class="bk-meta-tag">Bitcoin</span><span class="bk-meta-tag">Inglés</span></div><span class="bk-dl">↓ Abrir PDF</span></div>
       </a>
     </article>
 
-    <!-- empty state -->
     <div class="lib-empty" id="lib-empty">
       <h3>Sin resultados</h3>
       <p>Prueba con otro término de búsqueda.</p>
@@ -649,7 +279,6 @@
   </div>
 </div>
 
-<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <div>
@@ -671,29 +300,23 @@
 
 <script src="assets/js/main.js"></script>
 <script>
-  let activeTag = 'all';
-
+  var activeTag = 'all';
   function searchBooks() {
-    const q = document.getElementById('book-search').value.toLowerCase().trim();
-    const cards = document.querySelectorAll('.book-card');
-    let visible = 0;
+    var q = document.getElementById('book-search').value.toLowerCase().trim();
+    var cards = document.querySelectorAll('.book-card');
+    var visible = 0;
     cards.forEach(function(card) {
-      const titleOk = card.dataset.title.includes(q);
-      const authorOk = card.dataset.author.includes(q);
-      const tagOk = activeTag === 'all' || card.dataset.tags.includes(activeTag);
-      const show = (titleOk || authorOk) && tagOk;
+      var show = (card.dataset.title.includes(q) || card.dataset.author.includes(q)) &&
+                 (activeTag === 'all' || card.dataset.tags.includes(activeTag));
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
     document.getElementById('results-count').textContent = visible;
     document.getElementById('lib-empty').style.display = visible === 0 ? 'block' : 'none';
   }
-
   function filterTag(tag, btn) {
     activeTag = tag;
-    document.querySelectorAll('.lib-filter-btn').forEach(function(b) {
-      b.classList.remove('active');
-    });
+    document.querySelectorAll('.lib-filter-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
     searchBooks();
   }
