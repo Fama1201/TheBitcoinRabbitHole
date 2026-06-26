@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Networking Bitcoin — TheRabbitHole</title>
+  <meta name="description" content="Conecta con otros bitcoiners. Comparte ideas, proyectos y visiones. La comunidad es más grande de lo que crees."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .networking-hero {
+      min-height: calc(100vh - 80px);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--black);
+      padding: 7rem 2.5rem 5rem;
+      text-align: center;
+    }
+    .networking-inner { max-width: 620px; margin: 0 auto; }
+    .networking-badge {
+      font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 2rem;
+      display: inline-block;
+    }
+    .networking-title {
+      font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900; color: var(--white); line-height: 1.05; margin-bottom: 2rem;
+    }
+    .networking-title em { color: var(--orange); font-style: normal; }
+    .networking-desc {
+      font-size: 1.1rem; color: #888; line-height: 1.85; margin-bottom: 2.5rem;
+    }
+    .networking-coming {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-family: var(--font-mono); font-size: 0.82rem; font-weight: 600;
+      padding: 0.85rem 2rem; border-radius: var(--radius);
+      border: 1.5px solid #333; color: #666;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .networking-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--orange);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .networking-btc-icon {
+      width: 72px; height: 72px; margin: 0 auto 2rem;
+      opacity: 0.25;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M38 52 C35 42 32 26 33 14 C34 8 37 5 41 6 C45 7 46 12 45 22 C44 33 41 46 39 53Z" fill="#F2790B"/>
+      <path d="M39 50 C37 41 34 26 35 15 C36 10 38 7 41 8 C44 9 45 13 44 22 C43 32 41 45 40 51Z" fill="#d4601a"/>
+      <path d="M82 52 C85 42 88 26 87 14 C86 8 83 5 79 6 C75 7 74 12 75 22 C76 33 79 46 81 53Z" fill="#F2790B"/>
+      <path d="M81 50 C83 41 86 26 85 15 C84 10 82 7 79 8 C76 9 75 13 76 22 C77 32 79 45 80 51Z" fill="#d4601a"/>
+      <path d="M30 72 C29 61 34 51 43 49 C47 48 50 49 60 49 C70 49 73 48 77 49 C86 51 91 61 90 72 C89 82 82 89 60 90 C38 89 31 82 30 72Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="78" rx="14" ry="10" fill="#f5a060"/>
+      <ellipse cx="44" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="45" cy="68" r="5" fill="#14110F"/>
+      <circle cx="43" cy="66" r="2" fill="white"/>
+      <ellipse cx="76" cy="67" rx="7" ry="7.5" fill="white"/>
+      <circle cx="75" cy="68" r="5" fill="#14110F"/>
+      <circle cx="73" cy="66" r="2" fill="white"/>
+      <path d="M57 77 L63 77 L60 81Z" fill="#c04010"/>
+      <path d="M55 83 Q60 88 65 83" fill="none" stroke="#c04010" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 90 C38 80 46 75 60 74 C74 75 82 80 82 90Z" fill="#F2790B"/>
+      <path d="M38 87 C30 85 20 86 14 90 C10 93 11 98 16 99 C22 101 32 99 38 94Z" fill="#F2790B"/>
+      <path d="M82 87 C90 85 100 86 106 90 C110 93 109 98 104 99 C98 101 88 99 82 94Z" fill="#F2790B"/>
+      <ellipse cx="60" cy="110" rx="50" ry="14" fill="#14110F"/>
+    </svg>
+    TheRabbitHole
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+    <li><a href="networking.html" class="active">Networking</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="networking-hero">
+  <div class="networking-inner">
+    <svg class="networking-btc-icon" viewBox="0 0 4091.27 4091.73" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#F7931A" d="M4030.06 2540.77c-273.24,1096.01 -1383.32,1763.02 -2479.46,1489.71 -1095.68,-273.24 -1762.69,-1383.39 -1489.33,-2479.31 273.12,-1096.13 1383.2,-1763.19 2479,-1489.95 1096.06,273.24 1763.03,1383.51 1489.76,2479.57z"/>
+      <path fill="#FFFFFF" d="M2947.77 1754.38c40.72,-272.26 -166.56,-418.61 -450,-516.24l91.95,-368.8 -224.5,-55.94 -89.51,359.09c-59.02,-14.72 -119.63,-28.59 -179.87,-42.34l90.16,-361.46 -224.36,-55.94 -92,368.68c-48.84,-11.12 -96.81,-22.11 -143.35,-33.69l0.26,-1.16 -309.59,-77.31 -59.72,239.78c0,0 166.56,38.18 163.05,40.53 90.91,22.69 107.35,82.87 104.62,130.57l-104.74,420.15c6.26,1.59 14.38,3.89 23.34,7.49 -7.49,-1.86 -15.46,-3.89 -23.73,-5.87l-146.81,588.57c-11.11,27.62 -39.31,69.07 -102.87,53.33 2.25,3.26 -163.17,-40.72 -163.17,-40.72l-111.46,256.98 292.15,72.83c54.35,13.63 107.61,27.89 160.06,41.3l-92.69,372.04 224.24,55.94 92,-369.07c61.26,16.63 120.71,31.97 178.91,46.43l-91.69,367.33 224.51,55.94 92.69,-371.69c381.82,72.45 669.02,43.21 789.37,-302.1 97.14,-277.56 -4.86,-437.86 -205.66,-542.32 146.2,-33.69 256.41,-129.78 285.76,-328.3zm-511.27 716.84c-69.02,277.56 -536.03,127.55 -687.35,89.89l122.66,-491.75c151.32,37.78 636.86,112.52 564.67,401.88zm69.03,-720.03c-62.96,252.59 -451.18,124.2 -577.21,92.76l111.23,-446.03c126.03,31.44 531.65,90.14 465.98,353.26z"/>
+    </svg>
+    <p class="networking-badge">Próximamente</p>
+    <h1 class="networking-title">Conecta con otros <em>bitcoiners</em></h1>
+    <p class="networking-desc">
+      Los bitcoiners estamos regados por todo el mundo, pero somos más de los que pensamos. Conoce gente con la que puedas hablar sobre Bitcoin, compartir ideas, proyectos y visiones, y hacer la comunidad más fuerte y grande.
+    </p>
+    <div class="networking-coming">
+      <span class="networking-dot"></span>
+      En construcción — vuelve pronto
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+      <li><a href="networking.html">Networking</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
