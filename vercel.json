@@ -17,6 +17,7 @@
     { "src": "/sobre", "dest": "/sobre.html" },
     { "src": "/tiendas", "dest": "/tiendas.html" },
     { "src": "/networking", "dest": "/networking.html" },
-    { "src": "/libros", "dest": "/libros.html" }
+    { "src": "/libros", "dest": "/libros.html" },
+    { "src": "/deadbitcoin", "dest": "/deadbitcoin.html" }
   ]
 }
