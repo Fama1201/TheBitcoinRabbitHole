@@ -74,7 +74,115 @@
     </div>
   </div>
   <div class="hero-illustration">
-    <img src="assets/logo.svg" alt="TheRabbitHole">
+    <svg viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block;">
+      <title>TheRabbitHole — conejo saliendo del hoyo</title>
+      <defs>
+        <clipPath id="hole-mask">
+          <!-- Clip everything below the hole center (y=320), so the rabbit
+               disappears behind the hole when it ducks back in -->
+          <rect x="-200" y="-500" width="1080" height="820"/>
+        </clipPath>
+        <style>
+          @keyframes bunny-hop {
+            /* Resting - peeking out */
+            0%   { transform: translateY(0px);   }
+            /* Tiny pre-jump bob */
+            6%   { transform: translateY(-12px);  }
+            /* Jump! fully out of hole */
+            18%  { transform: translateY(-88px);  }
+            /* Slight settle at top */
+            26%  { transform: translateY(-80px);  }
+            /* Hold at top */
+            40%  { transform: translateY(-88px);  }
+            /* Coming back down */
+            53%  { transform: translateY(-12px);  }
+            /* Back to normal */
+            60%  { transform: translateY(0px);   }
+            /* Tiny bounce on landing */
+            64%  { transform: translateY(6px);   }
+            67%  { transform: translateY(0px);   }
+            /* Dive back into hole - only ears visible */
+            74%  { transform: translateY(105px);  }
+            /* Hold inside */
+            87%  { transform: translateY(105px);  }
+            /* Slowly emerge back */
+            100% { transform: translateY(0px);   }
+          }
+          .hero-bunny {
+            animation: bunny-hop 6s ease-in-out infinite;
+            animation-delay: 0.8s;
+          }
+        </style>
+      </defs>
+
+      <!-- HOYO fill (fondo oscuro del agujero) -->
+      <ellipse cx="340" cy="310" rx="110" ry="32" fill="#14110F"/>
+
+      <!-- CONEJO — todo el grupo se anima y se recorta en el hoyo -->
+      <g class="hero-bunny" clip-path="url(#hole-mask)">
+
+        <!-- Cuerpo / pecho -->
+        <path d="M 292 305 C 292 272 310 250 340 248 C 370 250 388 272 388 305 Z" fill="#F2790B"/>
+        <path d="M 318 300 C 318 272 327 258 340 256 C 353 258 362 272 362 300 Z" fill="#f5a060"/>
+
+        <!-- BRAZO IZQUIERDO -->
+        <path d="M 292 288 C 278 284 258 286 242 294 C 234 298 232 306 238 310 C 246 315 264 312 278 306 C 287 301 292 294 292 288 Z" fill="#F2790B"/>
+        <path d="M 238 308 C 224 307 214 311 212 318 C 210 325 220 329 233 326 C 244 323 252 316 248 309 Z" fill="#F2790B"/>
+        <ellipse cx="215" cy="317" rx="4" ry="3" fill="#d4601a"/>
+        <ellipse cx="225" cy="313" rx="4" ry="3" fill="#d4601a"/>
+        <ellipse cx="236" cy="311" rx="4" ry="3" fill="#d4601a"/>
+
+        <!-- BRAZO DERECHO -->
+        <path d="M 388 288 C 402 284 422 286 438 294 C 446 298 448 306 442 310 C 434 315 416 312 402 306 C 393 301 388 294 388 288 Z" fill="#F2790B"/>
+        <path d="M 442 308 C 456 307 466 311 468 318 C 470 325 460 329 447 326 C 436 323 428 316 432 309 Z" fill="#F2790B"/>
+        <ellipse cx="465" cy="317" rx="4" ry="3" fill="#d4601a"/>
+        <ellipse cx="455" cy="313" rx="4" ry="3" fill="#d4601a"/>
+        <ellipse cx="444" cy="311" rx="4" ry="3" fill="#d4601a"/>
+
+        <!-- CABEZA -->
+        <path d="M 298 228 C 296 196 308 168 325 162 C 332 159 336 162 340 162 C 344 162 348 159 355 162 C 372 168 384 196 382 228 C 380 256 364 274 340 276 C 316 274 300 256 298 228 Z" fill="#F2790B"/>
+        <path d="M 320 246 C 320 238 328 232 340 232 C 352 232 360 238 360 246 C 360 258 352 266 340 266 C 328 266 320 258 320 246 Z" fill="#f5a060"/>
+
+        <!-- OREJA IZQUIERDA -->
+        <path d="M 312 168 C 306 148 300 112 303 84 C 305 68 312 60 320 62 C 329 64 333 74 332 92 C 330 120 324 155 320 170 Z" fill="#F2790B"/>
+        <path d="M 313 165 C 308 146 304 114 307 90 C 308 78 313 72 319 74 C 325 76 327 84 326 96 C 324 120 320 150 317 166 Z" fill="#d4601a"/>
+
+        <!-- OREJA DERECHA -->
+        <path d="M 368 168 C 374 148 380 112 377 84 C 375 68 368 60 360 62 C 351 64 347 74 348 92 C 350 120 356 155 360 170 Z" fill="#F2790B"/>
+        <path d="M 367 165 C 372 146 376 114 373 90 C 372 78 367 72 361 74 C 355 76 353 84 354 96 C 356 120 360 150 363 166 Z" fill="#d4601a"/>
+
+        <!-- OJOS -->
+        <ellipse cx="320" cy="226" rx="15" ry="16" fill="white"/>
+        <circle cx="322" cy="228" r="10" fill="#14110F"/>
+        <circle cx="318" cy="224" r="4" fill="white"/>
+        <circle cx="325" cy="232" r="2" fill="white" opacity="0.5"/>
+        <ellipse cx="360" cy="226" rx="15" ry="16" fill="white"/>
+        <circle cx="358" cy="228" r="10" fill="#14110F"/>
+        <circle cx="354" cy="224" r="4" fill="white"/>
+        <circle cx="361" cy="232" r="2" fill="white" opacity="0.5"/>
+
+        <!-- NARIZ Y BOCA -->
+        <path d="M 336 246 L 344 246 L 340 252 Z" fill="#c04010"/>
+        <path d="M 333 253 Q 340 260 347 253" fill="none" stroke="#c04010" stroke-width="1.8" stroke-linecap="round"/>
+
+        <!-- BIGOTES -->
+        <line x1="318" y1="248" x2="292" y2="243" stroke="#c07840" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+        <line x1="318" y1="252" x2="290" y2="252" stroke="#c07840" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+        <line x1="318" y1="256" x2="293" y2="261" stroke="#c07840" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+        <line x1="362" y1="248" x2="388" y2="243" stroke="#c07840" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+        <line x1="362" y1="252" x2="390" y2="252" stroke="#c07840" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+        <line x1="362" y1="256" x2="387" y2="261" stroke="#c07840" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+
+      </g><!-- fin .hero-bunny -->
+
+      <!-- Borde del hoyo — encima del conejo para crear el efecto de profundidad -->
+      <ellipse cx="340" cy="310" rx="110" ry="32" fill="none" stroke="#14110F" stroke-width="8"/>
+
+      <!-- WORDMARK -->
+      <text x="340" y="390" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-weight="700" text-anchor="middle" fill="#14110F" letter-spacing="0.5">TheRabbitHole</text>
+      <text x="340" y="420" font-family="Arial, Helvetica, sans-serif" font-size="11" text-anchor="middle" fill="#888888" letter-spacing="3.5">EDUCACIÓN BITCOIN</text>
+      <line x1="230" y1="434" x2="450" y2="434" stroke="#F2790B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
   </div>
 </div>
 
