@@ -141,6 +141,7 @@
     <li><a href="sobre.html">Sobre nosotros</a></li>
     <li><a href="aprender.html">Aprender Bitcoin</a></li>
     <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
     <li><a href="tiendas.html" class="active">Tiendas BTC</a></li>
     <li><a href="donaciones.html">Donaciones</a></li>
     <li><a href="networking.html">Networking</a></li>
@@ -318,5 +319,15 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.tiendas-section').forEach(function(sec) {
+      sec.style.display = '';
+    });
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    var allBtn = document.querySelector('.filter-btn[onclick*="all"]');
+    if (allBtn) allBtn.classList.add('active');
+  });
+</script>
 </body>
 </html>

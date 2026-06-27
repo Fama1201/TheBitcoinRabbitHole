@@ -1,16 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dr. Athaseaa — Educador Bitcoin | TheRabbitHole</title>
-  <meta name="description" content="Educador e investigador independiente especializado en Bitcoin desde la teoría de la información, la criptografía, las matemáticas y la física."/>
+  <title>Dead Bitcoin — Educador Bitcoin | TheRabbitHole</title>
+  <meta name="description" content="Educador Bitcoin enfocado en autocustodia, privacidad y seguridad. Aprende a usar Bitcoin con confianza: wallets, nodos propios y herramientas open source."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/style.css"/>
   <style>
-    /* ── HERO ── */
     .educador-hero {
       background: var(--black); padding: 7rem 2.5rem 4rem;
       border-bottom: 1px solid #2a2520;
@@ -25,7 +24,7 @@
       border: 3px solid var(--orange);
     }
     .educador-hero-photo img {
-      width: 100%; height: 100%; object-fit: cover; object-position: center 33%;
+      width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
     }
     .educador-hero-info { flex: 1; min-width: 0; }
     .educador-hero-badge {
@@ -47,7 +46,6 @@
       border: 1px solid #333; letter-spacing: 0.04em;
     }
 
-    /* ── CONTENT ── */
     .educador-content { max-width: var(--max-w); margin: 0 auto; padding: 4rem 2.5rem; }
     .educador-section { margin-bottom: 3.5rem; }
     .educador-section h2 {
@@ -58,22 +56,20 @@
       line-height: 1.85; color: var(--text); margin-bottom: 1rem; font-size: 1rem;
     }
 
-    /* ── DISCIPLINES GRID ── */
-    .disciplines-grid {
+    .topics-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0;
     }
-    .discipline-card {
+    .topic-card {
       background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
       padding: 1rem 1.1rem;
     }
-    .discipline-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
-    .discipline-label {
+    .topic-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+    .topic-label {
       font-family: var(--font-display); font-size: 0.9rem; font-weight: 700;
       color: var(--black); margin-bottom: 0.2rem;
     }
-    .discipline-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin: 0; }
+    .topic-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin: 0; }
 
-    /* ── SOCIAL LINKS ── */
     .social-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;
     }
@@ -97,7 +93,6 @@
       margin-top: auto; padding-top: 0.5rem;
     }
 
-    /* ── CALLOUT ── */
     .callout {
       background: var(--bg2); border-left: 3px solid var(--orange);
       border-radius: 0 var(--radius) var(--radius) 0;
@@ -105,7 +100,6 @@
     }
     .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
 
-    /* ── BACK LINK ── */
     .back-link {
       font-family: var(--font-mono); font-size: 0.8rem; color: var(--orange);
       text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
@@ -116,12 +110,9 @@
     @media (max-width: 700px) {
       .educador-hero-inner { flex-direction: column; gap: 1.5rem; }
       .educador-hero-photo { width: 96px; height: 96px; }
-      .disciplines-grid { grid-template-columns: repeat(2, 1fr); }
+      .topics-grid { grid-template-columns: repeat(2, 1fr); }
       .social-grid { grid-template-columns: 1fr; }
       .educador-content { padding: 3rem 1.25rem; }
-    }
-    @media (max-width: 480px) {
-      .disciplines-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -169,19 +160,19 @@
 <div class="educador-hero">
   <div class="educador-hero-inner">
     <div class="educador-hero-photo">
-      <img src="assets/img/dc_athesea.jpeg" alt="Dr. Athaseaa"/>
+      <img src="assets/img/DeadBitcoin.jpg" alt="Dead Bitcoin"/>
     </div>
     <div class="educador-hero-info">
-      <p class="educador-hero-badge">Educador · Investigador independiente</p>
-      <h1 class="educador-hero-name">Dr. Athaseaa</h1>
+      <p class="educador-hero-badge">Educador · Autocustodia · Seguridad</p>
+      <h1 class="educador-hero-name">Dead Bitcoin</h1>
       <p class="educador-hero-title">
-        Bitcoin desde la física, las matemáticas y la teoría de la información.<br>
-        Contenido riguroso en español para hispanoamericanos.
+        Autocustodia, privacidad y seguridad en Bitcoin.<br>
+        Wallets, nodos propios y herramientas open source para usar Bitcoin con confianza.
       </p>
       <div class="educador-hero-platforms">
-        <span class="platform-pill">TikTok</span>
-        <span class="platform-pill">Telegram</span>
         <span class="platform-pill">Bitcoin-only</span>
+        <span class="platform-pill">Open Source</span>
+        <span class="platform-pill">Autocustodia</span>
       </div>
     </div>
   </div>
@@ -193,79 +184,68 @@
   <a href="educadores.html" class="back-link">← Volver al directorio</a>
 
   <div class="educador-section">
-    <h2>Sobre Dr. Athaseaa</h2>
+    <h2>Sobre Dead Bitcoin</h2>
     <p>
-      Dr. Athaseaa es un educador e investigador independiente especializado en Bitcoin y sus fundamentos científicos. Su trabajo explora Bitcoin desde disciplinas como la teoría de la información, la entropía, las matemáticas, la criptografía, la computación, la física y los sistemas complejos.
+      Dead Bitcoin es un educador de Bitcoin enfocado en enseñar autocustodia, privacidad y seguridad. Su contenido ayuda a las personas a usar Bitcoin con confianza, sin depender de terceros ni exponer sus fondos a riesgos innecesarios.
     </p>
     <p>
-      Interesado en comprender los principios fundamentales que gobiernan la información, la energía, el orden y el caos en el universo, busca conectar estos conceptos con el funcionamiento de Bitcoin como sistema descentralizado de preservación y transmisión de valor.
-    </p>
-    <p>
-      Su contenido está orientado a la educación rigurosa, el pensamiento crítico y el análisis de Bitcoin desde los primeros principios, acercando temas técnicos y científicos al público de habla hispana.
+      Promueve el uso de wallets propias, nodos personales y herramientas de código abierto, siempre con un enfoque exclusivo en Bitcoin. Su filosofía es que el verdadero control sobre los propios fondos requiere entender las herramientas que se usan, no solo confiar en ellas.
     </p>
     <div class="callout">
-      <p>Su enfoque parte de los primeros principios: antes de explicar <em>cómo</em> funciona Bitcoin, se pregunta <em>por qué</em> funciona. Esa base científica hace que su contenido sea especialmente valioso para quien quiere entender Bitcoin en profundidad y no solo usarlo.</p>
+      <p>Si no controlas tus llaves privadas, no controlas tus bitcoin. Dead Bitcoin enseña exactamente cómo tomar ese control: paso a paso, con herramientas verificables y sin atajos que comprometan la seguridad.</p>
     </div>
   </div>
 
   <div class="educador-section">
-    <h2>Disciplinas que conecta con Bitcoin</h2>
-    <p>Dr. Athaseaa aborda Bitcoin como un sistema complejo que se puede analizar desde múltiples ángulos científicos. Estas son las disciplinas que atraviesan su trabajo:</p>
+    <h2>Temas que cubre</h2>
+    <p>El contenido de Dead Bitcoin se centra en la práctica de la soberanía bitcoiner: desde elegir la wallet adecuada hasta correr tu propio nodo.</p>
 
-    <div class="disciplines-grid">
-      <div class="discipline-card">
-        <div class="discipline-icon">🔢</div>
-        <p class="discipline-label">Teoría de la información</p>
-        <p class="discipline-desc">Información, entropía, Shannon, transmisión y preservación de valor a través del protocolo.</p>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-icon">🔑</div>
+        <p class="topic-label">Autocustodia</p>
+        <p class="topic-desc">Cómo tomar el control de tus llaves privadas. Wallets de hardware, seed phrases y protección del acceso.</p>
       </div>
-      <div class="discipline-card">
-        <div class="discipline-icon">🔐</div>
-        <p class="discipline-label">Criptografía</p>
-        <p class="discipline-desc">Fundamentos de las firmas digitales, las funciones hash, la curva elíptica secp256k1 y la seguridad del protocolo.</p>
+      <div class="topic-card">
+        <div class="topic-icon">🛡️</div>
+        <p class="topic-label">Seguridad</p>
+        <p class="topic-desc">Buenas prácticas para proteger tus bitcoin: amenazas comunes, respaldos seguros y modelos de ataque.</p>
       </div>
-      <div class="discipline-card">
-        <div class="discipline-icon">📐</div>
-        <p class="discipline-label">Matemáticas</p>
-        <p class="discipline-desc">Álgebra, teoría de números, probabilidad y los principios matemáticos detrás del Proof of Work y la minería.</p>
+      <div class="topic-card">
+        <div class="topic-icon">🕵️</div>
+        <p class="topic-label">Privacidad</p>
+        <p class="topic-desc">Cómo reducir tu huella en la blockchain. Coinjoin, UTXO management y técnicas de privacidad on-chain.</p>
       </div>
-      <div class="discipline-card">
-        <div class="discipline-icon">⚡</div>
-        <p class="discipline-label">Física</p>
-        <p class="discipline-desc">Termodinámica, energía, entropía y cómo Bitcoin ancla la información al mundo físico a través del trabajo computacional.</p>
+      <div class="topic-card">
+        <div class="topic-icon">⚙️</div>
+        <p class="topic-label">Nodos propios</p>
+        <p class="topic-desc">Por qué correr tu propio nodo Bitcoin importa y cómo hacerlo. Verificación sin depender de terceros.</p>
       </div>
-      <div class="discipline-card">
-        <div class="discipline-icon">💻</div>
-        <p class="discipline-label">Computación</p>
-        <p class="discipline-desc">Teoría de la computación, consenso distribuido, redes peer-to-peer y la arquitectura del protocolo Bitcoin.</p>
+      <div class="topic-card">
+        <div class="topic-icon">💻</div>
+        <p class="topic-label">Open Source</p>
+        <p class="topic-desc">Herramientas de código abierto para Bitcoin. Por qué el software verificable es esencial para la soberanía.</p>
       </div>
-      <div class="discipline-card">
-        <div class="discipline-icon">🌐</div>
-        <p class="discipline-label">Sistemas complejos</p>
-        <p class="discipline-desc">Bitcoin como sistema emergente, propiedades del caos, orden espontáneo y resiliencia de redes descentralizadas.</p>
+      <div class="topic-card">
+        <div class="topic-icon">📱</div>
+        <p class="topic-label">Wallets</p>
+        <p class="topic-desc">Comparativas y guías de wallets Bitcoin. Diferencias entre hot wallets, hardware wallets y multisig.</p>
       </div>
     </div>
   </div>
 
   <div class="educador-section">
-    <h2>Dónde encontrarlo</h2>
-    <p>Puedes seguir el contenido de Dr. Athaseaa a través de sus cuentas de TikTok y su canal de Telegram:</p>
-
-    <div class="social-grid">
-      <a class="social-card" href="https://www.tiktok.com/@dr.athaseaa" target="_blank" rel="noopener">
-        <span class="social-network">TikTok</span>
-        <span class="social-handle">@dr.athaseaa</span>
-        <span class="social-arrow">Abrir en TikTok →</span>
-      </a>
-      <a class="social-card" href="https://www.tiktok.com/@dr_athaseaa_" target="_blank" rel="noopener">
-        <span class="social-network">TikTok</span>
-        <span class="social-handle">@dr_athaseaa_</span>
-        <span class="social-arrow">Abrir en TikTok →</span>
-      </a>
-      <a class="social-card" href="https://t.me/athaseaa" target="_blank" rel="noopener">
-        <span class="social-network">Telegram</span>
-        <span class="social-handle">@athaseaa</span>
-        <span class="social-arrow">Abrir en Telegram →</span>
-      </a>
+    <h2>Criterio Bitcoin-only</h2>
+    <p>Dead Bitcoin cumple el criterio de inclusión en este directorio:</p>
+    <div class="topics-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="topic-card">
+        <p class="topic-label" style="color:var(--orange);">✓ Bitcoin-only</p>
+        <p class="topic-desc">Contenido exclusivamente sobre Bitcoin. Sin altcoins, sin DeFi, sin tokens.</p>
+      </div>
+      <div class="topic-card">
+        <p class="topic-label" style="color:var(--orange);">✓ Sin trading</p>
+        <p class="topic-desc">No da señales de precio ni recomendaciones de inversión. Solo tecnología y práctica.</p>
+      </div>
     </div>
   </div>
 
