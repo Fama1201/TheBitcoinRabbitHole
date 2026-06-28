@@ -158,16 +158,14 @@
   <h1 class="lesson-title">Seed phrase y respaldo</h1>
 
   <p class="lesson-intro">
-    Las 12 o 24 palabras de tu <strong>seed phrase</strong> son el punto de partida de toda tu wallet Bitcoin. A partir de ellas se deriva matemáticamente cada llave privada, cada dirección, cada UTXO. Si alguien las obtiene, tiene tus bitcoin. Si tú las pierdes, no hay recuperación posible. Esta lección explica cómo funciona el estándar BIP39, cómo se generan y derivan las llaves, y cómo hacer un respaldo que sobreviva décadas.
+    Las 12 o 24 palabras de tu <strong>seed phrase</strong> son la raíz de toda tu wallet. Si alguien las obtiene, tiene tus bitcoin. Si las pierdes, no hay recuperación.
   </p>
 
   <!-- SECCIÓN 1: QUÉ ES UNA SEED PHRASE -->
   <div class="lesson-section">
     <h2>¿Qué son esas 12 o 24 palabras?</h2>
 
-    <p>Una seed phrase (también llamada frase semilla, frase mnemónica o frase de recuperación) es una lista de palabras que representa un número aleatorio de gran magnitud. Ese número —tu entropía— es la semilla de la que nace toda tu wallet.</p>
-
-    <p>El estándar se llama <strong>BIP39</strong> (Bitcoin Improvement Proposal 39) y define una lista fija de 2,048 palabras en inglés. Cada palabra representa un número del 0 al 2047. Cuando tu wallet genera una seed phrase, lo que realmente está haciendo es:</p>
+    <p>Una seed phrase es una lista de palabras que representa un número aleatorio enorme — tu entropía, la semilla de la que nace toda tu wallet. El estándar <strong>BIP39</strong> usa una lista fija de 2,048 palabras. Lo que hace tu wallet al crearla:</p>
 
     <!-- SVG: Proceso de generación -->
     <div class="diagram-box">
@@ -236,7 +234,7 @@
       </div>
     </div>
 
-    <p>Ambas opciones son extremadamente seguras. Con 128 bits de entropía, adivinar tu seed phrase es computacionalmente imposible incluso para los supercomputadores más potentes. Las 24 palabras solo añaden una capa extra para quienes prefieren máxima seguridad teórica.</p>
+    <p>Ambas son extremadamente seguras. Las 24 palabras son para quien quiere máxima seguridad teórica.</p>
 
     <div class="callout">
       <p><strong>La última palabra de la seed phrase es especial:</strong> es parcialmente una palabra de verificación (checksum). Sirve para detectar errores de escritura. Si escribes mal una palabra, la mayoría de wallets lo detecta y te avisa que la frase es inválida.</p>
@@ -272,7 +270,6 @@
       <li><strong>BIP32</strong> — define cómo derivar un árbol de llaves desde la semilla maestra</li>
     </ul>
 
-    <p>El proceso técnico es: las palabras se convierten en una semilla de 512 bits (usando una función llamada PBKDF2 con 2,048 iteraciones). Esa semilla genera la <em>llave maestra</em>, y de ella se derivan infinitas llaves hijo siguiendo rutas específicas.</p>
 
     <!-- SVG: HD Derivation Tree -->
     <div class="diagram-box">
@@ -334,7 +331,7 @@
       <figcaption>ÁRBOL DE DERIVACIÓN HD — una seed phrase genera un árbol completo de llaves y direcciones</figcaption>
     </div>
 
-    <p>Esta estructura jerárquica tiene una consecuencia poderosa: <strong>solo necesitas respaldar las palabras una vez</strong>. Si importas tu seed phrase en cualquier wallet compatible con BIP39/BIP32, esta reconstruirá automáticamente todas tus direcciones y encontrará todos tus bitcoin. No importa si el dispositivo se rompe, se pierde o es robado.</p>
+    <p><strong>Solo necesitas respaldar las palabras una vez.</strong> Cualquier wallet compatible con BIP39 reconstruirá automáticamente todas tus direcciones y fondos.</p>
 
     <div class="callout">
       <p><strong>Compatibilidad:</strong> Cualquier wallet que soporte BIP39 puede importar tu seed phrase. Esto significa que puedes pasar de Sparrow a Electrum, de Trezor a Ledger, de un hardware wallet a una app móvil — y siempre accederás a los mismos fondos. La interoperabilidad es parte del diseño.</p>
@@ -345,7 +342,7 @@
   <div class="lesson-section">
     <h2>La passphrase: la "palabra 25"</h2>
 
-    <p>BIP39 incluye una característica opcional muy poderosa: la <strong>passphrase</strong> (no confundir con la seed phrase en sí). Es una contraseña adicional que, combinada con tu seed phrase, genera un wallet completamente diferente.</p>
+    <p>La <strong>passphrase</strong> es una contraseña adicional opcional. Combinada con tu seed phrase, genera un wallet completamente diferente — invisible para quien solo tenga las palabras.</p>
 
     <!-- SVG: Passphrase concept -->
     <div class="diagram-box">
@@ -410,7 +407,7 @@
   <div class="lesson-section">
     <h2>Cómo respaldar tu seed phrase correctamente</h2>
 
-    <p>El respaldo de tu seed phrase es tan importante como la seed phrase misma. Un backup mal hecho puede significar la pérdida permanente de tus bitcoin. Aquí están las prácticas correctas — y los errores comunes que hay que evitar.</p>
+    <p>Un backup mal hecho puede significar la pérdida permanente de tus bitcoin.</p>
 
     <div class="dos-donts">
       <div class="dos-col do">
