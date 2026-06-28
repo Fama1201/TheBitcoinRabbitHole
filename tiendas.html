@@ -210,23 +210,29 @@
     <div class="tiendas-section" data-cat="servicios">
       <p class="tiendas-section-label">Servicios</p>
       <div class="tiendas-grid-full">
-        <div class="tienda-card-full">
-          <p class="tienda-cat">Servicios</p>
-          <h4>Nombre servicio</h4>
-          <p>Descripción del servicio que ofrecen y cómo procesan los pagos en Bitcoin.</p>
-          <div class="tienda-metodos">
-            <span class="tienda-metodo">On-chain</span>
-            <span class="tienda-metodo">Lightning</span>
+
+        <!-- MONSTRUO MOTOS -->
+        <a href="monstruo-motos.html" class="tienda-card-link">
+          <div class="tienda-link-logo">
+            <img src="assets/img/monstruo-motos.jpeg" alt="Monstruo Motos"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <span class="tienda-logo-initials" style="display:none">MM</span>
           </div>
-        </div>
-        <div class="tienda-card-full">
-          <p class="tienda-cat">Servicios</p>
-          <h4>Nombre servicio</h4>
-          <p>Descripción del servicio que ofrecen y cómo procesan los pagos en Bitcoin.</p>
-          <div class="tienda-metodos">
-            <span class="tienda-metodo">On-chain</span>
+          <div class="tienda-link-body">
+            <div class="tienda-link-top">
+              <div>
+                <h4 class="tienda-link-name">Monstruo Motos</h4>
+                <p class="tienda-link-loc">Taller · Repuestos · Cafetería · Ecuador</p>
+              </div>
+              <span class="tienda-link-arrow">→</span>
+            </div>
+            <p class="tienda-link-desc">Almacén de repuestos, taller mecánico de motos y cafetería en un mismo lugar. Paga los repuestos, la mano de obra o tu café directamente con Bitcoin.</p>
+            <div class="tienda-metodos" style="margin-top:0.75rem;">
+              <span class="tienda-metodo">Bitcoin</span>
+            </div>
           </div>
-        </div>
+        </a>
+
       </div>
     </div>
 
@@ -330,6 +336,7 @@
     var allBtn = document.querySelector('.filter-btn[onclick*="all"]');
     if (allBtn) allBtn.classList.add('active');
   });
+
 </script>
 </body>
 </html>

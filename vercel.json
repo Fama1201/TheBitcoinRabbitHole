@@ -19,6 +19,7 @@
     { "src": "/networking", "dest": "/networking.html" },
     { "src": "/libros", "dest": "/libros.html" },
     { "src": "/deadbitcoin", "dest": "/deadbitcoin.html" },
-    { "src": "/contacto", "dest": "/contacto.html" }
+    { "src": "/contacto", "dest": "/contacto.html" },
+    { "src": "/monstruo-motos", "dest": "/monstruo-motos.html" }
   ]
 }
