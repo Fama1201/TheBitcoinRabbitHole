@@ -212,36 +212,26 @@
       <div class="tiendas-grid-full">
 
         <!-- MONSTRUO MOTOS -->
-        <div class="tienda-card-expand" onclick="toggleTienda(this)">
-          <div class="tienda-expand-header">
-            <div class="tienda-logo-wrap">
-              <img src="assets/img/monstruo%20motos.jpeg" alt="Monstruo Motos"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-              <span class="tienda-logo-initials" style="display:none">MM</span>
-            </div>
-            <div class="tienda-expand-info">
-              <h4 class="tienda-expand-name">Monstruo Motos</h4>
-              <p class="tienda-expand-sub">TALLER · REPUESTOS · CAFETERÍA · ECUADOR</p>
-              <div class="tienda-expand-metodos">
-                <span class="tienda-metodo">Bitcoin</span>
-              </div>
-            </div>
-            <span class="tienda-expand-chevron">▾</span>
+        <a href="monstruo-motos.html" class="tienda-card-link">
+          <div class="tienda-link-logo">
+            <img src="assets/img/monstruo-motos.jpeg" alt="Monstruo Motos"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <span class="tienda-logo-initials" style="display:none">MM</span>
           </div>
-          <div class="tienda-expand-body">
-            <hr class="tienda-expand-divider"/>
-            <p class="tienda-desc">Almacén de repuestos y taller mecánico de motos que también tiene una cafetería. Puedes pagar tus repuestos, la mano de obra o tu café directamente con Bitcoin.</p>
-            <div class="tienda-contact-grid">
-              <div class="tienda-contact-item">
-                <p class="tienda-contact-label">Teléfono</p>
-                <p class="tienda-contact-val"><a href="tel:+5930987730218">+593 098 773 0218</a></p>
+          <div class="tienda-link-body">
+            <div class="tienda-link-top">
+              <div>
+                <h4 class="tienda-link-name">Monstruo Motos</h4>
+                <p class="tienda-link-loc">Taller · Repuestos · Cafetería · Ecuador</p>
               </div>
+              <span class="tienda-link-arrow">→</span>
             </div>
-            <div class="tienda-expand-actions">
-              <a href="tel:+5930987730218" class="tienda-action-btn primary" onclick="event.stopPropagation()">Llamar</a>
+            <p class="tienda-link-desc">Almacén de repuestos, taller mecánico de motos y cafetería en un mismo lugar. Paga los repuestos, la mano de obra o tu café directamente con Bitcoin.</p>
+            <div class="tienda-metodos" style="margin-top:0.75rem;">
+              <span class="tienda-metodo">Bitcoin</span>
             </div>
           </div>
-        </div>
+        </a>
 
       </div>
     </div>
@@ -347,9 +337,6 @@
     if (allBtn) allBtn.classList.add('active');
   });
 
-  function toggleTienda(card) {
-    card.classList.toggle('open');
-  }
 </script>
 </body>
 </html>
