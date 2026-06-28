@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 08: ¿Quién es Satoshi Nakamoto? — TheRabbitHole</title>
+  <meta name="description" content="Satoshi Nakamoto creó Bitcoin en 2008 y desapareció en 2010. Nadie sabe quién es — y esa puede ser la característica más importante del protocolo."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.dark { background: var(--black); border-color: var(--orange); }
+    .callout.dark p { color: #ccc; }
+    .callout.dark strong { color: var(--orange); }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── WHITEPAPER CARD ── */
+    .whitepaper-card { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem; margin: 1.5rem 0; display: flex; gap: 1.5rem; align-items: flex-start; }
+    .wp-icon { flex-shrink: 0; width: 56px; height: 70px; background: #F2790B; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+    .wp-content h4 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; color: white; }
+    .wp-meta { font-family: var(--font-mono); font-size: 0.7rem; color: #888; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+    .wp-content p { font-size: 0.88rem; line-height: 1.6; color: #aaa; margin: 0; }
+
+    /* ── TIMELINE ── */
+    .satoshi-timeline { border-left: 2px solid var(--border); margin: 1.75rem 0 1.75rem 0.75rem; padding-left: 1.5rem; }
+    .stl-item { position: relative; margin-bottom: 1.5rem; }
+    .stl-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--orange); border: 2px solid var(--bg); }
+    .stl-item.end::before { background: #555; }
+    .stl-date { font-family: var(--font-mono); font-size: 0.72rem; color: var(--orange); letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+    .stl-item.end .stl-date { color: var(--muted); }
+    .stl-item h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .stl-item p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── BITCOIN SATOSHI ── */
+    .btc-stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .btc-stat { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
+    .btc-stat-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; color: var(--orange); margin-bottom: 0.3rem; }
+    .btc-stat-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; }
+
+    /* ── TEORÍAS ── */
+    .teoria-list { display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0; }
+    .teoria-item { background: var(--bg); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; gap: 1rem; align-items: center; }
+    .teoria-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; min-width: 160px; }
+    .teoria-why { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+    .teoria-verdict { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); background: var(--bg2); padding: 0.2rem 0.6rem; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .whitepaper-card { flex-direction: column; }
+      .btc-stat-row { grid-template-columns: 1fr; }
+      .teoria-item { flex-direction: column; align-items: flex-start; }
+      .teoria-name { min-width: unset; }
+      .lesson-nav-next { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-rabbit" viewBox="0 0 64 50" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <ellipse cx="9" cy="33" rx="6" ry="5" fill="#f5a060"/>
+      <g class="rnb">
+        <ellipse cx="27" cy="33" rx="17" ry="11" fill="#F2790B" transform="rotate(-8 27 33)"/>
+        <ellipse cx="33" cy="34" rx="8" ry="6" fill="#f5a060" transform="rotate(-8 33 34)"/>
+        <circle cx="49" cy="23" r="10" fill="#F2790B"/>
+        <ellipse cx="45" cy="11" rx="3.5" ry="9" fill="#F2790B" transform="rotate(-15 45 20)"/>
+        <ellipse cx="45" cy="11" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(-15 45 20)"/>
+        <ellipse cx="52" cy="10" rx="3.5" ry="9" fill="#F2790B" transform="rotate(8 52 20)"/>
+        <ellipse cx="52" cy="10" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(8 52 20)"/>
+        <circle cx="55" cy="20" r="2.5" fill="#14110F"/>
+        <circle cx="56" cy="19" r="1" fill="white"/>
+        <circle cx="60" cy="25" r="1.5" fill="#c04010"/>
+      </g>
+      <rect class="rnla" x="38" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="44" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="13" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnla" x="20" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+    </svg>
+    <span class="nav-logo-text">TheRabbitHole</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+    <li><a href="networking.html">Networking</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <p class="breadcrumb" style="margin-bottom:1.5rem;">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="aprender.html">Aprender Bitcoin</a><span>›</span>
+    Lección 08
+  </p>
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 08</span>
+    <span class="lesson-nivel-badge">● Básico</span>
+    <span class="lesson-tiempo">⏱ ~10 min lectura</span>
+  </div>
+
+  <h1 class="lesson-title">¿Quién es Satoshi Nakamoto?</h1>
+  <p class="lesson-intro">Nadie lo sabe. El creador de Bitcoin apareció en 2008, publicó el whitepaper, construyó el protocolo, minó los primeros bloques y desapareció en 2010. Su identidad sigue siendo el mayor misterio de la tecnología moderna.</p>
+
+  <!-- ── SECCIÓN 1: EL WHITEPAPER ── -->
+  <div class="lesson-section">
+    <h2>Todo empezó con un documento de 9 páginas</h2>
+    <p>El 31 de octubre de 2008, en una lista de correos de criptografía, alguien bajo el nombre de Satoshi Nakamoto publicó un enlace a un PDF titulado <em>"Bitcoin: A Peer-to-Peer Electronic Cash System"</em>.</p>
+
+    <div class="whitepaper-card">
+      <div class="wp-icon">📄</div>
+      <div class="wp-content">
+        <h4>Bitcoin: A Peer-to-Peer Electronic Cash System</h4>
+        <p class="wp-meta">SATOSHI NAKAMOTO · 31 OCT 2008 · 9 PÁGINAS · bitcoin.org/bitcoin.pdf</p>
+        <p>El paper propone un sistema de efectivo electrónico que permite pagos directos entre personas sin pasar por una institución financiera. Usa una cadena de bloques con prueba de trabajo para resolver el problema del doble gasto sin necesitar un servidor central de confianza.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>El whitepaper no era el trabajo de un aficionado. Combinaba criptografía, teoría de juegos, economía y ciencias de la computación con una elegancia que sorprendió a expertos. Quienquiera que lo escribió llevaba años pensando en esto.</p>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 2: TIMELINE ── -->
+  <div class="lesson-section">
+    <h2>La actividad de Satoshi: 2008–2010</h2>
+
+    <div class="satoshi-timeline">
+      <div class="stl-item">
+        <p class="stl-date">31 OCT 2008</p>
+        <h4>Publicación del whitepaper</h4>
+        <p>Comparte el PDF en la lista de correo Cryptography Mailing List. La recepción es escéptica: varios expertos señalan problemas técnicos. Satoshi los responde con calma y precisión.</p>
+      </div>
+      <div class="stl-item">
+        <p class="stl-date">3 ENE 2009</p>
+        <h4>Bloque génesis — Bitcoin nace</h4>
+        <p>Satoshi mina el primer bloque de Bitcoin. Lo llama el <em>bloque génesis</em> y lo marca con un titular del Times de ese día: <em>"Chancellor on brink of second bailout for banks"</em> — un mensaje político incrustado en la blockchain para siempre.</p>
+      </div>
+      <div class="stl-item">
+        <p class="stl-date">9 ENE 2009</p>
+        <h4>Lanzamiento público del software</h4>
+        <p>Publica Bitcoin 0.1 en SourceForge. La red comienza a funcionar. Hal Finney recibe la primera transacción de Bitcoin de la historia — 10 BTC enviados por Satoshi.</p>
+      </div>
+      <div class="stl-item">
+        <p class="stl-date">2009–2010</p>
+        <h4>Desarrollo activo y foros</h4>
+        <p>Satoshi participa activamente en Bitcointalk, responde preguntas técnicas, corrige bugs y guía a los primeros desarrolladores. Su estilo es meticuloso, reservado y siempre en inglés impecable.</p>
+      </div>
+      <div class="stl-item">
+        <p class="stl-date">DIC 2010</p>
+        <h4>El último mensaje</h4>
+        <p>Satoshi envía un email a Gavin Andresen, el desarrollador a quien le pasa el control del proyecto: <em>"Seguiré con otras cosas"</em>. Luego se desconecta. Nunca más se vuelve a saber de él.</p>
+      </div>
+      <div class="stl-item end">
+        <p class="stl-date">2011 – HOY</p>
+        <h4>Silencio total</h4>
+        <p>Sus cuentas en foros dejan de usarse. Nadie ha podido verificar contacto con Satoshi desde entonces. El protocolo que dejó sigue funcionando sin él.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 3: EL BITCOIN DE SATOSHI ── -->
+  <div class="lesson-section">
+    <h2>El bitcoin que nunca se movió</h2>
+    <p>Durante los primeros meses de la red, Satoshi minó una gran cantidad de bloques — era el único minero activo durante semanas. Se estima que acumuló alrededor de <strong>1 millón de BTC</strong>.</p>
+
+    <div class="btc-stat-row">
+      <div class="btc-stat">
+        <div class="btc-stat-val">~1M</div>
+        <div class="btc-stat-label">BTC estimados<br>de Satoshi</div>
+      </div>
+      <div class="btc-stat">
+        <div class="btc-stat-val">4.76%</div>
+        <div class="btc-stat-label">Del suministro<br>total de 21M</div>
+      </div>
+      <div class="btc-stat">
+        <div class="btc-stat-val">$0</div>
+        <div class="btc-stat-label">Gastado<br>hasta hoy</div>
+      </div>
+    </div>
+
+    <div class="diagram-box" style="padding:1.5rem;">
+      <svg viewBox="0 0 680 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+        <!-- Total supply bar -->
+        <rect x="10" y="15" width="660" height="30" rx="6" fill="#EDECEA"/>
+        <!-- Satoshi's portion -->
+        <rect x="10" y="15" width="31" height="30" rx="6" fill="#F2790B"/>
+        <!-- Labels -->
+        <text x="26" y="35" text-anchor="middle" font-size="8" fill="white" font-weight="700">~1M</text>
+        <text x="340" y="35" text-anchor="middle" font-size="9" fill="#6B6760">Suministro total: 21,000,000 BTC</text>
+        <text x="26" y="58" text-anchor="middle" font-size="7" fill="#F2790B">Satoshi</text>
+      </svg>
+      <figcaption>EL BITCOIN DE SATOSHI NUNCA SE HA MOVIDO — los investigadores rastrean las "Satoshi coins" en la blockchain</figcaption>
+    </div>
+
+    <div class="callout dark">
+      <p><strong>El mejor argumento de que no es una estafa:</strong> Satoshi tenía ~1 millón de BTC y nunca los vendió. Si el objetivo era enriquecerse rápido, tuvo múltiples oportunidades. El hecho de que ese bitcoin siga intacto sugiere que el proyecto fue creado por convicción, no por codicia.</p>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 4: EL ANONIMATO ── -->
+  <div class="lesson-section">
+    <h2>¿Por qué el anonimato importa?</h2>
+    <p>No es solo un misterio romántico — el anonimato de Satoshi tiene consecuencias técnicas y políticas profundas para Bitcoin.</p>
+
+    <div class="diagram-box" style="padding:1.5rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div style="padding:1rem;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem;">Sin Satoshi conocido</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#2a7a2a;">✓</span> No hay líder que presionar o arrestar</li>
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#2a7a2a;">✓</span> El protocolo no puede ser "censurado" atacando a una persona</li>
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#2a7a2a;">✓</span> Las decisiones las toma la comunidad, no un fundador</li>
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#2a7a2a;">✓</span> Bitcoin es un protocolo, no una empresa</li>
+          </ul>
+        </div>
+        <div style="padding:1rem;background:#fff5f5;border-radius:var(--radius);">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:#b03030;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem;">Si Satoshi fuera conocido</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#b03030;">✗</span> Podría ser forzado a cambiar el protocolo</li>
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#b03030;">✗</span> Podría ser arrestado por crear "dinero no autorizado"</li>
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#b03030;">✗</span> Sus 1M BTC crearían presión de venta indefinida</li>
+            <li style="font-size:0.85rem;display:flex;gap:0.5rem;"><span style="color:#b03030;">✗</span> Bitcoin sería percibido como su proyecto personal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 5: TEORÍAS ── -->
+  <div class="lesson-section">
+    <h2>Las teorías — y por qué ninguna convence del todo</h2>
+    <p>A lo largo de los años se han propuesto muchos candidatos. Ninguno ha sido verificado con certeza.</p>
+
+    <div class="teoria-list">
+      <div class="teoria-item">
+        <div class="teoria-name">Hal Finney</div>
+        <div class="teoria-why">Criptógrafo brillante, recibió la primera transacción Bitcoin, vivía cerca de alguien llamado "Satoshi Nakamoto". Murió en 2014. Siempre lo negó.</div>
+        <div class="teoria-verdict">Sin confirmar</div>
+      </div>
+      <div class="teoria-item">
+        <div class="teoria-name">Nick Szabo</div>
+        <div class="teoria-why">Creó "bit gold" (precursor conceptual de Bitcoin), conocedor profundo de criptografía y economía. Análisis de escritura sugieren similitudes con el whitepaper. Lo niega.</div>
+        <div class="teoria-verdict">Sin confirmar</div>
+      </div>
+      <div class="teoria-item">
+        <div class="teoria-name">Craig Wright</div>
+        <div class="teoria-why">Afirmó públicamente ser Satoshi en 2016. No pudo probarlo criptográficamente. Múltiples juicios lo desmintieron. La comunidad Bitcoin lo rechaza.</div>
+        <div class="teoria-verdict">Descartado</div>
+      </div>
+      <div class="teoria-item">
+        <div class="teoria-name">Un grupo de personas</div>
+        <div class="teoria-why">Algunos investigadores creen que "Satoshi Nakamoto" es un pseudónimo colectivo — la profundidad técnica del whitepaper y el código sugiere múltiples disciplinas combinadas.</div>
+        <div class="teoria-verdict">Posible</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>La respuesta más honesta es: no lo sabemos. Y quizás es mejor así. Bitcoin fue diseñado para no depender de ninguna persona — incluyendo a su creador.</p>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>Satoshi Nakamoto publicó el whitepaper de Bitcoin el 31 de octubre de 2008 y desapareció en diciembre de 2010.</li>
+      <li>Nadie sabe quién es — puede ser una persona o un grupo bajo pseudónimo.</li>
+      <li>Minó los primeros bloques y acumuló ~1M BTC que nunca se han movido.</li>
+      <li>El bloque génesis tiene un mensaje político: un titular sobre el rescate bancario de 2009.</li>
+      <li>Su anonimato protege a Bitcoin: sin líder, no hay punto de presión para los gobiernos.</li>
+      <li>El protocolo que diseñó funciona sin él — esa era la idea desde el principio.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="leccion-7.html">Lección 07: ¿Qué es DCA?</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Volver al índice</span>
+      <a href="aprender.html">Ver todas las lecciones →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="libros.html">Libros</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

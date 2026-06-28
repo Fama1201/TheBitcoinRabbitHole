@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 00: ¿Qué es el dinero? — TheRabbitHole</title>
+  <meta name="description" content="Antes de entender Bitcoin, necesitas entender qué es el dinero, por qué surgió y por qué el sistema actual tiene problemas estructurales."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.danger { border-color: #b03030; background: #fff5f5; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── FUNCIONES DEL DINERO ── */
+    .funciones-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .funcion-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
+    .funcion-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .funcion-card h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .funcion-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin: 0; }
+
+    /* ── TIMELINE ── */
+    .money-timeline { margin: 1.75rem 0; }
+    .money-tl-item { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; align-items: flex-start; }
+    .money-tl-dot { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .money-tl-dot.muted { background: var(--bg2); }
+    .money-tl-content { padding-top: 0.25rem; }
+    .money-tl-era { font-family: var(--font-mono); font-size: 0.65rem; color: var(--orange); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .money-tl-content h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .money-tl-content p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── PROPIEDADES TABLE ── */
+    .prop-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    .prop-table th { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; background: var(--black); color: var(--white); }
+    .prop-table th:not(:first-child) { text-align: center; }
+    .prop-table td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); line-height: 1.5; vertical-align: middle; }
+    .prop-table tr:last-child td { border-bottom: none; }
+    .prop-table tr:hover td { background: var(--bg2); }
+    .prop-table td:not(:first-child) { text-align: center; }
+    .check-yes { color: #2a7a2a; font-weight: 700; font-size: 1rem; }
+    .check-partial { color: #d4601a; font-weight: 700; font-size: 0.9rem; }
+    .check-no { color: #b03030; font-weight: 700; font-size: 1rem; }
+
+    /* ── INFLACIÓN VISUAL ── */
+    .inflation-bars { display: flex; gap: 0.75rem; align-items: flex-end; height: 120px; margin: 1rem 0; }
+    .infl-bar { flex: 1; border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 0.4rem; }
+    .infl-bar span { font-family: var(--font-mono); font-size: 0.65rem; color: white; font-weight: 700; }
+    .infl-labels { display: flex; gap: 0.75rem; }
+    .infl-label { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .funciones-grid { grid-template-columns: 1fr; }
+      .lesson-nav-next { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-rabbit" viewBox="0 0 64 50" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <ellipse cx="9" cy="33" rx="6" ry="5" fill="#f5a060"/>
+      <g class="rnb">
+        <ellipse cx="27" cy="33" rx="17" ry="11" fill="#F2790B" transform="rotate(-8 27 33)"/>
+        <ellipse cx="33" cy="34" rx="8" ry="6" fill="#f5a060" transform="rotate(-8 33 34)"/>
+        <circle cx="49" cy="23" r="10" fill="#F2790B"/>
+        <ellipse cx="45" cy="11" rx="3.5" ry="9" fill="#F2790B" transform="rotate(-15 45 20)"/>
+        <ellipse cx="45" cy="11" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(-15 45 20)"/>
+        <ellipse cx="52" cy="10" rx="3.5" ry="9" fill="#F2790B" transform="rotate(8 52 20)"/>
+        <ellipse cx="52" cy="10" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(8 52 20)"/>
+        <circle cx="55" cy="20" r="2.5" fill="#14110F"/>
+        <circle cx="56" cy="19" r="1" fill="white"/>
+        <circle cx="60" cy="25" r="1.5" fill="#c04010"/>
+      </g>
+      <rect class="rnla" x="38" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="44" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="13" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnla" x="20" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+    </svg>
+    <span class="nav-logo-text">TheRabbitHole</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+    <li><a href="networking.html">Networking</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <p class="breadcrumb" style="margin-bottom:1.5rem;">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="aprender.html">Aprender Bitcoin</a><span>›</span>
+    Lección 00
+  </p>
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 00</span>
+    <span class="lesson-nivel-badge">● Básico</span>
+    <span class="lesson-tiempo">⏱ ~8 min lectura</span>
+  </div>
+
+  <h1 class="lesson-title">¿Qué es el dinero?</h1>
+  <p class="lesson-intro">Para entender Bitcoin primero hay que entender qué es el dinero, cómo surgió y por qué el sistema actual tiene fallas estructurales que afectan a todos.</p>
+
+  <!-- ── SECCIÓN 1: FUNCIONES ── -->
+  <div class="lesson-section">
+    <h2>El dinero tiene tres funciones</h2>
+    <p>Cualquier cosa que usemos como dinero debe cumplir estas tres funciones:</p>
+
+    <div class="funciones-grid">
+      <div class="funcion-card">
+        <div class="funcion-icon">🔄</div>
+        <h4>Medio de intercambio</h4>
+        <p>Permite comprar y vender sin necesitar que ambas partes tengan justo lo que el otro quiere.</p>
+      </div>
+      <div class="funcion-card">
+        <div class="funcion-icon">🏦</div>
+        <h4>Depósito de valor</h4>
+        <p>Guarda poder adquisitivo en el tiempo. Lo que ganas hoy debe valer algo mañana.</p>
+      </div>
+      <div class="funcion-card">
+        <div class="funcion-icon">📏</div>
+        <h4>Unidad de cuenta</h4>
+        <p>Permite comparar el valor de cosas distintas usando una misma medida común.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>El problema del trueque: si tienes manzanas y quieres zapatos, necesitas encontrar a alguien que tenga zapatos <em>y</em> quiera manzanas. El dinero elimina esa dependencia — es el intermediario universal.</p>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 2: HISTORIA ── -->
+  <div class="lesson-section">
+    <h2>Cómo evolucionó el dinero</h2>
+
+    <div class="money-timeline">
+      <div class="money-tl-item">
+        <div class="money-tl-dot">🍎</div>
+        <div class="money-tl-content">
+          <p class="money-tl-era">Prehistoria</p>
+          <h4>Trueque directo</h4>
+          <p>Se intercambian bienes y servicios sin intermediario. Funciona en comunidades pequeñas, pero escala muy mal.</p>
+        </div>
+      </div>
+      <div class="money-tl-item">
+        <div class="money-tl-dot">🐚</div>
+        <div class="money-tl-content">
+          <p class="money-tl-era">~3000 a.C.</p>
+          <h4>Mercancías como dinero</h4>
+          <p>Sal, conchas, ganado, cacao. Tienen valor propio pero son difíciles de transportar, dividir o almacenar.</p>
+        </div>
+      </div>
+      <div class="money-tl-item">
+        <div class="money-tl-dot">🥇</div>
+        <div class="money-tl-content">
+          <p class="money-tl-era">~700 a.C.</p>
+          <h4>Metales preciosos y monedas</h4>
+          <p>El oro y la plata se convierten en el estándar mundial. Son escasos, durables, divisibles y portátiles. Durante siglos, el dinero más sólido de la historia.</p>
+        </div>
+      </div>
+      <div class="money-tl-item">
+        <div class="money-tl-dot">📜</div>
+        <div class="money-tl-content">
+          <p class="money-tl-era">Siglos XVII–XIX</p>
+          <h4>Billetes respaldados por oro</h4>
+          <p>Los bancos emiten papel canjeable por oro. Más práctico que cargar metal. El papel "promete" valor real.</p>
+        </div>
+      </div>
+      <div class="money-tl-item">
+        <div class="money-tl-dot" style="background:#b03030;">💵</div>
+        <div class="money-tl-content">
+          <p class="money-tl-era">1971 – hoy</p>
+          <h4>Dinero fiat — sin respaldo</h4>
+          <p>Nixon rompe la convertibilidad dólar-oro. El dinero ya no representa nada físico — vale porque el gobierno lo ordena (<em>fiat</em> = "que así sea" en latín). Los bancos centrales pueden crear tanto como quieran.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 3: EL PROBLEMA ── -->
+  <div class="lesson-section">
+    <h2>El problema con el dinero fiat</h2>
+    <p>Cuando el dinero no tiene límite de emisión, los gobiernos tienen la tentación de imprimir más para pagar sus deudas. El resultado es la inflación: el mismo dinero compra menos con el tiempo.</p>
+
+    <!-- SVG: poder adquisitivo del dólar -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+        <text x="340" y="18" text-anchor="middle" font-size="9" fill="#6B6760" letter-spacing="2">PODER ADQUISITIVO DEL DÓLAR (base 100 en 1971)</text>
+
+        <!-- Axis -->
+        <line x1="60" y1="150" x2="650" y2="150" stroke="#DDDAD6" stroke-width="1"/>
+        <line x1="60" y1="30" x2="60" y2="150" stroke="#DDDAD6" stroke-width="1"/>
+
+        <!-- Y labels -->
+        <text x="50" y="34" text-anchor="end" font-size="8" fill="#6B6760">100</text>
+        <text x="50" y="84" text-anchor="end" font-size="8" fill="#6B6760">50</text>
+        <text x="50" y="152" text-anchor="end" font-size="8" fill="#6B6760">0</text>
+        <line x1="58" y1="84" x2="62" y2="84" stroke="#DDDAD6" stroke-width="1"/>
+
+        <!-- Declining curve: from 100 in 1971 to ~14 today -->
+        <path d="M60,30 C120,35 180,55 250,75 S370,105 450,120 S570,138 650,145"
+              stroke="#b03030" stroke-width="2.5" fill="none"/>
+
+        <!-- Shaded area under curve -->
+        <path d="M60,30 C120,35 180,55 250,75 S370,105 450,120 S570,138 650,145 L650,150 L60,150 Z"
+              fill="#b03030" opacity="0.08"/>
+
+        <!-- Year labels -->
+        <text x="60" y="163" text-anchor="middle" font-size="8" fill="#6B6760">1971</text>
+        <text x="200" y="163" text-anchor="middle" font-size="8" fill="#6B6760">1985</text>
+        <text x="350" y="163" text-anchor="middle" font-size="8" fill="#6B6760">2000</text>
+        <text x="500" y="163" text-anchor="middle" font-size="8" fill="#6B6760">2015</text>
+        <text x="640" y="163" text-anchor="middle" font-size="8" fill="#6B6760">2025</text>
+
+        <!-- Start marker -->
+        <circle cx="60" cy="30" r="4" fill="#F2790B"/>
+        <text x="70" y="27" font-size="8" fill="#F2790B">$1.00 en 1971</text>
+
+        <!-- End marker -->
+        <circle cx="650" cy="145" r="4" fill="#b03030"/>
+        <text x="580" y="142" font-size="8" fill="#b03030">≈ $0.14 hoy</text>
+      </svg>
+      <figcaption>EL DÓLAR HA PERDIDO MÁS DEL 85% DE SU PODER ADQUISITIVO DESDE 1971 — y sigue cayendo</figcaption>
+    </div>
+
+    <div class="callout danger">
+      <p><strong>La inflación es un impuesto invisible.</strong> Si tienes $10,000 en el banco y la inflación es del 8% anual, al año siguiente tu dinero compra lo que antes compraban $9,200 — aunque el número en pantalla siga siendo $10,000. No ves que te cobran; simplemente puedes comprar menos.</p>
+    </div>
+
+    <h3>Tres problemas estructurales del dinero fiat</h3>
+
+    <div class="diagram-box" style="padding: 1.5rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+        <div style="text-align:center;padding:1rem;">
+          <div style="font-size:1.8rem;margin-bottom:0.5rem;">🖨️</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Emisión infinita</div>
+          <p style="font-size:0.82rem;color:var(--muted);line-height:1.5;margin:0;">Los bancos centrales pueden crear dinero sin límite. Nadie votó por eso.</p>
+        </div>
+        <div style="text-align:center;padding:1rem;">
+          <div style="font-size:1.8rem;margin-bottom:0.5rem;">🏛️</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Confianza obligatoria</div>
+          <p style="font-size:0.82rem;color:var(--muted);line-height:1.5;margin:0;">El sistema depende de que confíes en bancos, gobiernos y reguladores. No tienes opción.</p>
+        </div>
+        <div style="text-align:center;padding:1rem;">
+          <div style="font-size:1.8rem;margin-bottom:0.5rem;">🚫</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Confiscación posible</div>
+          <p style="font-size:0.82rem;color:var(--muted);line-height:1.5;margin:0;">Tu cuenta puede ser congelada, tu saldo confiscado. El dinero en el banco no es completamente tuyo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 4: PROPIEDADES ── -->
+  <div class="lesson-section">
+    <h2>¿Qué hace "bueno" al dinero?</h2>
+    <p>A lo largo de la historia, el dinero más adoptado ha sido el que mejor cumple estas propiedades. Compara cómo el oro, el fiat y Bitcoin se desempeñan:</p>
+
+    <table class="prop-table">
+      <thead>
+        <tr>
+          <th>Propiedad</th>
+          <th>Oro</th>
+          <th>Fiat (USD)</th>
+          <th>Bitcoin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Escasez</strong> — oferta limitada</td>
+          <td><span class="check-yes">✓</span></td>
+          <td><span class="check-no">✗</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Durabilidad</strong> — no se degrada</td>
+          <td><span class="check-yes">✓</span></td>
+          <td><span class="check-partial">~</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Portabilidad</strong> — fácil de mover</td>
+          <td><span class="check-no">✗</span></td>
+          <td><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Divisibilidad</strong> — fracciones exactas</td>
+          <td><span class="check-partial">~</span></td>
+          <td><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fungibilidad</strong> — cada unidad es igual</td>
+          <td><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Verificabilidad</strong> — difícil de falsificar</td>
+          <td><span class="check-partial">~</span></td>
+          <td><span class="check-partial">~</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sin permiso</strong> — nadie puede bloquearte</td>
+          <td><span class="check-partial">~</span></td>
+          <td><span class="check-no">✗</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Transportable globalmente</strong></td>
+          <td><span class="check-no">✗</span></td>
+          <td><span class="check-partial">~</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p>El oro es el mejor dinero que la humanidad encontró durante milenios. Su único problema: no se puede enviar por internet. Bitcoin resuelve eso — es oro digital con oferta fija de 21 millones, verificable matemáticamente, enviable en minutos a cualquier parte del mundo.</p>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>El dinero es una herramienta: medio de intercambio, depósito de valor y unidad de cuenta.</li>
+      <li>Evolucionó desde el trueque hasta los metales y luego al papel respaldado por oro.</li>
+      <li>En 1971 el dólar perdió su respaldo en oro — desde entonces el dinero vale porque el gobierno lo dice.</li>
+      <li>El dinero fiat puede ser emitido sin límite, causando inflación que erosiona tus ahorros.</li>
+      <li>El buen dinero es escaso, durable, portátil, divisible, fungible y verificable.</li>
+      <li>Bitcoin fue diseñado para ser eso: dinero duro, digital y sin permiso de ninguna autoridad.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="aprender.html">Volver a todas las lecciones</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="leccion-1.html">¿Qué es Bitcoin? →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="libros.html">Libros</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
