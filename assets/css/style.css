@@ -53,7 +53,23 @@ nav {
   font-size: 1.05rem; font-weight: 700;
   color: var(--black); letter-spacing: -0.01em;
 }
-.nav-logo svg { width: 32px; height: 32px; flex-shrink: 0; }
+.nav-logo svg { width: auto; height: 36px; flex-shrink: 0; }
+
+/* ── NAV LOGO RABBIT ANIMATION ── */
+@keyframes rnb  { 0%,100%{ transform:translateY(0);    } 50%{ transform:translateY(-2px); } }
+@keyframes rnla { 0%,100%{ transform:translateY(0);    } 50%{ transform:translateY(-7px); } }
+@keyframes rnlb { 0%,100%{ transform:translateY(-7px); } 50%{ transform:translateY(0);    } }
+@keyframes rnt  { to{ max-width:180px; } }
+.nav-logo-rabbit .rnb  { animation: rnb  0.42s ease-in-out infinite; }
+.nav-logo-rabbit .rnla { animation: rnla 0.42s ease-in-out infinite; }
+.nav-logo-rabbit .rnlb { animation: rnlb 0.42s ease-in-out infinite; }
+.nav-logo-text {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 0;
+  white-space: nowrap;
+  animation: rnt 0.65s ease-out 0.35s forwards;
+}
 
 .nav-links { display: flex; gap: 0; list-style: none; }
 .nav-links a {
