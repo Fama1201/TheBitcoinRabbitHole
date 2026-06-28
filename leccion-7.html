@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lección 07: ¿Qué es DCA? — TheRabbitHole</title>
+  <meta name="description" content="Dollar Cost Averaging: la estrategia de comprar bitcoin en cantidades fijas y regulares, sin importar el precio. Aprende por qué funciona y cómo automatizarlo."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .lesson-wrap { max-width: 760px; margin: 0 auto; padding: 5rem 2.5rem 6rem; }
+    .lesson-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .lesson-num-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-nivel-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg2); padding: 0.25rem 0.7rem; border-radius: var(--radius); }
+    .lesson-tiempo { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+    .lesson-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+    .lesson-intro { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .lesson-section { margin-bottom: 3.5rem; }
+    .lesson-section h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; }
+    .lesson-section h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 1.5rem 0 0.5rem; }
+    .lesson-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .callout { background: var(--bg2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+    .callout.tip { border-color: #2a7a2a; background: #f6fdf6; }
+    .diagram-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 2rem 0; }
+    .diagram-box figcaption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 1rem; letter-spacing: 0.05em; }
+
+    /* ── DCA BARS ── */
+    .dca-chart-wrap { padding: 0.5rem 0; }
+    .dca-bars { display: flex; gap: 8px; align-items: flex-end; height: 140px; }
+    .dca-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .dca-bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--orange); position: relative; }
+    .dca-bar.low { background: #2a7a2a; }
+    .dca-bar.high { background: #d4601a; }
+    .dca-bar-price { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); text-align: center; }
+    .dca-bar-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); }
+    .dca-legend { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+    .dca-legend-item { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); }
+    .dca-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+    /* ── COMPARACIÓN DCA vs LUMP ── */
+    .strategy-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .strategy-col { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .strategy-col.dca-col { border-color: #2a7a2a; background: #f6fdf6; }
+    .strategy-col.lump-col { border-color: #b03030; background: #fff5f5; }
+    .strategy-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .strategy-col.dca-col .strategy-label { color: #2a7a2a; }
+    .strategy-col.lump-col .strategy-label { color: #b03030; }
+    .strategy-col h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .strategy-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .strategy-col li { font-size: 0.84rem; line-height: 1.5; }
+    .dca-col li::before { content: '✓ '; color: #2a7a2a; }
+    .lump-col li::before { content: '✗ '; color: #b03030; }
+
+    /* ── CALCULADORA ── */
+    .interactive-box { background: var(--white); border: 1.5px solid var(--orange); border-radius: var(--radius); padding: 1.75rem; margin: 2rem 0; }
+    .interactive-box h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .interactive-box p.hint { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .calc-field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .calc-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .calc-input { padding: 0.6rem 0.9rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.9rem; background: var(--bg); color: var(--black); width: 100%; box-sizing: border-box; }
+    .calc-input:focus { outline: none; border-color: var(--orange); }
+    .calc-btn { background: var(--orange); color: white; border: none; border-radius: var(--radius); padding: 0.7rem 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; cursor: pointer; transition: opacity 0.2s; width: 100%; }
+    .calc-btn:hover { opacity: 0.85; }
+    .calc-results { margin-top: 1.25rem; display: none; }
+    .calc-results.visible { display: block; }
+    .calc-result-row { display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0; border-bottom: 1px solid var(--border); }
+    .calc-result-row:last-child { border-bottom: none; }
+    .calc-result-label { font-size: 0.88rem; color: var(--muted); }
+    .calc-result-val { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: var(--black); }
+    .calc-result-val.positive { color: #2a7a2a; }
+
+    /* ── AUTOMATIZAR ── */
+    .auto-steps { display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0; }
+    .auto-step { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem; background: var(--bg); border-radius: var(--radius); }
+    .auto-step-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--orange); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; }
+    .auto-step p { font-size: 0.88rem; line-height: 1.6; color: var(--text); margin: 0; }
+
+    /* ── RESUMEN ── */
+    .resumen-box { background: var(--black); color: var(--white); border-radius: var(--radius); padding: 2rem 2.5rem; margin: 2.5rem 0; }
+    .resumen-box h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--orange); }
+    .resumen-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .resumen-box li { font-size: 0.93rem; line-height: 1.5; display: flex; gap: 0.6rem; }
+    .resumen-box li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+    .lesson-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .lesson-nav-back { font-size: 0.875rem; color: var(--muted); }
+    .lesson-nav-back a { color: var(--orange); }
+    .lesson-nav-next { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+    .lesson-nav-next span { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .lesson-nav-next a { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--black); transition: color var(--tr); }
+    .lesson-nav-next a:hover { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .lesson-wrap { padding: 4rem 1.25rem 4rem; }
+      .strategy-compare { grid-template-columns: 1fr; }
+      .calc-grid { grid-template-columns: 1fr; }
+      .lesson-nav-next { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-rabbit" viewBox="0 0 64 50" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <ellipse cx="9" cy="33" rx="6" ry="5" fill="#f5a060"/>
+      <g class="rnb">
+        <ellipse cx="27" cy="33" rx="17" ry="11" fill="#F2790B" transform="rotate(-8 27 33)"/>
+        <ellipse cx="33" cy="34" rx="8" ry="6" fill="#f5a060" transform="rotate(-8 33 34)"/>
+        <circle cx="49" cy="23" r="10" fill="#F2790B"/>
+        <ellipse cx="45" cy="11" rx="3.5" ry="9" fill="#F2790B" transform="rotate(-15 45 20)"/>
+        <ellipse cx="45" cy="11" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(-15 45 20)"/>
+        <ellipse cx="52" cy="10" rx="3.5" ry="9" fill="#F2790B" transform="rotate(8 52 20)"/>
+        <ellipse cx="52" cy="10" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(8 52 20)"/>
+        <circle cx="55" cy="20" r="2.5" fill="#14110F"/>
+        <circle cx="56" cy="19" r="1" fill="white"/>
+        <circle cx="60" cy="25" r="1.5" fill="#c04010"/>
+      </g>
+      <rect class="rnla" x="38" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="44" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="13" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnla" x="20" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+    </svg>
+    <span class="nav-logo-text">TheRabbitHole</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html" class="active">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+    <li><a href="networking.html">Networking</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<div class="lesson-wrap">
+
+  <p class="breadcrumb" style="margin-bottom:1.5rem;">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="aprender.html">Aprender Bitcoin</a><span>›</span>
+    Lección 07
+  </p>
+
+  <div class="lesson-meta">
+    <span class="lesson-num-badge">Lección 07</span>
+    <span class="lesson-nivel-badge">● Básico</span>
+    <span class="lesson-tiempo">⏱ ~10 min lectura</span>
+  </div>
+
+  <h1 class="lesson-title">¿Qué es DCA?</h1>
+  <p class="lesson-intro">DCA (Dollar Cost Averaging) es comprar una cantidad fija de bitcoin de forma periódica — sin importar el precio. Es la estrategia más simple, más probada y más accesible para acumular bitcoin a largo plazo.</p>
+
+  <!-- ── SECCIÓN 1: QUÉ ES ── -->
+  <div class="lesson-section">
+    <h2>La idea central</h2>
+    <p>En lugar de intentar comprar en el momento "perfecto" — cuando el precio está en el mínimo —, con DCA compras la misma cantidad de dinero fiat cada semana o cada mes, sin pensar en el precio de ese día.</p>
+
+    <div class="diagram-box">
+      <div class="dca-chart-wrap">
+        <p style="font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:1rem;">$100 al mes durante 12 meses — el precio varía, la inversión no</p>
+        <div class="dca-bars" id="dcaBarsDemo">
+          <!-- filled by JS -->
+        </div>
+        <div style="display:flex;gap:8px;margin-top:6px;" id="dcaMonthLabels"></div>
+        <div class="dca-legend">
+          <div class="dca-legend-item"><div class="dca-legend-dot" style="background:#2a7a2a;"></div>Precio bajo → más BTC comprado</div>
+          <div class="dca-legend-item"><div class="dca-legend-dot" style="background:#F2790B;"></div>Precio medio</div>
+          <div class="dca-legend-item"><div class="dca-legend-dot" style="background:#d4601a;"></div>Precio alto → menos BTC comprado</div>
+        </div>
+      </div>
+      <figcaption>DCA: MISMA CANTIDAD EN FIAT CADA MES — DIFERENTE CANTIDAD DE BTC SEGÚN EL PRECIO</figcaption>
+    </div>
+
+    <div class="callout">
+      <p><strong>El efecto clave:</strong> cuando el precio baja, tus $100 compran <em>más</em> bitcoin. Cuando sube, compran menos. Al promediar, tu costo de entrada queda entre los picos y los valles — sin que tengas que predecir nada.</p>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 2: POR QUÉ FUNCIONA ── -->
+  <div class="lesson-section">
+    <h2>¿Por qué no intentar comprar en el mínimo?</h2>
+    <p>La estrategia alternativa se llama "timing the market": esperar al precio más bajo para comprar todo de golpe. El problema: nadie sabe cuándo es el mínimo hasta que ya pasó.</p>
+
+    <!-- SVG: el problema del timing -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" font-family="JetBrains Mono, monospace">
+        <!-- Price curve -->
+        <path d="M30,120 C80,110 100,60 150,80 S220,130 270,70 S340,30 390,60 S450,110 500,50 S580,20 650,40"
+              stroke="#F2790B" stroke-width="2" fill="none"/>
+
+        <!-- Shaded area -->
+        <path d="M30,120 C80,110 100,60 150,80 S220,130 270,70 S340,30 390,60 S450,110 500,50 S580,20 650,40 L650,145 L30,145 Z"
+              fill="#F2790B" opacity="0.07"/>
+
+        <!-- Bad buy: bought at peak -->
+        <circle cx="150" cy="80" r="6" fill="#b03030"/>
+        <text x="150" y="70" text-anchor="middle" font-size="8" fill="#b03030">Compraste aquí</text>
+        <text x="150" y="60" text-anchor="middle" font-size="8" fill="#b03030">"parecía el fondo"</text>
+
+        <!-- Real bottom -->
+        <circle cx="390" cy="60" r="6" fill="#2a7a2a"/>
+        <text x="390" y="50" text-anchor="middle" font-size="8" fill="#2a7a2a">El fondo real</text>
+        <text x="390" y="40" text-anchor="middle" font-size="8" fill="#2a7a2a">nadie lo sabe hasta después</text>
+
+        <!-- DCA line: flat -->
+        <line x1="30" y1="100" x2="650" y2="100" stroke="#888" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="660" y="103" font-size="8" fill="#888">Precio prom. DCA</text>
+
+        <!-- Axis -->
+        <line x1="30" y1="145" x2="660" y2="145" stroke="#DDDAD6" stroke-width="1"/>
+        <text x="30" y="155" text-anchor="middle" font-size="7" fill="#6B6760">Ene</text>
+        <text x="180" y="155" text-anchor="middle" font-size="7" fill="#6B6760">Abr</text>
+        <text x="340" y="155" text-anchor="middle" font-size="7" fill="#6B6760">Jul</text>
+        <text x="500" y="155" text-anchor="middle" font-size="7" fill="#6B6760">Oct</text>
+        <text x="650" y="155" text-anchor="middle" font-size="7" fill="#6B6760">Dic</text>
+      </svg>
+      <figcaption>TIMING THE MARKET: nadie acierta consistentemente. DCA elimina esa presión.</figcaption>
+    </div>
+
+    <div class="strategy-compare">
+      <div class="strategy-col dca-col">
+        <p class="strategy-label">DCA ✓</p>
+        <h4>Compras regulares</h4>
+        <ul>
+          <li>No necesitas predecir el precio</li>
+          <li>Reduces el riesgo de comprar en pico</li>
+          <li>Fácil de automatizar</li>
+          <li>Funciona con cualquier presupuesto</li>
+          <li>Disciplina sin esfuerzo emocional</li>
+        </ul>
+      </div>
+      <div class="strategy-col lump-col">
+        <p class="strategy-label">Timing the market ✗</p>
+        <h4>Compra única en el "mínimo"</h4>
+        <ul>
+          <li>Nadie sabe cuándo es el mínimo</li>
+          <li>Alta exposición al error de timing</li>
+          <li>Carga psicológica enorme</li>
+          <li>Puede resultar en comprar en pico</li>
+          <li>Estadísticamente inferior al DCA en activos volátiles</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 3: CALCULADORA ── -->
+  <div class="lesson-section">
+    <h2>Calcula tu DCA</h2>
+    <p>Ingresa cuánto invertirías por mes y a qué precio de bitcoin, y ve cuántos sats acumularías.</p>
+
+    <div class="interactive-box">
+      <h4>Calculadora DCA simple</h4>
+      <p class="hint">Estima cuánto bitcoin acumularías con compras regulares. Los precios son ilustrativos.</p>
+
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label class="calc-label" for="cMonthly">Inversión mensual (USD)</label>
+          <input class="calc-input" type="number" id="cMonthly" value="50" min="1" max="100000" step="10"/>
+        </div>
+        <div class="calc-field">
+          <label class="calc-label" for="cMonths">Meses de DCA</label>
+          <input class="calc-input" type="number" id="cMonths" value="12" min="1" max="120" step="1"/>
+        </div>
+        <div class="calc-field">
+          <label class="calc-label" for="cPrice">Precio promedio de BTC (USD)</label>
+          <input class="calc-input" type="number" id="cPrice" value="95000" min="1000" step="1000"/>
+        </div>
+        <div class="calc-field" style="display:flex;align-items:flex-end;">
+          <button class="calc-btn" onclick="calcDca()">Calcular →</button>
+        </div>
+      </div>
+
+      <div class="calc-results" id="dcaResults">
+        <div class="calc-result-row">
+          <span class="calc-result-label">Total invertido en fiat</span>
+          <span class="calc-result-val" id="rTotalFiat">—</span>
+        </div>
+        <div class="calc-result-row">
+          <span class="calc-result-label">Bitcoin acumulado</span>
+          <span class="calc-result-val positive" id="rBtcTotal">—</span>
+        </div>
+        <div class="calc-result-row">
+          <span class="calc-result-label">Satoshis acumulados</span>
+          <span class="calc-result-val positive" id="rSatsTotal">—</span>
+        </div>
+        <div class="calc-result-row">
+          <span class="calc-result-label">Precio promedio de compra</span>
+          <span class="calc-result-val" id="rAvgPrice">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 4: CÓMO AUTOMATIZARLO ── -->
+  <div class="lesson-section">
+    <h2>Cómo automatizar tu DCA</h2>
+    <p>El DCA funciona mejor cuando se automatiza — elimina la tentación de "esperar un mejor momento".</p>
+
+    <div class="auto-steps">
+      <div class="auto-step">
+        <div class="auto-step-num">1</div>
+        <p><strong>Elige un exchange con compras recurrentes.</strong> Kraken, Buda.com, Bitso y otros permiten configurar compras automáticas: diarias, semanales o mensuales. Activas una vez, funciona solo.</p>
+      </div>
+      <div class="auto-step">
+        <div class="auto-step-num">2</div>
+        <p><strong>Define un monto que no te duela perder.</strong> El DCA funciona porque es constante. Si el monto te genera ansiedad mensual, es muy alto. Empieza con poco — hasta $10/mes tiene sentido.</p>
+      </div>
+      <div class="auto-step">
+        <div class="auto-step-num">3</div>
+        <p><strong>Configura el retiro automático a tu wallet.</strong> Algunos exchanges permiten enviar automáticamente a tu dirección. Si no, establece un recordatorio mensual para retirar. Nunca acumules en el exchange.</p>
+      </div>
+      <div class="auto-step">
+        <div class="auto-step-num">4</div>
+        <p><strong>No mires el precio a diario.</strong> El DCA está diseñado para hacerte olvidar el ruido del mercado. Revisa tu acumulación en sats, no en USD. A largo plazo, los sats importan más que el precio de hoy.</p>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Mide en sats, no en dólares.</strong> Si inviertes $100 y el precio baja 30%, en dólares "perdiste". En sats, tienes exactamente los mismos sats — y el próximo mes compras 43% más por el mismo precio. La mentalidad DCA es de acumulación, no de especulación.</p>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="resumen-box">
+    <h3>Resumen de la lección</h3>
+    <ul>
+      <li>DCA = comprar una cantidad fija de dinero fiat en bitcoin de forma periódica, sin importar el precio.</li>
+      <li>Funciona porque nadie puede predecir el precio — el DCA elimina esa presión.</li>
+      <li>A precio bajo compras más bitcoin; a precio alto compras menos. El promedio es favorable.</li>
+      <li>Es mejor que el "timing the market" en activos volátiles: menos estrés, mejores resultados estadísticos.</li>
+      <li>Se puede automatizar en exchanges: configuras una vez y funciona solo.</li>
+      <li>Regla de oro: después de cada compra, retira a tu propia wallet. Nunca acumules en el exchange.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-nav">
+    <div class="lesson-nav-back">
+      ← <a href="leccion-6.html">Lección 06: Cómo comprar Bitcoin</a>
+    </div>
+    <div class="lesson-nav-next">
+      <span>Siguiente lección</span>
+      <a href="leccion-8.html">¿Quién es Satoshi Nakamoto? →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="libros.html">Libros</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+// ── DCA BARS DEMO ──
+const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const prices = [42000, 48000, 55000, 50000, 38000, 30000, 35000, 45000, 60000, 75000, 68000, 80000];
+const maxPrice = Math.max(...prices);
+
+const barsEl = document.getElementById('dcaBarsDemo');
+const labelsEl = document.getElementById('dcaMonthLabels');
+
+prices.forEach((p, i) => {
+  const col = document.createElement('div');
+  col.className = 'dca-bar-col';
+  col.style.flex = '1';
+
+  const heightPct = Math.round((p / maxPrice) * 100);
+  const color = p < 40000 ? '#2a7a2a' : p > 65000 ? '#d4601a' : '#F2790B';
+
+  const sats = Math.round((100 / p) * 1e8);
+
+  col.innerHTML = `
+    <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--muted);text-align:center;">+${(sats/1000).toFixed(0)}k</div>
+    <div style="width:100%;height:${heightPct * 1.2}px;border-radius:3px 3px 0 0;background:${color};"></div>
+  `;
+  barsEl.appendChild(col);
+
+  const lbl = document.createElement('div');
+  lbl.style.flex = '1';
+  lbl.style.textAlign = 'center';
+  lbl.style.fontFamily = 'var(--font-mono)';
+  lbl.style.fontSize = '0.6rem';
+  lbl.style.color = 'var(--muted)';
+  lbl.textContent = months[i];
+  labelsEl.appendChild(lbl);
+});
+
+// ── DCA CALCULATOR ──
+function calcDca() {
+  const monthly = parseFloat(document.getElementById('cMonthly').value) || 50;
+  const months  = parseInt(document.getElementById('cMonths').value)    || 12;
+  const price   = parseFloat(document.getElementById('cPrice').value)   || 95000;
+
+  const totalFiat = monthly * months;
+  const btcTotal  = totalFiat / price;
+  const satsTotal = Math.round(btcTotal * 1e8);
+
+  document.getElementById('rTotalFiat').textContent  = '$' + totalFiat.toLocaleString('en-US', {maximumFractionDigits:2});
+  document.getElementById('rBtcTotal').textContent   = btcTotal.toFixed(8) + ' BTC';
+  document.getElementById('rSatsTotal').textContent  = satsTotal.toLocaleString('en-US') + ' sats';
+  document.getElementById('rAvgPrice').textContent   = '$' + price.toLocaleString('en-US');
+
+  document.getElementById('dcaResults').classList.add('visible');
+}
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
