@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>N4-3D — Impresión 3D en Ibarra, Ecuador | TheRabbitHole</title>
+  <meta name="description" content="Creaciones N4-3D: impresión 3D de figuras personalizadas y repuestos técnicos en Ibarra, Ecuador. Acepta Bitcoin. Contacto: +593 97 9667797."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    /* ── HERO ── */
+    .tienda-hero {
+      background: var(--black); padding: 7rem 2.5rem 4rem;
+      border-bottom: 1px solid #2a2520;
+    }
+    .tienda-hero-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .tienda-hero-logo {
+      width: 120px; height: 120px; flex-shrink: 0;
+      border-radius: 16px; overflow: hidden;
+      background: #1a1512; border: 1px solid #2a2520;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tienda-hero-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .tienda-hero-logo-fallback {
+      font-family: var(--font-display); font-size: 1.6rem; font-weight: 900;
+      color: var(--orange); text-align: center; line-height: 1.2;
+    }
+    .tienda-hero-info { flex: 1; min-width: 0; }
+    .tienda-hero-badge {
+      font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem;
+    }
+    .tienda-hero-name {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900; color: var(--white); line-height: 1.1; margin-bottom: 0.5rem;
+    }
+    .tienda-hero-loc { font-size: 0.9rem; color: #888; margin-bottom: 1.25rem; }
+    .tienda-hero-dist { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .dist-pill {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      padding: 0.35rem 0.9rem; border-radius: 99px;
+      background: var(--orange); color: var(--white); letter-spacing: 0.05em;
+    }
+    .dist-pill.outline {
+      background: transparent; border: 1px solid #444; color: #aaa;
+    }
+
+    /* ── CONTENT ── */
+    .tienda-content { max-width: var(--max-w); margin: 0 auto; padding: 4rem 2.5rem; }
+    .tienda-section { margin-bottom: 3.5rem; }
+    .tienda-section h2 {
+      font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+      color: var(--black); margin-bottom: 1rem;
+    }
+    .tienda-section p { line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+
+    /* ── SERVICIOS GRID ── */
+    .productos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .producto-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+    }
+    .producto-marca {
+      font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 0.35rem;
+    }
+    .producto-card h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .producto-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── MATERIALES ── */
+    .materiales-grid { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.25rem 0; }
+    .mat-chip {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      padding: 0.3rem 0.8rem; border-radius: 99px;
+      border: 1.5px solid var(--border); background: var(--bg2);
+      color: var(--black); letter-spacing: 0.05em;
+    }
+    .mat-chip.featured { border-color: var(--orange); background: #fff8f0; color: var(--orange); }
+
+    /* ── REDES SOCIALES ── */
+    .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .social-card {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.25rem;
+      text-decoration: none; color: inherit; transition: all var(--tr);
+    }
+    .social-card:hover { border-color: var(--orange); }
+    .social-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .social-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.15rem; }
+    .social-handle { font-size: 0.88rem; font-weight: 600; color: var(--orange); }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .contact-item {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+    }
+    .contact-label {
+      font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem;
+    }
+    .contact-val { font-size: 0.95rem; font-weight: 500; color: var(--black); }
+    .contact-val a { color: var(--orange); }
+
+    /* ── CTA ACTIONS ── */
+    .tienda-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .btn-tienda-primary {
+      font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
+      padding: 0.75rem 1.5rem; border-radius: var(--radius);
+      background: var(--orange); color: var(--white); border: none;
+      text-decoration: none; transition: background var(--tr);
+    }
+    .btn-tienda-primary:hover { background: #d4600a; }
+    .btn-tienda-sec {
+      font-family: var(--font-mono); font-size: 0.82rem;
+      padding: 0.75rem 1.5rem; border-radius: var(--radius);
+      background: var(--bg); color: var(--black);
+      border: 1.5px solid var(--border); text-decoration: none;
+      transition: all var(--tr);
+    }
+    .btn-tienda-sec:hover { border-color: var(--orange); color: var(--orange); }
+
+    @media (max-width: 700px) {
+      .tienda-hero-inner { flex-direction: column; gap: 1.5rem; }
+      .tienda-hero-logo { width: 88px; height: 88px; }
+      .productos-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .social-grid { grid-template-columns: 1fr; }
+      .tienda-content { padding: 3rem 1.25rem; }
+    }
+    @media (max-width: 480px) {
+      .productos-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-rabbit" viewBox="0 0 64 50" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <ellipse cx="9" cy="33" rx="6" ry="5" fill="#f5a060"/>
+      <g class="rnb">
+        <ellipse cx="27" cy="33" rx="17" ry="11" fill="#F2790B" transform="rotate(-8 27 33)"/>
+        <ellipse cx="33" cy="34" rx="8" ry="6" fill="#f5a060" transform="rotate(-8 33 34)"/>
+        <circle cx="49" cy="23" r="10" fill="#F2790B"/>
+        <ellipse cx="45" cy="11" rx="3.5" ry="9" fill="#F2790B" transform="rotate(-15 45 20)"/>
+        <ellipse cx="45" cy="11" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(-15 45 20)"/>
+        <ellipse cx="52" cy="10" rx="3.5" ry="9" fill="#F2790B" transform="rotate(8 52 20)"/>
+        <ellipse cx="52" cy="10" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(8 52 20)"/>
+        <circle cx="55" cy="20" r="2.5" fill="#14110F"/>
+        <circle cx="56" cy="19" r="1" fill="white"/>
+        <circle cx="60" cy="25" r="1.5" fill="#c04010"/>
+      </g>
+      <rect class="rnla" x="38" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="44" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="13" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnla" x="20" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+    </svg>
+    <span class="nav-logo-text">TheRabbitHole</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
+    <li><a href="tiendas.html" class="active">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+    <li><a href="networking.html">Networking</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="tienda-hero">
+  <div class="tienda-hero-inner">
+    <div class="tienda-hero-logo">
+      <img src="assets/img/N4-3D.jpg" alt="N4-3D"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="tienda-hero-logo-fallback" style="display:none">N4<br>3D</span>
+    </div>
+    <div class="tienda-hero-info">
+      <p class="tienda-hero-badge">
+        <a href="tiendas.html" style="color:var(--orange);">← Tiendas BTC</a>
+        &nbsp;·&nbsp; Impresión 3D · Ibarra, Ecuador
+      </p>
+      <h1 class="tienda-hero-name">Creaciones N4-3D</h1>
+      <p class="tienda-hero-loc">📍 Ibarra, Imbabura — Ecuador</p>
+      <div class="tienda-hero-dist">
+        <span class="dist-pill">Impresión 3D</span>
+        <span class="dist-pill">Figuras personalizadas</span>
+        <span class="dist-pill">Repuestos técnicos</span>
+        <span class="dist-pill outline">Acepta Bitcoin</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="tienda-content">
+
+  <!-- SOBRE EL NEGOCIO -->
+  <div class="tienda-section">
+    <h2>Sobre Creaciones N4-3D</h2>
+    <p>N4-3D es un taller de impresión 3D con sede en Ibarra, Ecuador. Trabajan con materiales técnicos de alta calidad para fabricar figuras personalizadas, repuestos plásticos y prototipos. Si necesitas una pieza que ya no se consigue o quieres dar vida a un diseño propio, N4-3D lo puede hacer.</p>
+    <p>Especializados en reproducir repuestos plásticos para vehículos, electrodomésticos y maquinaria — y en crear figuras de colección, decoración o regalo a pedido.</p>
+  </div>
+
+  <!-- SERVICIOS -->
+  <div class="tienda-section">
+    <h2>Servicios</h2>
+
+    <div class="productos-grid">
+      <div class="producto-card">
+        <p class="producto-marca">Fabricación</p>
+        <h4>Figuras personalizadas</h4>
+        <p>Desde personajes de colección hasta decoración y regalos únicos. Diseño y fabricación a pedido con acabados detallados.</p>
+      </div>
+      <div class="producto-card">
+        <p class="producto-marca">Soluciones técnicas</p>
+        <h4>Repuestos plásticos</h4>
+        <p>Replicamos piezas difíciles de conseguir para vehículos, electrodomésticos y maquinaria industrial. Calidad técnica, precisión exacta.</p>
+      </div>
+      <div class="producto-card">
+        <p class="producto-marca">Prototipado</p>
+        <h4>Diseño + fabricación</h4>
+        <p>Desde la idea hasta la pieza terminada. Trabajamos con tu diseño o te ayudamos a desarrollarlo. Ideal para emprendedores y empresas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATERIALES -->
+  <div class="tienda-section">
+    <h2>Materiales disponibles</h2>
+    <p>Trabajamos con una selección de filamentos técnicos según la aplicación:</p>
+    <div class="materiales-grid">
+      <span class="mat-chip featured">PLA</span>
+      <span class="mat-chip featured">PETG</span>
+      <span class="mat-chip featured">ABS</span>
+      <span class="mat-chip">TPU (flexible)</span>
+      <span class="mat-chip">ASA</span>
+      <span class="mat-chip">Resina</span>
+    </div>
+  </div>
+
+  <!-- REDES SOCIALES -->
+  <div class="tienda-section">
+    <h2>Síguelos en redes</h2>
+    <p>Ven sus trabajos más recientes en Instagram y TikTok:</p>
+    <div class="social-grid">
+      <a href="https://www.instagram.com/creaciones.n4_3d" target="_blank" rel="noopener" class="social-card">
+        <span class="social-icon">📸</span>
+        <div>
+          <p class="social-label">Instagram</p>
+          <p class="social-handle">@creaciones.n4_3d</p>
+        </div>
+      </a>
+      <a href="https://www.tiktok.com/@creaciones.n43d" target="_blank" rel="noopener" class="social-card">
+        <span class="social-icon">🎵</span>
+        <div>
+          <p class="social-label">TikTok</p>
+          <p class="social-handle">@creaciones.n43d</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="tienda-section">
+    <h2>Contacto</h2>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <p class="contact-label">Teléfono / WhatsApp</p>
+        <p class="contact-val"><a href="tel:+593979667797">+593 97 9667797</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">Ubicación</p>
+        <p class="contact-val">Ibarra, Imbabura — Ecuador</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">Instagram</p>
+        <p class="contact-val"><a href="https://www.instagram.com/creaciones.n4_3d" target="_blank" rel="noopener">@creaciones.n4_3d</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">TikTok</p>
+        <p class="contact-val"><a href="https://www.tiktok.com/@creaciones.n43d" target="_blank" rel="noopener">@creaciones.n43d</a></p>
+      </div>
+    </div>
+
+    <div class="tienda-actions">
+      <a href="tel:+593979667797" class="btn-tienda-primary">📞 Llamar / WhatsApp</a>
+      <a href="https://www.instagram.com/creaciones.n4_3d" target="_blank" rel="noopener" class="btn-tienda-sec">Ver Instagram →</a>
+      <a href="tiendas.html" class="btn-tienda-sec">← Volver al directorio</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="libros.html">Libros</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
