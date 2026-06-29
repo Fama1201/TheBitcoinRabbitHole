@@ -20,15 +20,15 @@
     }
     .coming-btn:hover { border-color: var(--orange); color: var(--orange); }
 
-    .edu-carousel-outer { display:flex; align-items:center; gap:0.75rem; margin:2rem 0 1rem; }
-    .edu-wrap { overflow:hidden; flex:1; min-width:0; }
-    .edu-track { display:flex; transition:transform 0.45s cubic-bezier(.4,0,.2,1); will-change:transform; }
-    .edu-track .educador-card { flex-shrink:0; box-sizing:border-box; padding:0 0.5rem; }
-    .edu-arrow { flex-shrink:0; width:36px; height:36px; border-radius:50%; background:var(--white); border:1.5px solid var(--border); color:var(--black); font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:border-color 0.18s,color 0.18s; line-height:1; }
-    .edu-arrow:hover { border-color:var(--orange); color:var(--orange); }
-    .edu-dots { display:flex; justify-content:center; gap:0.5rem; margin-top:1rem; }
-    .edu-dot { width:6px; height:6px; border-radius:50%; background:var(--border); border:none; cursor:pointer; padding:0; transition:background 0.2s,transform 0.2s; }
-    .edu-dot.active { background:var(--orange); transform:scale(1.4); }
+    .edu-marquee-wrap {
+      overflow:hidden; margin:2rem 0 0.5rem;
+      -webkit-mask-image:linear-gradient(to right,transparent 0%,black 10%,black 90%,transparent 100%);
+      mask-image:linear-gradient(to right,transparent 0%,black 10%,black 90%,transparent 100%);
+    }
+    .edu-marquee-track { display:flex; gap:1rem; width:max-content; animation:eduScroll 24s linear infinite; }
+    .edu-marquee-track:hover { animation-play-state:paused; }
+    .edu-marquee-track .educador-card { width:220px; flex-shrink:0; box-sizing:border-box; }
+    @keyframes eduScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
   </style>
 </head>
 <body>
@@ -341,53 +341,88 @@
     <p class="section-label">Directorio</p>
     <h2 class="section-title">Otros educadores Bitcoin en español</h2>
     <p class="section-sub">Personas que también enseñan Bitcoin con rigor. Cada uno con su enfoque, todos recomendables.</p>
-    <div class="edu-carousel-outer">
-      <button class="edu-arrow" id="eduPrev" aria-label="Anterior">&#8249;</button>
-      <div class="edu-wrap">
-        <div class="edu-track" id="eduTrack">
-          <a href="dr-athaseaa.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
-            <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
-              <img src="assets/img/dc_athesea.jpeg" alt="Dr. Athaseaa" style="width:56px;height:56px;object-fit:cover;object-position:center 33%;border-radius:50%;display:block;"/>
-            </div>
-            <h4>Dr. Athaseaa</h4>
-            <p>TikTok · Telegram</p>
-            <span class="educador-link">Ver perfil →</span>
-          </a>
-          <a href="satoshihodler.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
-            <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
-              <img src="assets/img/satoshihodler.jpg" alt="Satoshihodler" style="width:56px;height:56px;object-fit:cover;object-position:center 38%;border-radius:50%;display:block;"/>
-            </div>
-            <h4>Satoshihodler</h4>
-            <p>TikTok · Twitter/X · Instagram</p>
-            <span class="educador-link">Ver perfil →</span>
-          </a>
-          <a href="deadbitcoin.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
-            <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
-              <img src="assets/img/DeadBitcoin.jpg" alt="Dead Bitcoin" style="width:56px;height:56px;object-fit:cover;object-position:center 20%;border-radius:50%;display:block;"/>
-            </div>
-            <h4>Dead Bitcoin</h4>
-            <p>Autocustodia · Seguridad</p>
-            <span class="educador-link">Ver perfil →</span>
-          </a>
-          <a href="elcausabtc.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
-            <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
-              <img src="assets/img/elcausabtc.jpg" alt="ElcausaBTC" style="width:56px;height:56px;object-fit:cover;object-position:center 20%;border-radius:50%;display:block;"/>
-            </div>
-            <h4>ElcausaBTC</h4>
-            <p>TikTok · Instagram</p>
-            <span class="educador-link">Ver perfil →</span>
-          </a>
-          <div class="educador-card">
-            <div class="educador-avatar">+</div>
-            <h4>Sugerir educador</h4>
-            <p>¿Conoces a alguien?</p>
-            <a href="educadores.html" class="educador-link">Ir al directorio →</a>
+    <div class="edu-marquee-wrap">
+      <div class="edu-marquee-track">
+        <!-- set 1 -->
+        <a href="dr-athaseaa.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/dc_athesea.jpeg" alt="Dr. Athaseaa" style="width:56px;height:56px;object-fit:cover;object-position:center 33%;border-radius:50%;display:block;"/>
           </div>
+          <h4>Dr. Athaseaa</h4>
+          <p>TikTok · Telegram</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <a href="satoshihodler.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/satoshihodler.jpg" alt="Satoshihodler" style="width:56px;height:56px;object-fit:cover;object-position:center 38%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>Satoshihodler</h4>
+          <p>TikTok · Twitter/X · Instagram</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <a href="deadbitcoin.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/DeadBitcoin.jpg" alt="Dead Bitcoin" style="width:56px;height:56px;object-fit:cover;object-position:center 20%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>Dead Bitcoin</h4>
+          <p>Autocustodia · Seguridad</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <a href="elcausabtc.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/elcausabtc.jpg" alt="ElcausaBTC" style="width:56px;height:56px;object-fit:cover;object-position:center 20%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>ElcausaBTC</h4>
+          <p>TikTok · Instagram</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <div class="educador-card">
+          <div class="educador-avatar">+</div>
+          <h4>Sugerir educador</h4>
+          <p>¿Conoces a alguien?</p>
+          <a href="educadores.html" class="educador-link">Ir al directorio →</a>
+        </div>
+        <!-- set 2 (copia para loop sin corte) -->
+        <a href="dr-athaseaa.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/dc_athesea.jpeg" alt="Dr. Athaseaa" style="width:56px;height:56px;object-fit:cover;object-position:center 33%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>Dr. Athaseaa</h4>
+          <p>TikTok · Telegram</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <a href="satoshihodler.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/satoshihodler.jpg" alt="Satoshihodler" style="width:56px;height:56px;object-fit:cover;object-position:center 38%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>Satoshihodler</h4>
+          <p>TikTok · Twitter/X · Instagram</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <a href="deadbitcoin.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/DeadBitcoin.jpg" alt="Dead Bitcoin" style="width:56px;height:56px;object-fit:cover;object-position:center 20%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>Dead Bitcoin</h4>
+          <p>Autocustodia · Seguridad</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <a href="elcausabtc.html" class="educador-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="educador-avatar" style="width:56px;height:56px;border-radius:50%;overflow:hidden;background:none;padding:0;">
+            <img src="assets/img/elcausabtc.jpg" alt="ElcausaBTC" style="width:56px;height:56px;object-fit:cover;object-position:center 20%;border-radius:50%;display:block;"/>
+          </div>
+          <h4>ElcausaBTC</h4>
+          <p>TikTok · Instagram</p>
+          <span class="educador-link">Ver perfil →</span>
+        </a>
+        <div class="educador-card">
+          <div class="educador-avatar">+</div>
+          <h4>Sugerir educador</h4>
+          <p>¿Conoces a alguien?</p>
+          <a href="educadores.html" class="educador-link">Ir al directorio →</a>
         </div>
       </div>
-      <button class="edu-arrow" id="eduNext" aria-label="Siguiente">&#8250;</button>
     </div>
-    <div class="edu-dots" id="eduDots"></div>
   </div>
 </section>
 
@@ -536,53 +571,6 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
-<script>
-(function(){
-  var track=document.getElementById('eduTrack');
-  if(!track)return;
-  var wrap=track.parentElement;
-  var cards=Array.from(track.children);
-  var total=cards.length,cur=0,timer;
-  function vis(){return window.innerWidth>=900?3:window.innerWidth>=560?2:1;}
-  function max(){return total-vis();}
-  function layout(){
-    var v=vis(),w=wrap.offsetWidth,cw=w/v;
-    cards.forEach(function(c){c.style.width=cw+'px';});
-    if(cur>max())cur=max();
-    go(cur,false);mkdots();
-  }
-  function go(idx,anim){
-    if(anim===false)track.style.transition='none';
-    cur=Math.max(0,Math.min(idx,max()));
-    track.style.transform='translateX(-'+(cur*(wrap.offsetWidth/vis()))+'px)';
-    if(anim===false)requestAnimationFrame(function(){track.style.transition='';});
-    mkdots();
-  }
-  function mkdots(){
-    var el=document.getElementById('eduDots');if(!el)return;
-    el.innerHTML='';
-    for(var i=0;i<=max();i++){
-      (function(i){
-        var d=document.createElement('button');
-        d.className='edu-dot'+(i===cur?' active':'');
-        d.setAttribute('aria-label','Posición '+(i+1));
-        d.onclick=function(){go(i);reset();};
-        el.appendChild(d);
-      })(i);
-    }
-  }
-  function next(){go(cur<max()?cur+1:0);}
-  function prev(){go(cur>0?cur-1:max());}
-  function start(){timer=setInterval(next,3500);}
-  function reset(){clearInterval(timer);start();}
-  document.getElementById('eduNext').onclick=function(){next();reset();};
-  document.getElementById('eduPrev').onclick=function(){prev();reset();};
-  wrap.addEventListener('mouseenter',function(){clearInterval(timer);});
-  wrap.addEventListener('mouseleave',start);
-  window.addEventListener('resize',layout);
-  layout();start();
-})();
-</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
