@@ -24,6 +24,7 @@
     { "src": "/n4-3d", "dest": "/n4-3d.html" },
     { "src": "/leccion-0", "dest": "/leccion-0.html" },
     { "src": "/leccion-7", "dest": "/leccion-7.html" },
-    { "src": "/leccion-8", "dest": "/leccion-8.html" }
+    { "src": "/leccion-8", "dest": "/leccion-8.html" },
+    { "src": "/elcausabtc", "dest": "/elcausabtc.html" }
   ]
 }
