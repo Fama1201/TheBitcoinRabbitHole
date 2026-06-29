@@ -142,13 +142,12 @@
   </div>
 
   <h1 class="lesson-title">Blockchain y bloques</h1>
-  <p class="lesson-intro">La blockchain es el registro público e inmutable donde se guardan todas las transacciones de Bitcoin. Pero ¿cómo funciona exactamente? En esta lección explicamos qué es un bloque, qué es un hash, cómo se encadenan los bloques y por qué modificar el historial es prácticamente imposible — y puedes comprobarlo tú mismo con los demos interactivos.</p>
+  <p class="lesson-intro">La blockchain es el registro público donde se guardan todas las transacciones. Modificarlo es prácticamente imposible — aquí te mostramos por qué, con demos que puedes probar tú mismo.</p>
 
   <!-- ── QUÉ ES UN BLOQUE ── -->
   <div class="lesson-section">
     <h2>¿Qué es un bloque?</h2>
-    <p>Cada bloque es un paquete de transacciones. Cada 10 minutos aproximadamente, los mineros agrupan transacciones pendientes, las validan y las añaden a la cadena formando un nuevo bloque.</p>
-    <p>Un bloque contiene:</p>
+    <p>Cada ~10 minutos los mineros agrupan transacciones, las validan y añaden un nuevo bloque a la cadena. Cada bloque contiene:</p>
 
     <figure class="diagram-box">
       <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
@@ -174,14 +173,12 @@
       <figcaption>CONTENIDO SIMPLIFICADO DE UN BLOQUE REAL DE BITCOIN</figcaption>
     </figure>
 
-    <p>El campo más importante es el <strong>hash del bloque anterior</strong>. Ese puntero es lo que forma la cadena — de ahí el nombre "blockchain".</p>
   </div>
 
   <!-- ── QUÉ ES UN HASH ── -->
   <div class="lesson-section">
     <h2>¿Qué es un hash?</h2>
-    <p>Un hash es el resultado de pasar cualquier texto por una función matemática que produce una "huella digital" de longitud fija. Bitcoin usa SHA-256, que siempre produce una cadena de 64 caracteres hexadecimales.</p>
-    <p>Tres propiedades fundamentales:</p>
+    <p>Un hash es la "huella digital" de cualquier dato. Bitcoin usa SHA-256. Tiene tres propiedades clave:</p>
     <ul style="margin-left:1.5rem;line-height:2;margin-bottom:1rem;">
       <li><strong>Determinista:</strong> el mismo texto siempre produce el mismo hash.</li>
       <li><strong>Avalancha:</strong> cambiar un solo carácter produce un hash completamente diferente.</li>
@@ -277,14 +274,12 @@
       <button class="chain-reset-btn" onclick="resetChain()">↺ Restaurar datos originales</button>
     </div>
 
-    <p>En la red real de Bitcoin hay más de 850.000 bloques encadenados. Para modificar el bloque número 500.000, necesitarías recalcular el Proof of Work de ese bloque Y de todos los bloques posteriores — mientras la red sigue añadiendo bloques nuevos a velocidad normal. Es computacionalmente imposible.</p>
   </div>
 
   <!-- ── PROOF OF WORK ── -->
   <div class="lesson-section">
     <h2>Proof of Work: el mecanismo que hace costosa la trampa</h2>
-    <p>Para añadir un bloque a la cadena, los mineros tienen que encontrar un hash que empiece con un número determinado de ceros. No hay forma de predecir qué valor de <strong>nonce</strong> producirá ese hash — solo queda probarlo millones de veces hasta encontrarlo.</p>
-    <p>Esto consume energía real, y eso es intencional: si modificar el historial requiere rehacerlo todo con coste energético real, solo quien tenga más del 50% del poder de cómputo global podría intentarlo — y sería más rentable usar esa energía para minar honestamente.</p>
+    <p>Para añadir un bloque, los mineros buscan un <strong>nonce</strong> que haga que el hash empiece con cierta cantidad de ceros. Solo queda probarlo millones de veces — consume energía real, lo que hace que falsificar el historial sea más caro que minar honestamente.</p>
 
     <!-- DEMO INTERACTIVO: MINING SIMULATION -->
     <div class="mining-demo">
@@ -303,7 +298,6 @@
   <!-- ── INMUTABILIDAD ── -->
   <div class="lesson-section">
     <h2>¿Por qué es "inmutable"?</h2>
-    <p>La inmutabilidad de la blockchain no es magia — es consecuencia de la combinación de tres cosas:</p>
 
     <figure class="diagram-box">
       <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
@@ -325,7 +319,6 @@
       <figcaption>LOS TRES PILARES DE LA INMUTABILIDAD EN BITCOIN</figcaption>
     </figure>
 
-    <p>Ninguno de los tres elementos por sí solo sería suficiente. Un hash sin Proof of Work sería fácil de recalcular. Un Proof of Work sin red distribuida podría ser controlado por un solo actor. La red sin hashing no detectaría manipulaciones. Los tres juntos hacen que la blockchain sea prácticamente inalterable.</p>
   </div>
 
   <!-- ── RESUMEN ── -->

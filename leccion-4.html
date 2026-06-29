@@ -174,14 +174,14 @@
   <h1 class="lesson-title">¿Qué es un UTXO?</h1>
 
   <p class="lesson-intro">
-    Bitcoin no funciona con saldos como una cuenta bancaria. En cambio, funciona con <strong>UTXOs</strong>: Unspent Transaction Outputs, o salidas de transacciones no gastadas. Es un modelo completamente diferente al que estamos acostumbrados, y entenderlo es clave para comprender cómo se construyen las transacciones, por qué existen las comisiones y cómo funciona la privacidad en Bitcoin.
+    Bitcoin no usa saldos. Usa <strong>UTXOs</strong> — Unspent Transaction Outputs, monedas individuales de distintos tamaños. Entenderlo cambia cómo piensas en las transacciones y las comisiones.
   </p>
 
   <!-- SECCIÓN 1: DOS MODELOS -->
   <div class="lesson-section">
     <h2>El modelo bancario vs. el modelo UTXO</h2>
 
-    <p>Cuando tienes dinero en un banco, el banco registra un único número: tu saldo. Si tienes $400, el banco actualiza ese número cuando recibes o gastas. Bitcoin no funciona así.</p>
+    <p>El banco guarda un número: tu saldo. Bitcoin no.</p>
 
     <div class="model-compare">
       <div class="model-card bank">
@@ -317,7 +317,7 @@
       <figcaption>ANATOMÍA DE UNA TRANSACCIÓN — 2 UTXOs entran, 3 salidas se crean (destinatario, cambio y comisión implícita)</figcaption>
     </div>
 
-    <p>Fíjate en algo importante: los UTXOs de entrada se <strong>consumen completamente</strong>. No puedes gastar "la mitad" de un UTXO. Si tienes un UTXO de 0.23 BTC y quieres enviar 0.10 BTC, tu wallet consume el UTXO entero (0.23 BTC) y crea dos salidas: 0.10 BTC para el destinatario y el resto de vuelta a ti como cambio (menos la comisión del minero).</p>
+    <p>Los UTXOs se consumen completos — no puedes gastar la mitad. El excedente vuelve a ti como cambio (un nuevo UTXO).</p>
 
     <div class="callout">
       <p>La dirección de cambio puede ser la misma tuya o —en wallets bien diseñadas— una dirección nueva. Usar una dirección de cambio nueva mejora la privacidad porque hace más difícil rastrear tus UTXOs en la blockchain.</p>
@@ -401,9 +401,7 @@
   <div class="lesson-section">
     <h2>La mempool: la sala de espera de Bitcoin</h2>
 
-    <p>Cuando envías una transacción, esta no se incluye inmediatamente en un bloque. Primero va a la <strong>mempool</strong> (memory pool): un espacio de memoria donde los nodos de la red guardan las transacciones pendientes de confirmación.</p>
-
-    <p>Los mineros pueden elegir qué transacciones incluir en el próximo bloque. Su incentivo económico es maximizar las comisiones que reciben, por lo que priorizan las transacciones con mayor <strong>tasa de comisión</strong>, medida en satoshis por byte virtual (sat/vByte).</p>
+    <p>Cuando envías una transacción, primero va a la <strong>mempool</strong>: la sala de espera donde los nodos guardan transacciones pendientes. Los mineros priorizan las de mayor <strong>tasa de comisión</strong> (sat/vByte) para maximizar sus ingresos.</p>
 
     <!-- MEMPOOL VISUAL -->
     <div class="mempool-wrap">
@@ -452,7 +450,7 @@
       </div>
     </div>
 
-    <p>Cada bloque de Bitcoin tiene un tamaño máximo de aproximadamente 4 MB (en peso) y puede contener unas 2,000–3,000 transacciones típicas. Los mineros llenan cada bloque empezando por las transacciones de mayor tasa hasta llenarlo.</p>
+    <p>Cada bloque tiene espacio para ~2,000–3,000 transacciones. Los mineros lo llenan de mayor a menor tasa.</p>
 
     <h3>¿Cuánto debería pagar de comisión?</h3>
     <p>Depende de la urgencia. Hay herramientas online que muestran el estado actual de la mempool y recomiendan una tasa según el tiempo de confirmación deseado. Muchas wallets calculan esto automáticamente.</p>
@@ -489,7 +487,7 @@
     </table>
 
     <div class="callout tip">
-      <p><strong>Tip:</strong> Una transacción con tasa muy baja puede quedar atascada en la mempool indefinidamente. Si la mempool se vacía (períodos de baja actividad), eventualmente los mineros la incluyen. Pero si la tasa es tan baja que nunca es competitiva, los nodos pueden expulsarla de la mempool tras cierto tiempo.</p>
+      <p><strong>Tip:</strong> Una transacción con tasa muy baja puede quedar atascada indefinidamente — o ser expulsada de la mempool si nunca es competitiva.</p>
     </div>
   </div>
 
@@ -530,7 +528,7 @@
       <figcaption>CADA UTXO EXISTE EN LA BLOCKCHAIN — los nodos de la red mantienen el UTXO set completo en memoria para validar transacciones rápidamente</figcaption>
     </div>
 
-    <p>Los nodos completos de Bitcoin mantienen el UTXO set en memoria RAM para poder validar transacciones rápidamente. Cuando una transacción llega, el nodo verifica que los UTXOs de entrada existan en el UTXO set y no hayan sido gastados antes. Esto es lo que hace imposible el doble gasto en Bitcoin.</p>
+    <p>Los nodos mantienen el UTXO set en RAM para validar transacciones al instante — es lo que hace imposible el doble gasto.</p>
 
     <div class="callout">
       <p><strong>Dato técnico:</strong> A junio de 2025, el UTXO set de Bitcoin contiene aproximadamente 180 millones de UTXOs y ocupa unos 10–12 GB en memoria. Los satoshis no existen en ninguna cuenta — existen como UTXOs registrados en la blockchain y validados por miles de nodos en todo el mundo.</p>
