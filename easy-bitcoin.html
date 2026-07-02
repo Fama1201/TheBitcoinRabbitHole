@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Easy Bitcoin — Educador Bitcoin | TheRabbitHole</title>
+  <meta name="description" content="Educador en autocustodia de Bitcoin. Enseña a custodiar de forma soberana y verificable, a tomar el control de tus propias llaves, sin depender de intermediarios."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .educador-hero {
+      background: var(--black); padding: 7rem 2.5rem 4rem;
+      border-bottom: 1px solid #2a2520;
+    }
+    .educador-hero-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .educador-hero-photo {
+      width: 120px; height: 120px; flex-shrink: 0;
+      border-radius: 50%; overflow: hidden;
+      border: 3px solid var(--orange);
+    }
+    .educador-hero-photo img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
+    }
+    .educador-hero-info { flex: 1; min-width: 0; }
+    .educador-hero-badge {
+      font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem;
+    }
+    .educador-hero-name {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900; color: var(--white); line-height: 1.1; margin-bottom: 0.5rem;
+    }
+    .educador-hero-title {
+      font-size: 0.95rem; color: #888; margin-bottom: 1.25rem; line-height: 1.6;
+    }
+    .educador-hero-platforms { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .platform-pill {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+      padding: 0.35rem 0.9rem; border-radius: 99px;
+      background: #1a1512; color: #ccc;
+      border: 1px solid #333; letter-spacing: 0.04em;
+    }
+
+    .educador-content { max-width: var(--max-w); margin: 0 auto; padding: 4rem 2.5rem; }
+    .educador-section { margin-bottom: 3.5rem; }
+    .educador-section h2 {
+      font-family: var(--font-display); font-size: 1.5rem; font-weight: 700;
+      color: var(--black); margin-bottom: 1rem;
+    }
+    .educador-section p {
+      line-height: 1.85; color: var(--text); margin-bottom: 1rem; font-size: 1rem;
+    }
+
+    .topics-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0;
+    }
+    .topic-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+    }
+    .topic-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+    .topic-label {
+      font-family: var(--font-display); font-size: 0.9rem; font-weight: 700;
+      color: var(--black); margin-bottom: 0.2rem;
+    }
+    .topic-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin: 0; }
+
+    .social-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;
+    }
+    .social-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem; text-decoration: none; transition: all var(--tr);
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .social-card:hover { border-color: var(--orange); }
+    .social-network {
+      font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .social-handle {
+      font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700;
+      color: var(--black);
+    }
+    .social-card:hover .social-handle { color: var(--orange); }
+    .social-arrow {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--orange);
+      margin-top: auto; padding-top: 0.5rem;
+    }
+
+    .callout {
+      background: var(--bg2); border-left: 3px solid var(--orange);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.25rem 1.5rem; margin: 1.75rem 0;
+    }
+    .callout p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+
+    .back-link {
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--orange);
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-bottom: 2rem; transition: color var(--tr);
+    }
+    .back-link:hover { color: #d4600a; }
+
+    @media (max-width: 700px) {
+      .educador-hero-inner { flex-direction: column; gap: 1.5rem; }
+      .educador-hero-photo { width: 96px; height: 96px; }
+      .topics-grid { grid-template-columns: repeat(2, 1fr); }
+      .social-grid { grid-template-columns: 1fr; }
+      .educador-content { padding: 3rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-rabbit" viewBox="0 0 64 50" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <ellipse cx="9" cy="33" rx="6" ry="5" fill="#f5a060"/>
+      <g class="rnb">
+        <ellipse cx="27" cy="33" rx="17" ry="11" fill="#F2790B" transform="rotate(-8 27 33)"/>
+        <ellipse cx="33" cy="34" rx="8" ry="6" fill="#f5a060" transform="rotate(-8 33 34)"/>
+        <circle cx="49" cy="23" r="10" fill="#F2790B"/>
+        <ellipse cx="45" cy="11" rx="3.5" ry="9" fill="#F2790B" transform="rotate(-15 45 20)"/>
+        <ellipse cx="45" cy="11" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(-15 45 20)"/>
+        <ellipse cx="52" cy="10" rx="3.5" ry="9" fill="#F2790B" transform="rotate(8 52 20)"/>
+        <ellipse cx="52" cy="10" rx="1.8" ry="6.5" fill="#d4601a" transform="rotate(8 52 20)"/>
+        <circle cx="55" cy="20" r="2.5" fill="#14110F"/>
+        <circle cx="56" cy="19" r="1" fill="white"/>
+        <circle cx="60" cy="25" r="1.5" fill="#c04010"/>
+      </g>
+      <rect class="rnla" x="38" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="44" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnlb" x="13" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+      <rect class="rnla" x="20" y="40" width="6" height="10" rx="3" fill="#F2790B"/>
+    </svg>
+    <span class="nav-logo-text">TheRabbitHole</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="sobre.html">Sobre nosotros</a></li>
+    <li><a href="aprender.html">Aprender Bitcoin</a></li>
+    <li><a href="educadores.html" class="active">Educadores</a></li>
+    <li><a href="libros.html">Libros</a></li>
+    <li><a href="tiendas.html">Tiendas BTC</a></li>
+    <li><a href="donaciones.html">Donaciones</a></li>
+    <li><a href="networking.html">Networking</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú" onclick="toggleNav()">&#9776;</button>
+  <a href="donaciones.html" class="nav-donate">Apoyar →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="educador-hero">
+  <div class="educador-hero-inner">
+    <div class="educador-hero-photo">
+      <img src="assets/img/Easy_Bitcoin.jpg" alt="Easy Bitcoin"/>
+    </div>
+    <div class="educador-hero-info">
+      <p class="educador-hero-badge">Educador · Autocustodia Bitcoin</p>
+      <h1 class="educador-hero-name">Easy Bitcoin</h1>
+      <p class="educador-hero-title">
+        La soberanía real exige entender las herramientas que usas, no solo confiar en ellas.<br>
+        Autocustodia verificable, desde cero, sin depender de nadie.
+      </p>
+      <div class="educador-hero-platforms">
+        <span class="platform-pill">TikTok</span>
+        <span class="platform-pill">Instagram</span>
+        <span class="platform-pill">Twitter / X</span>
+        <span class="platform-pill">Bitcoin-only</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="educador-content">
+
+  <a href="educadores.html" class="back-link">← Volver al directorio</a>
+
+  <div class="educador-section">
+    <h2>Sobre Easy Bitcoin</h2>
+    <p>
+      Easy Bitcoin es educador especializado en autocustodia de Bitcoin. Su enfoque es directo: enseñar a custodiar de forma soberana y verificable, tomando el control real de las propias llaves sin depender de ningún intermediario.
+    </p>
+    <p>
+      Su filosofía parte de una premisa sólida: la soberanía real exige entender las herramientas que usas, no solo confiar en ellas. Por eso enseña a verificar el hardware antes de usarlo, a respaldar y recuperar de verdad, y a conocer en profundidad la wallet que se va a usar.
+    </p>
+    <div class="callout">
+      <p>"Lo que enseño, lo practico primero." Su objetivo es que cada persona sea completamente autosuficiente con su Bitcoin — sin necesitar a nadie para proteger lo suyo.</p>
+    </div>
+  </div>
+
+  <div class="educador-section">
+    <h2>Temas que cubre</h2>
+    <p>Su contenido va directo al núcleo de la autocustodia: desde la verificación del hardware hasta la recuperación real de fondos:</p>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-icon">🔑</div>
+        <p class="topic-label">Tus llaves, tu Bitcoin</p>
+        <p class="topic-desc">Cómo tomar el control real de tus llaves privadas y dejar de depender de terceros para proteger tu Bitcoin.</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-icon">🔍</div>
+        <p class="topic-label">Verificación de hardware</p>
+        <p class="topic-desc">Cómo verificar que tu dispositivo es auténtico antes de confiarle fondos. Paso a paso, sin asumir nada.</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-icon">💾</div>
+        <p class="topic-label">Backup y recuperación</p>
+        <p class="topic-desc">Respaldar y recuperar de verdad: seed phrases, pruebas de restauración y errores comunes que cuestan caro.</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-icon">👛</div>
+        <p class="topic-label">Wallets a fondo</p>
+        <p class="topic-desc">Conocer la wallet que usas: cómo funciona, qué hace con tus claves y por qué importa entenderla antes de usarla.</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-icon">🏛️</div>
+        <p class="topic-label">Sin intermediarios</p>
+        <p class="topic-desc">Por qué delegar la custodia es un riesgo real y cómo construir una solución propia, robusta y verificable.</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-icon">🛡️</div>
+        <p class="topic-label">Autosuficiencia total</p>
+        <p class="topic-desc">El objetivo final: que nadie más tenga que estar presente para que protejas y accedas a tu Bitcoin.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="educador-section">
+    <h2>Dónde encontrarlo</h2>
+    <p>Puedes seguir el contenido de Easy Bitcoin en TikTok, Instagram y Twitter/X:</p>
+
+    <div class="social-grid">
+      <a class="social-card" href="https://www.tiktok.com/@btceasyguide" target="_blank" rel="noopener">
+        <span class="social-network">TikTok</span>
+        <span class="social-handle">@btceasyguide</span>
+        <span class="social-arrow">→</span>
+      </a>
+      <a class="social-card" href="https://www.instagram.com/btceasyguide" target="_blank" rel="noopener">
+        <span class="social-network">Instagram</span>
+        <span class="social-handle">@btceasyguide</span>
+        <span class="social-arrow">→</span>
+      </a>
+      <a class="social-card" href="https://x.com/BtceasyGuide" target="_blank" rel="noopener">
+        <span class="social-network">Twitter / X</span>
+        <span class="social-handle">@BtceasyGuide</span>
+        <span class="social-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">TheRabbitHole</p>
+      <p class="footer-note">therabbitholebtc.com · Bitcoin-only · Contenido gratuito</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="sobre.html">Sobre nosotros</a></li>
+      <li><a href="aprender.html">Aprender</a></li>
+      <li><a href="educadores.html">Educadores</a></li>
+      <li><a href="libros.html">Libros</a></li>
+      <li><a href="tiendas.html">Tiendas BTC</a></li>
+      <li><a href="donaciones.html">Donaciones</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <p class="footer-note">© 2025 TheRabbitHole</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
